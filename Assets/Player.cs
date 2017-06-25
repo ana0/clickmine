@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public float speed = -10f;
-    public float momentum = 10f;
+    public static float speed = -1f;
+    public float momentum = 1f;
     private Vector3 movement;
     Rigidbody playerRigidbody;
 
@@ -23,14 +23,17 @@ public class Player : MonoBehaviour {
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
+        Debug.Log(h);
         Move(h, v);
     }
 
     public void Move(float h, float v)
     {
         //Set movement vector from keyboard input, speed is our constant forward float
-        movement.Set(-h, v, speed);
-        movement = movement * momentum * Time.deltaTime;
+        movement.Set(-h, v, 0f);
+        movement = movement * momentum;
+        Vector3 constantSpeed = new Vector3(0f, 0f, speed);
+        movement = movement + constantSpeed;
         //Add movement vector to the player's current transform
         playerRigidbody.MovePosition(transform.position + movement);
     }
