@@ -23,7 +23,6 @@ public class Player : MonoBehaviour {
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        Debug.Log(h);
         Move(h, v);
     }
 
@@ -36,7 +35,9 @@ public class Player : MonoBehaviour {
         movement = movement + constantSpeed;
         //Add movement vector to the player's current transform
         playerRigidbody.MovePosition(transform.position + movement);
-    }
+		Debug.Log(movement);
+		//playerRigidbody.AddForce(movement, ForceMode.Acceleration);
+	}
 
 
 }
