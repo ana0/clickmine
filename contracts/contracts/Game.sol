@@ -1,8 +1,8 @@
-import "./StandardToken.sol";
+import "./Registrar.sol";
 
 pragma solidity ^0.4.8;
 
-contract Game {
+contract Game is owned, mortal {
 
     struct Player {
       bytes32 seed;
@@ -21,12 +21,18 @@ contract Game {
     }
     Good[10] public goods;
 
-        //functions available to the player
+    //functions available to the player
 
     function beginGame() {
       //set initial game state 
       //will wipe game state if it exists
       //no mercy
+
+      games[msg.sender].seed = 
+      games[msg.sender].miningEfficiency = 
+      games[msg.sender].miningSpeed = 0;
+      games[msg.sender].canSmelt = false;
+      games[msg.sender].ownedGoods = [];
     }
 
     function click() {
@@ -55,11 +61,11 @@ contract Game {
       //returns all relevant data for given player
     }
 
-    function addGood() {
+    function addGood() onlyOwner {
       //used up to ten times to add goods
     }
 
-    function updateGood() {
+    function updateGood() onlyOwner {
       //to update the goods list 
     }
 
