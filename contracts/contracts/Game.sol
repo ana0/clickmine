@@ -2,7 +2,7 @@ import "./Registrar.sol";
 
 pragma solidity ^0.4.8;
 
-contract Game is owned, mortal {
+contract Game is mortal {
 
     struct Player {
       bytes32 seed;
@@ -19,7 +19,7 @@ contract Game is owned, mortal {
       uint256 speedBoost;
       uint256 cost;
     }
-    Good[10] public goods;
+    Good[] public goods;
 
     //functions available to the player
 
@@ -28,11 +28,11 @@ contract Game is owned, mortal {
       //will wipe game state if it exists
       //no mercy
 
-      games[msg.sender].seed = 
-      games[msg.sender].miningEfficiency = 
+      games[msg.sender].seed = block.blockhash(block.number - 1);
+      games[msg.sender].miningEfficiency = 0;
       games[msg.sender].miningSpeed = 0;
       games[msg.sender].canSmelt = false;
-      games[msg.sender].ownedGoods = [];
+      games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
     }
 
     function click() {

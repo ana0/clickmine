@@ -3,7 +3,7 @@ import "./Registrar.sol";
 
 pragma solidity ^0.4.8;
 
-contract ClickMineToken is StandardToken, owned, mortal {
+contract ClickMineToken is StandardToken, mortal {
 
     /* Public variables of the token */
 

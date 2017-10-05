@@ -1,21 +1,4 @@
-import "./StandardToken.sol";
-
 pragma solidity ^0.4.8;
-
-contract Registrar is mortal, owned {
-
-    public address GameAddress;
-    public address TokenAddress;
-
-    function updateGameAddress() onlyOwner {
-
-    }
-
-    function updateTokenAddress() onlyOwner {
-      
-    }
-
-  }
 
 contract owned {
     function owned() { owner = msg.sender; }
@@ -46,4 +29,19 @@ contract mortal is owned {
     function close() onlyOwner {
         selfdestruct(owner);
     }
+}
+
+contract Registrar is mortal {
+
+    address public GameAddress;
+    address public TokenAddress;
+
+    function updateGameAddress() onlyOwner {
+
+    }
+
+    function updateTokenAddress() onlyOwner {
+      
+    }
+
 }

@@ -1,5 +1,9 @@
-var HumanStandardToken = artifacts.require("./HumanStandardToken.sol");
+var ClickMineToken = artifacts.require("./ClickMineToken.sol");
+var Registrar = artifacts.require("./Registrar.sol");
+var Game = artifacts.require("./Game.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(HumanStandardToken);
+  deployer.deploy(ClickMineToken);
+  deployer.deploy(Registrar);
+  deployer.deploy(Game);
 };
