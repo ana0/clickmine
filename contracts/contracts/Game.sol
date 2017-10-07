@@ -14,7 +14,7 @@ contract Game is mortal {
     mapping (address => Player) public games;
 
     struct Good {
-      bytes32 name;
+      string name;
       uint256 efficiencyBoost;
       uint256 speedBoost;
       uint256 cost;
@@ -27,7 +27,6 @@ contract Game is mortal {
       //set initial game state 
       //will wipe game state if it exists
       //no mercy
-
       games[msg.sender].seed = block.blockhash(block.number - 1);
       games[msg.sender].miningEfficiency = 0;
       games[msg.sender].miningSpeed = 0;
@@ -41,8 +40,16 @@ contract Game is mortal {
       //subject to miningSpeed and miningEfficiency
     }
 
-    function buyGoods() {
+    function buyGoods(address tokenAddress, uint256 goodIdentifier, uint256 quantity) {
       //buy any number of a single good
+      uint256 totalCost = calcPriceOfGood(goodIdentifier, quantity);
+    }
+
+    function calcPriceOfGood(uint256 goodIdentifier, uint256 quantity) internal returns (uint256 price) {
+      require(goodIdentifier >= 0 && goodIdentifier <= 10);
+      uint256 totalCost = goods[goodIdentifier].cost * quantity;
+      assert(goods[goodIdentifier].cost == 0 || totalCost / goods[goodIdentifier].cost == quantity);
+      return totalCost;
     }
 
     function socialClick() {
@@ -61,12 +68,14 @@ contract Game is mortal {
       //returns all relevant data for given player
     }
 
-    function addGood() onlyOwner {
+    function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner returns (bool success) {
       //used up to ten times to add goods
-    }
-
-    function updateGood() onlyOwner {
-      //to update the goods list 
+      require(_index >= 0 && _index <= 10);
+      goods[_index].name = _name;
+      goods[_index].efficiencyBoost = _efficiencyBoost;
+      goods[_index].speedBoost = _speedBoost;
+      goods[_index].cost = _cost;
+      return true;
     }
 
     function wipeGame() {
