@@ -16,14 +16,14 @@ contract ClickMineToken is StandardToken, mortal {
     string public name;                   //fancy name: eg Simon Bucks
     uint8 public decimals;                //How many decimals to show. ie. There could 1000 base units with 3 decimals. Meaning 0.980 SBX = 980 base units. It's like comparing 1 wei to 1 ether.
     string public symbol;                 //An identifier: eg SBX
-    string public gameAddress;
+    address public gameAddress;
 
     function ClickMineToken(
         uint256 _initialAmount,
         string _tokenName,
         uint8 _decimalUnits,
         string _tokenSymbol,
-        string _gameAddress,
+        address _gameAddress
         ) {
         balances[_gameAddress] = _initialAmount;               // Give the creator all initial tokens
         totalSupply = _initialAmount;                        // Update total supply
@@ -57,7 +57,7 @@ contract ClickMineToken is StandardToken, mortal {
     function mint(address _to, uint256 _value) onlyGame returns (bool success) {
         require(balances[_to] + _value > balances[_to]);
         balances[_to] += _value;
-        Transfer('0x0000000000000000000000000000000000000000', _to, _value);
+        Transfer(0x0000000000000000000000000000000000000000, _to, _value);
         return true;
     }
 
