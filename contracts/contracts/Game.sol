@@ -1,8 +1,9 @@
 import "./Registrar.sol";
+import "./ClickMineToken.sol";
 
 pragma solidity ^0.4.8;
 
-contract Game is mortal {
+contract Game is ClickMineToken {
 
     struct Player {
       bytes32 seed;
@@ -10,6 +11,7 @@ contract Game is mortal {
       uint256 miningSpeed;
       bool canSmelt;
       uint256[10] ownedGoods;
+      uint lastClick;
     }
     mapping (address => Player) public games;
 
@@ -32,6 +34,7 @@ contract Game is mortal {
       games[msg.sender].miningSpeed = 0;
       games[msg.sender].canSmelt = false;
       games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
+      games[msg.sender].lastClick = block.timestamp;
     }
 
     function click() {
@@ -40,9 +43,20 @@ contract Game is mortal {
       //subject to miningSpeed and miningEfficiency
     }
 
-    function buyGoods(address tokenAddress, uint256 goodIdentifier, uint256 quantity) {
+    function buyGoods(uint256 goodIdentifier, uint256 quantity) {
       //buy any number of a single good
       uint256 totalCost = calcPriceOfGood(goodIdentifier, quantity);
+      require(balances[msg.sender] >= totalCost);
+      require(games[msg.sender].miningEfficiency + goods[goodIdentifier].efficiencyBoost > games[msg.sender].miningEfficiency);
+      require(games[msg.sender].miningSpeed + goods[goodIdentifier].speedBoost > games[msg.sender].miningSpeed);
+      require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
+      require(games[msg.sender].canSmelt);
+      require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
+
+      // these are all actually multipliers!
+      games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + goods[goodIdentifier].efficiencyBoost;
+      games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + goods[goodIdentifier].speedBoost;
+      games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
     }
 
     function calcPriceOfGood(uint256 goodIdentifier, uint256 quantity) internal returns (uint256 price) {

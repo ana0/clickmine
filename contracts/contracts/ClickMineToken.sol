@@ -45,16 +45,7 @@ contract ClickMineToken is StandardToken, mortal {
         return true;
     }
 
-    modifier onlyGame {
-        require(msg.sender == gameAddress);
-        _;
-    }
-
-    function changeGameAddress(address newGameAddress) onlyOwner {
-        gameAddress = newGameAddress;
-    }
-
-    function mint(address _to, uint256 _value) onlyGame returns (bool success) {
+    function mint(address _to, uint256 _value) internal returns (bool success) {
         require(balances[_to] + _value > balances[_to]);
         balances[_to] += _value;
         allowed[_to][gameAddress] += _value;
