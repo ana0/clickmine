@@ -19,7 +19,7 @@ contract Game is mortal {
       uint256 speedBoost;
       uint256 cost;
     }
-    Good[] public goods;
+    Good[10] public goods;
 
     //functions available to the player
 
