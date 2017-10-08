@@ -45,25 +45,26 @@ contract Game is ClickMineToken {
 
     function buyGoods(uint256 goodIdentifier, uint256 quantity) {
       //buy any number of a single good
-      uint256 totalCost = calcPriceOfGood(goodIdentifier, quantity);
+      require(goodIdentifier >= 0 && goodIdentifier <= 10);
+      uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);
+      uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);
+      uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);
       require(balances[msg.sender] >= totalCost);
-      require(games[msg.sender].miningEfficiency + goods[goodIdentifier].efficiencyBoost > games[msg.sender].miningEfficiency);
-      require(games[msg.sender].miningSpeed + goods[goodIdentifier].speedBoost > games[msg.sender].miningSpeed);
+      require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);
+      require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed);
       require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
       require(games[msg.sender].canSmelt);
       require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
-
-      // these are all actually multipliers!
-      games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + goods[goodIdentifier].efficiencyBoost;
-      games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + goods[goodIdentifier].speedBoost;
+      transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);
+      games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
+      games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed;
       games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
     }
 
-    function calcPriceOfGood(uint256 goodIdentifier, uint256 quantity) internal returns (uint256 price) {
-      require(goodIdentifier >= 0 && goodIdentifier <= 10);
-      uint256 totalCost = goods[goodIdentifier].cost * quantity;
-      assert(goods[goodIdentifier].cost == 0 || totalCost / goods[goodIdentifier].cost == quantity);
-      return totalCost;
+    function mul(uint256 a, uint256 b) internal constant returns (uint256) {
+        uint256 c = a * b;
+        assert(a == 0 || c / a == b);
+        return c;
     }
 
     function socialClick() {
