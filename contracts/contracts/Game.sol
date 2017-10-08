@@ -22,6 +22,7 @@ contract Game is ClickMineToken {
       uint256 cost;
     }
     Good[10] public goods;
+    uint256 public tokensPerClick;
 
     //functions available to the player
 
@@ -38,9 +39,11 @@ contract Game is ClickMineToken {
     }
 
     function click() {
-      //mints coin
-      //can buy any number of goods
-      //subject to miningSpeed and miningEfficiency
+      require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
+      games[msg.sender].lastClick = block.timestamp;
+      uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);
+      mint(msg.sender, totalPayout);
+      // should add buying goods?
     }
 
     function buyGoods(uint256 goodIdentifier, uint256 quantity) {
