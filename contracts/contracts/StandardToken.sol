@@ -27,12 +27,6 @@ contract StandardToken is Token {
         return true;
     }
 
-    function mul(uint256 a, uint256 b) internal constant returns (uint256) {
-        uint256 c = a * b;
-        assert(a == 0 || c / a == b);
-        return c;
-    }
-
     function balanceOf(address _owner) constant returns (uint256 balance) {
         return balances[_owner];
     }

@@ -13,6 +13,7 @@ contract Game is ClickMineToken {
       uint256[10] ownedGoods;
       uint lastClick;
     }
+    
     mapping (address => Player) public games;
 
     struct Good {
@@ -21,7 +22,9 @@ contract Game is ClickMineToken {
       uint256 speedBoost;
       uint256 cost;
     }
+
     Good[10] public goods;
+    
     uint256 public tokensPerClick;
 
     //functions available to the player
