@@ -10,12 +10,23 @@ public class holeGen : MonoBehaviour {
 	int numClicks2 = 5;
 	string seed3 = "0x8edb34da54becceabd1cf638bb9b685a4b398b2a445845843762e41405e5edfd";
 	int numClicks3 = 8;
+
 	Object[] materials;
 
 	// Use this for initialization
 	void Start () {
 		materials = Resources.FindObjectsOfTypeAll (typeof(Material));
 		var dirt = GameObject.CreatePrimitive(PrimitiveType.Quad);
+	}
+
+	Material MakeMaterial (Texture mask, Texture ground) {
+		// makes a new material for the ground
+		Material mat = new Material(Shader.Find("standard"));
+		mat.SetTexture ("_MainTex", mask); // should be the mask
+		mat.SetFloat ("_Mode", 1);
+		mat.SetColor ("_Color", Color.gray);
+		mat.SetTexture ("_DetailAlbedoMap", ground); 
+		return mat;
 	}
 
 	void ClickCycle (string seed) {
