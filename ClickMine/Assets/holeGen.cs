@@ -16,8 +16,6 @@ public class holeGen : MonoBehaviour {
 	void Start () {
 		materials = Resources.FindObjectsOfTypeAll (typeof(Material));
 		var dirt = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		Debug.Log (materials);
-		Debug.Log (materials.Length);
 	}
 
 	void ClickCycle (string seed) {
