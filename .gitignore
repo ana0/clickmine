@@ -6,6 +6,12 @@ Obj/
 UnityGenerated/
 Library/
 Assets/AssetStoreTools*
+ClickMine/Assets/Resources/Textures/*
+ClickMine/Temp/
+ClickMine/Obj/
+ClickMine/UnityGenerated/
+ClickMine/Library/
+ClickMine/Assets/AssetStoreTools*
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
