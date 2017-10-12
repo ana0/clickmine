@@ -10,8 +10,9 @@ public class fullSize : MonoBehaviour {
 		var quadWidth = quadHeight * Screen.width / Screen.height;
 		this.gameObject.transform.localScale = new Vector3((float)quadWidth, (float)quadHeight, 1f);
 		Renderer renderer = GetComponent<Renderer>();
+		renderer.enabled = false;
 		Material mat = renderer.material;
-		Debug.Log(mat.GetTexture("_DetailAlbedoMap"));
+		Debug.Log(mat.GetFloatArray ("_Cutoff"));
 	}
 	
 	// Update is called once per frame

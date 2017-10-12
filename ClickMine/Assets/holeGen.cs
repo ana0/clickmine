@@ -15,17 +15,29 @@ public class holeGen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		materials = Resources.FindObjectsOfTypeAll (typeof(Material));
+		// materials = Resources.FindObjectsOfTypeAll (typeof(Material));
 		var dirt = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		var quadHeight = (Camera.main.orthographicSize + 1.0) * 2.0;
+		var quadWidth = quadHeight * Screen.width / Screen.height;
+		dirt.transform.localScale = new Vector3((float)quadWidth, (float)quadHeight, 1f);
+		Texture dirtTex = Resources.Load ("Textures/Dirt3") as Texture;
+		Texture maskTex = Resources.Load ("Textures/Mask") as Texture;
+		Material dirtMaterial = MakeMaterial (maskTex, dirtTex);
+		Debug.Log (dirtMaterial.GetFloatArray ("_Cutoff"));
+		dirt.GetComponent<Renderer>().material = dirtMaterial;
 	}
 
 	Material MakeMaterial (Texture mask, Texture ground) {
 		// makes a new material for the ground
-		Material mat = new Material(Shader.Find("standard"));
+		Material mat = new Material(Shader.Find("Standard"));
 		mat.SetTexture ("_MainTex", mask); // should be the mask
 		mat.SetFloat ("_Mode", 1);
 		mat.SetColor ("_Color", Color.gray);
 		mat.SetTexture ("_DetailAlbedoMap", ground); 
+		mat.EnableKeyword("_DETAIL_MULX2");
+		mat.EnableKeyword("_ALPHATEST_ON");
+		mat.DisableKeyword("_ALPHABLEND_ON");
+		mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 		return mat;
 	}
 
