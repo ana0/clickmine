@@ -11,24 +11,20 @@ public class holeGen : MonoBehaviour {
 	string seed3 = "0x8edb34da54becceabd1cf638bb9b685a4b398b2a445845843762e41405e5edfd";
 	int numClicks3 = 8;
 
-	Object[] materials;
 
-	// Use this for initialization
 	void Start () {
-		// materials = Resources.FindObjectsOfTypeAll (typeof(Material));
-		var dirt = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		var quadHeight = (Camera.main.orthographicSize + 1.0) * 2.0;
-		var quadWidth = quadHeight * Screen.width / Screen.height;
-		dirt.transform.localScale = new Vector3((float)quadWidth, (float)quadHeight, 1f);
-		Texture dirtTex = Resources.Load ("Textures/Dirt3") as Texture;
-		Texture maskTex = Resources.Load ("Textures/Mask") as Texture;
-		Material dirtMaterial = MakeMaterial (maskTex, dirtTex);
-		Debug.Log (dirtMaterial.GetFloatArray ("_Cutoff"));
-		dirt.GetComponent<Renderer>().material = dirtMaterial;
+		// fetch Player info from chain here
+		randomFromSeed(seed);
+	}
+
+	Texture GetTexture(string nameType, int identifier) {
+		// load a texture with a name like "Rock1" or "Mask6"
+		Texture tex = Resources.Load ("Textures/" + nameType + identifier) as Texture;
+		return tex;
 	}
 
 	Material MakeMaterial (Texture mask, Texture ground) {
-		// makes a new material for the ground
+		// makes a new material to hole specifications
 		Material mat = new Material(Shader.Find("Standard"));
 		mat.SetTexture ("_MainTex", mask); // should be the mask
 		mat.SetFloat ("_Mode", 1);
@@ -41,7 +37,30 @@ public class holeGen : MonoBehaviour {
 		return mat;
 	}
 
+	void genQuad (Texture maskTex, Texture dirtTex) {
+		// generates a fullsize quad using materials given
+		var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		var quadHeight = (Camera.main.orthographicSize + 1.0) * 2.0;
+		var quadWidth = quadHeight * Screen.width / Screen.height;
+		q.transform.localScale = new Vector3((float)quadWidth, (float)quadHeight, 1f);
+		Material dirtMaterial = MakeMaterial (maskTex, dirtTex);
+		q.GetComponent<Renderer>().material = dirtMaterial;
+	}
+
+	void randomFromSeed(string seed) {
+		int seedInt = int.Parse(seed, System.Globalization.NumberStyles.HexNumber);
+		Random.InitState (seedInt);
+	}
+
+	void generate(string layerName, string mask, int limit) {
+		// how to ensure increasing depth?
+		int t = Random.Range (0, limit);
+		int m = Random.Range (0, limit);
+		genQuad(GetTexture(layerName, t), GetTexture(layerName, m));
+	}
+
 	void ClickCycle (string seed) {
+		
 	}
 	
 	// Update is called once per frame
