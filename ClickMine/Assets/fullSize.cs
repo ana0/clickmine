@@ -18,6 +18,7 @@ public class fullSize : MonoBehaviour {
 		SetFullScreen ();
 		holeGenerator = GameObject.FindGameObjectWithTag ("holeGenerator");
 		hole = holeGenerator.GetComponent<holeGen> ();
+		Debug.Log (hole);
 		//Renderer renderer = GetComponent<Renderer>();
 		//renderer.enabled = false;
 		//Material mat = renderer.material;
@@ -28,9 +29,9 @@ public class fullSize : MonoBehaviour {
 	void OnMouseOver ()	{
 		//If your mouse hovers over the GameObject with the script attached, output this message
 		if (Input.GetMouseButtonDown (0)) {
-			hole.numClicks += 1;
-			hole.ClickCycle ();
-			Debug.Log("Mouse click.");
+			//Debug.Log("Mouse click.");
+			hole.click ();
+	
 		}
 	}
 
