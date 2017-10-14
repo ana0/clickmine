@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public class holeGen : MonoBehaviour {
 
@@ -11,11 +12,15 @@ public class holeGen : MonoBehaviour {
 	string seed3 = "0x8edb34da54becceabd1cf638bb9b685a4b398b2a445845843762e41405e5edfd";
 	int numClicks3 = 6;
 
+	[DllImport("__Internal")]
+	private static extern void Hello();
+
 
 	void Start () {
 		// fetch Player info from chain here
 		randomFromSeed(seed);
 		ClickCycle ();
+		Hello ();
 	}
 
 	Texture GetTexture(string nameType, int identifier) {
