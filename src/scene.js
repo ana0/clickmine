@@ -5,6 +5,7 @@ var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 5;
+var darkness = 255;
 
 init();
 
@@ -39,7 +40,15 @@ function getTexture(label, identfier) {
 }
 
 function makeGroundMaterial(texture, alpha, geometry) {
-  var material = new THREE.MeshBasicMaterial({ side: THREE.FrontSide, depthTest: false, transparent: true, map: texture, alphaMap: alpha });
+  var material = new THREE.MeshBasicMaterial({
+    color: `rgb(${darkness}, ${darkness}, ${darkness})`,
+    side: THREE.FrontSide,
+    depthTest: false,
+    transparent: true,
+    map: texture,
+    alphaMap: alpha
+  });
+  console.log(darkness);
   var mesh = new THREE.Mesh( geometry, material );
   //mesh.position.y = 5 * 0.25;
   mesh.rotation.x = - Math.PI / 2;
@@ -73,12 +82,16 @@ function clickCycle () {
   //Debug.Log("called cycle");
   var layer = numClicks;
   console.log("Numclicks" + numClicks);
-  console.log("Dirtlayers length" + dirtLayers.length);
   if (dirtLayers.length > maxMask) {
     dirtLayers.splice(0, 1);
   }
+  console.log('darkness is ' + darkness)
+  if (numClicks > 5 && darkness > 30) {
+    darkness -= 45;
+  } else if (darkness <= 30) {
+    darkness = 0;
+  }
   var layer = dirtLayers.length;
-  console.log("Dirtlayers length" + dirtLayers.length);
   for (let i = 0; i < dirtLayers.length; i++) {
     //Debug.Log ("cond true");
     console.log("moving " + i + " to " + layer);
