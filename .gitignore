@@ -12,6 +12,7 @@ ClickMine/Obj/
 ClickMine/UnityGenerated/
 ClickMine/Library/
 ClickMine/Assets/AssetStoreTools*
+*.jpg
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
