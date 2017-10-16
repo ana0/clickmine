@@ -32,16 +32,12 @@ contract mortal is owned {
 }
 
 contract Registrar is mortal {
-
     address public GameAddress;
-    address public TokenAddress;
 
-    function updateGameAddress() onlyOwner {
+    function Registrar(address adrs) { GameAddress = adrs; }
 
+    function updateGameAddress(address adrs) onlyOwner returns (bool success) {
+      GameAddress = adrs;
+      return true;
     }
-
-    function updateTokenAddress() onlyOwner {
-      
-    }
-
 }

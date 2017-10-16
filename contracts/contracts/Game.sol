@@ -29,7 +29,7 @@ contract Game is ClickMineToken {
 
     //functions available to the player
 
-    function beginGame() {
+    function beginGame() returns (bool success) {
       //set initial game state 
       //will wipe game state if it exists
       //no mercy
@@ -39,13 +39,15 @@ contract Game is ClickMineToken {
       games[msg.sender].canSmelt = false;
       games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
       games[msg.sender].lastClick = block.timestamp;
+      return true;
     }
 
-    function click() {
+    function click() returns (bool success) {
       require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
       games[msg.sender].lastClick = block.timestamp;
       uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);
       mint(msg.sender, totalPayout);
+      return true;
       // should add buying goods?
     }
 
@@ -82,15 +84,15 @@ contract Game is ClickMineToken {
       return c;
     }
 
-    function socialClick(address _friend) {
-      //costs small amount of coin
-      //mints more coins than costs at friends address
-      //subject to miningSpeed and miningEfficiency
-    }
+    // function socialClick(address _friend) {
+    //   //costs small amount of coin
+    //   //mints more coins than costs at friends address
+    //   //subject to miningSpeed and miningEfficiency
+    // }
 
-    function smelt(address _friend) {
-      //turns ephemeral coin into real coin . . . but how is it different from click?
-    }
+    // function smelt(address _friend) {
+    //   //turns ephemeral coin into real coin . . . but how is it different from click?
+    // }
 
     function goodsGetter() constant returns (
       uint256, string, uint256, uint256, uint256,
