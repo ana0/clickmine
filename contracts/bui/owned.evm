@@ -1,0 +1,145 @@
+    /* "contracts/Registrar.sol":26:653  contract owned {... */
+  mstore(0x40, 0x60)
+    /* "contracts/Registrar.sol":47:94  function owned() public { owner = msg.sender; } */
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+    /* "contracts/Registrar.sol":81:91  msg.sender */
+  caller
+    /* "contracts/Registrar.sol":73:78  owner */
+  0x0
+  dup1
+    /* "contracts/Registrar.sol":73:91  owner = msg.sender */
+  0x100
+  exp
+  dup2
+  sload
+  dup2
+  0xffffffffffffffffffffffffffffffffffffffff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xffffffffffffffffffffffffffffffffffffffff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "contracts/Registrar.sol":26:653  contract owned {... */
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+        /* "contracts/Registrar.sol":26:653  contract owned {... */
+      mstore(0x40, 0x60)
+      calldataload(0x0)
+      0x100000000000000000000000000000000000000000000000000000000
+      swap1
+      div
+      0xffffffff
+      and
+      dup1
+      0xa6f9dae1
+      eq
+      tag_2
+      jumpi
+      0x0
+      dup1
+      revert
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+    tag_2:
+      jumpi(tag_3, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_3:
+      tag_4
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_5)
+    tag_4:
+      stop
+    tag_5:
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x0
+      dup1
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_7
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_7:
+        /* "contracts/Registrar.sol":636:644  newOwner */
+      dup1
+        /* "contracts/Registrar.sol":628:633  owner */
+      0x0
+      dup1
+        /* "contracts/Registrar.sol":628:644  owner = newOwner */
+      0x100
+      exp
+      dup2
+      sload
+      dup2
+      0xffffffffffffffffffffffffffffffffffffffff
+      mul
+      not
+      and
+      swap1
+      dup4
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      mul
+      or
+      swap1
+      sstore
+      pop
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+      pop
+      jump	// out
+
+    auxdata: 0xa165627a7a72305820fea894aa1a44f9a90616765f271c7b00cf8ea1f4796ecfabae17c8682bd700ca0029
+}

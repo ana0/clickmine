@@ -1,0 +1,192 @@
+PragmaDirective
+   Source: "pragma solidity ^0.4.15;"
+ContractDefinition "owned"
+   Source: "contract owned {\n    function owned() public { owner = msg.sender; }\n    address owner;\n\n    // This contract only defines a modifier but does not use\n    // it - it will be used in derived contracts.\n    // The function body is inserted where the special symbol\n    // \"_;\" in the definition of a modifier appears.\n    // This means that if the owner calls this function, the\n    // function is executed and otherwise, an exception is\n    // thrown.\n    modifier onlyOwner {\n        require(msg.sender == owner);\n        _;\n    }\n\n    function changeOwner(address newOwner) onlyOwner public {\n        owner = newOwner;\n    }\n}"
+  FunctionDefinition "owned" - public
+     Source: "function owned() public { owner = msg.sender; }"
+    ParameterList
+       Source: "()"
+    ParameterList
+       Source: ""
+    Block
+       Source: "{ owner = msg.sender; }"
+      ExpressionStatement
+         Source: "owner = msg.sender"
+        Assignment using operator =
+           Type: address
+           Source: "owner = msg.sender"
+          Identifier owner
+             Type: address
+             Source: "owner"
+          MemberAccess to member sender
+             Type: address
+             Source: "msg.sender"
+            Identifier msg
+               Type: msg
+               Source: "msg"
+  VariableDeclaration "owner"
+     Type: address
+     Source: "address owner"
+    ElementaryTypeName address
+       Source: "address"
+  ModifierDefinition "onlyOwner"
+     Source: "modifier onlyOwner {\n        require(msg.sender == owner);\n        _;\n    }"
+    ParameterList
+       Source: ""
+    Block
+       Source: "{\n        require(msg.sender == owner);\n        _;\n    }"
+      ExpressionStatement
+         Source: "require(msg.sender == owner)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(msg.sender == owner)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator ==
+             Type: bool
+             Source: "msg.sender == owner"
+            MemberAccess to member sender
+               Type: address
+               Source: "msg.sender"
+              Identifier msg
+                 Type: msg
+                 Source: "msg"
+            Identifier owner
+               Type: address
+               Source: "owner"
+      PlaceholderStatement
+         Source: "_"
+  FunctionDefinition "changeOwner" - public
+     Source: "function changeOwner(address newOwner) onlyOwner public {\n        owner = newOwner;\n    }"
+    ParameterList
+       Source: "(address newOwner)"
+      VariableDeclaration "newOwner"
+         Type: address
+         Source: "address newOwner"
+        ElementaryTypeName address
+           Source: "address"
+    ParameterList
+       Source: ""
+    ModifierInvocation "onlyOwner"
+       Source: "onlyOwner"
+      Identifier onlyOwner
+         Type: modifier ()
+         Source: "onlyOwner"
+    Block
+       Source: "{\n        owner = newOwner;\n    }"
+      ExpressionStatement
+         Source: "owner = newOwner"
+        Assignment using operator =
+           Type: address
+           Source: "owner = newOwner"
+          Identifier owner
+             Type: address
+             Source: "owner"
+          Identifier newOwner
+             Type: address
+             Source: "newOwner"
+ContractDefinition "mortal"
+   Source: "contract mortal is owned {\n    // This contract inherits the \"onlyOwner\"-modifier from\n    // \"owned\" and applies it to the \"close\"-function, which\n    // causes that calls to \"close\" only have an effect if\n    // they are made by the stored owner.\n    function close() onlyOwner public {\n        selfdestruct(owner);\n    }\n}"
+  InheritanceSpecifier
+     Source: "owned"
+    UserDefinedTypeName "owned"
+       Source: "owned"
+  FunctionDefinition "close" - public
+     Source: "function close() onlyOwner public {\n        selfdestruct(owner);\n    }"
+    ParameterList
+       Source: "()"
+    ParameterList
+       Source: ""
+    ModifierInvocation "onlyOwner"
+       Source: "onlyOwner"
+      Identifier onlyOwner
+         Type: modifier ()
+         Source: "onlyOwner"
+    Block
+       Source: "{\n        selfdestruct(owner);\n    }"
+      ExpressionStatement
+         Source: "selfdestruct(owner)"
+        FunctionCall
+           Type: tuple()
+           Source: "selfdestruct(owner)"
+          Identifier selfdestruct
+             Type: function (address)
+             Source: "selfdestruct"
+          Identifier owner
+             Type: address
+             Source: "owner"
+ContractDefinition "Registrar"
+   Source: "contract Registrar is mortal {\n    address public GameAddress;\n\n    function Registrar(address adrs) public { GameAddress = adrs; }\n\n    function updateGameAddress(address adrs) onlyOwner public returns (bool success)\n    {\n      GameAddress = adrs;\n      return true;\n    }\n}"
+  InheritanceSpecifier
+     Source: "mortal"
+    UserDefinedTypeName "mortal"
+       Source: "mortal"
+  VariableDeclaration "GameAddress"
+     Type: address
+     Source: "address public GameAddress"
+    ElementaryTypeName address
+       Source: "address"
+  FunctionDefinition "Registrar" - public
+     Source: "function Registrar(address adrs) public { GameAddress = adrs; }"
+    ParameterList
+       Source: "(address adrs)"
+      VariableDeclaration "adrs"
+         Type: address
+         Source: "address adrs"
+        ElementaryTypeName address
+           Source: "address"
+    ParameterList
+       Source: ""
+    Block
+       Source: "{ GameAddress = adrs; }"
+      ExpressionStatement
+         Source: "GameAddress = adrs"
+        Assignment using operator =
+           Type: address
+           Source: "GameAddress = adrs"
+          Identifier GameAddress
+             Type: address
+             Source: "GameAddress"
+          Identifier adrs
+             Type: address
+             Source: "adrs"
+  FunctionDefinition "updateGameAddress" - public
+     Source: "function updateGameAddress(address adrs) onlyOwner public returns (bool success)\n    {\n      GameAddress = adrs;\n      return true;\n    }"
+    ParameterList
+       Source: "(address adrs)"
+      VariableDeclaration "adrs"
+         Type: address
+         Source: "address adrs"
+        ElementaryTypeName address
+           Source: "address"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    ModifierInvocation "onlyOwner"
+       Source: "onlyOwner"
+      Identifier onlyOwner
+         Type: modifier ()
+         Source: "onlyOwner"
+    Block
+       Source: "{\n      GameAddress = adrs;\n      return true;\n    }"
+      ExpressionStatement
+         Source: "GameAddress = adrs"
+        Assignment using operator =
+           Type: address
+           Source: "GameAddress = adrs"
+          Identifier GameAddress
+             Type: address
+             Source: "GameAddress"
+          Identifier adrs
+             Type: address
+             Source: "adrs"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"

@@ -1,0 +1,5645 @@
+    /* "contracts/Game.sol":84:4620  contract Game is ClickMineToken {... */
+  mstore(0x40, 0x60)
+    /* "contracts/Game.sol":504:692  function Game(uint256 tokens, string _tokenName, uint8 _decimalUnits, string _tokenSymbol)... */
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+  mload(0x40)
+  sub(codesize, bytecodeSize)
+  dup1
+  bytecodeSize
+  dup4
+  codecopy
+  dup2
+  add
+  0x40
+  mstore
+  dup1
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  swap2
+  swap1
+  dup1
+  mload
+  dup3
+  add
+  swap2
+  swap1
+  0x20
+  add
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  swap2
+  swap1
+  dup1
+  mload
+  dup3
+  add
+  swap2
+  swap1
+  pop
+  pop
+    /* "contracts/Game.sol":614:624  _tokenName */
+  dup3
+    /* "contracts/Game.sol":626:639  _decimalUnits */
+  dup3
+    /* "contracts/Game.sol":641:653  _tokenSymbol */
+  dup3
+    /* "contracts/Registrar.sol":81:91  msg.sender */
+  caller
+    /* "contracts/Registrar.sol":73:78  owner */
+  0x3
+  0x0
+    /* "contracts/Registrar.sol":73:91  owner = msg.sender */
+  0x100
+  exp
+  dup2
+  sload
+  dup2
+  0xffffffffffffffffffffffffffffffffffffffff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xffffffffffffffffffffffffffffffffffffffff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "contracts/ClickMineToken.sol":912:922  _tokenName */
+  dup3
+    /* "contracts/ClickMineToken.sol":905:909  name */
+  0x4
+    /* "contracts/ClickMineToken.sol":905:922  name = _tokenName */
+  swap1
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  tag_7
+  swap3
+  swap2
+  swap1
+  jump	// in(tag_8)
+tag_7:
+  pop
+    /* "contracts/ClickMineToken.sol":1014:1027  _decimalUnits */
+  dup2
+    /* "contracts/ClickMineToken.sol":1003:1011  decimals */
+  0x5
+  0x0
+    /* "contracts/ClickMineToken.sol":1003:1027  decimals = _decimalUnits */
+  0x100
+  exp
+  dup2
+  sload
+  dup2
+  0xff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "contracts/ClickMineToken.sol":1116:1128  _tokenSymbol */
+  dup1
+    /* "contracts/ClickMineToken.sol":1107:1113  symbol */
+  0x6
+    /* "contracts/ClickMineToken.sol":1107:1128  symbol = _tokenSymbol */
+  swap1
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  tag_9
+  swap3
+  swap2
+  swap1
+  jump	// in(tag_8)
+tag_9:
+  pop
+    /* "contracts/ClickMineToken.sol":799:1204  function ClickMineToken(string _tokenName, uint8 _decimalUnits, string _tokenSymbol) public... */
+  pop
+  pop
+  pop
+    /* "contracts/Game.sol":683:689  tokens */
+  dup4
+    /* "contracts/Game.sol":666:680  tokensPerClick */
+  0x30
+    /* "contracts/Game.sol":666:689  tokensPerClick = tokens */
+  dup2
+  swap1
+  sstore
+  pop
+    /* "contracts/Game.sol":504:692  function Game(uint256 tokens, string _tokenName, uint8 _decimalUnits, string _tokenSymbol)... */
+  pop
+  pop
+  pop
+  pop
+    /* "contracts/Game.sol":84:4620  contract Game is ClickMineToken {... */
+  jump(tag_11)
+tag_8:
+  dup3
+  dup1
+  sload
+  0x1
+  dup2
+  0x1
+  and
+  iszero
+  0x100
+  mul
+  sub
+  and
+  0x2
+  swap1
+  div
+  swap1
+  0x0
+  mstore
+  keccak256(0x0, 0x20)
+  swap1
+  0x1f
+  add
+  0x20
+  swap1
+  div
+  dup2
+  add
+  swap3
+  dup3
+  0x1f
+  lt
+  tag_13
+  jumpi
+  dup1
+  mload
+  not(0xff)
+  and
+  dup4
+  dup1
+  add
+  or
+  dup6
+  sstore
+  jump(tag_12)
+tag_13:
+  dup3
+  dup1
+  add
+  0x1
+  add
+  dup6
+  sstore
+  dup3
+  iszero
+  tag_12
+  jumpi
+  swap2
+  dup3
+  add
+tag_14:
+  dup3
+  dup2
+  gt
+  iszero
+  tag_15
+  jumpi
+  dup3
+  mload
+  dup3
+  sstore
+  swap2
+  0x20
+  add
+  swap2
+  swap1
+  0x1
+  add
+  swap1
+  jump(tag_14)
+tag_15:
+tag_12:
+  pop
+  swap1
+  pop
+  tag_16
+  swap2
+  swap1
+  jump	// in(tag_17)
+tag_16:
+  pop
+  swap1
+  jump	// out
+tag_17:
+  tag_18
+  swap2
+  swap1
+tag_19:
+  dup1
+  dup3
+  gt
+  iszero
+  tag_20
+  jumpi
+  0x0
+  dup2
+  0x0
+  swap1
+  sstore
+  pop
+  0x1
+  add
+  jump(tag_19)
+tag_20:
+  pop
+  swap1
+  jump
+tag_18:
+  swap1
+  jump	// out
+tag_11:
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+        /* "contracts/Game.sol":84:4620  contract Game is ClickMineToken {... */
+      mstore(0x40, 0x60)
+      jumpi(tag_1, iszero(calldatasize))
+      calldataload(0x0)
+      0x100000000000000000000000000000000000000000000000000000000
+      swap1
+      div
+      0xffffffff
+      and
+      dup1
+      0x6fdde03
+      eq
+      tag_2
+      jumpi
+      dup1
+      0x95ea7b3
+      eq
+      tag_3
+      jumpi
+      dup1
+      0x17e31e28
+      eq
+      tag_4
+      jumpi
+      dup1
+      0x18160ddd
+      eq
+      tag_5
+      jumpi
+      dup1
+      0x23b872dd
+      eq
+      tag_6
+      jumpi
+      dup1
+      0x2f724394
+      eq
+      tag_7
+      jumpi
+      dup1
+      0x313ce567
+      eq
+      tag_8
+      jumpi
+      dup1
+      0x43d726d6
+      eq
+      tag_9
+      jumpi
+      dup1
+      0x49366eb4
+      eq
+      tag_10
+      jumpi
+      dup1
+      0x511b8829
+      eq
+      tag_11
+      jumpi
+      dup1
+      0x70a08231
+      eq
+      tag_12
+      jumpi
+      dup1
+      0x79131a19
+      eq
+      tag_13
+      jumpi
+      dup1
+      0x7a1036a7
+      eq
+      tag_14
+      jumpi
+      dup1
+      0x7d55923d
+      eq
+      tag_15
+      jumpi
+      dup1
+      0x95d89b41
+      eq
+      tag_16
+      jumpi
+      dup1
+      0xa6f9dae1
+      eq
+      tag_17
+      jumpi
+      dup1
+      0xa9059cbb
+      eq
+      tag_18
+      jumpi
+      dup1
+      0xbbcf0b07
+      eq
+      tag_19
+      jumpi
+      dup1
+      0xbdec07cf
+      eq
+      tag_20
+      jumpi
+      dup1
+      0xda0b0682
+      eq
+      tag_21
+      jumpi
+      dup1
+      0xdd62ed3e
+      eq
+      tag_22
+      jumpi
+    tag_1:
+      0x0
+      dup1
+      revert
+        /* "contracts/ClickMineToken.sol":467:485  string public name */
+    tag_2:
+      jumpi(tag_23, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_23:
+      tag_24
+      jump(tag_25)
+    tag_24:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup4
+      dup2
+      dup2
+      mload
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_26:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_27
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_26)
+    tag_27:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      swap1
+      dup2
+      add
+      swap1
+      0x1f
+      and
+      dup1
+      iszero
+      tag_29
+      jumpi
+      dup1
+      dup3
+      sub
+      dup1
+      mload
+      0x1
+      dup4
+      0x20
+      sub
+      0x100
+      exp
+      sub
+      not
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+    tag_29:
+      pop
+      swap3
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+    tag_3:
+      jumpi(tag_30, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_30:
+      tag_31
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_32)
+    tag_31:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":1784:3076  function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)... */
+    tag_4:
+      jumpi(tag_33, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_33:
+      tag_34
+      0x4
+      dup1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_35)
+    tag_34:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Token.sol":508:534  uint256 public totalSupply */
+    tag_5:
+      jumpi(tag_36, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_36:
+      tag_37
+      jump(tag_38)
+    tag_37:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+    tag_6:
+      jumpi(tag_39, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_39:
+      tag_40
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_41)
+    tag_40:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":440:461  Good[10] public goods */
+    tag_7:
+      jumpi(tag_42, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_42:
+      tag_43
+      0x4
+      dup1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_44)
+    tag_43:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup6
+      dup2
+      mstore
+      0x20
+      add
+      dup5
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup7
+      dup2
+      dup2
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_45
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_46
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_45)
+    tag_46:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_47:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_47
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_45:
+      pop
+      pop
+      swap6
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":538:559  uint8 public decimals */
+    tag_8:
+      jumpi(tag_48, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_48:
+      tag_49
+      jump(tag_50)
+    tag_49:
+      mload(0x40)
+      dup1
+      dup3
+      0xff
+      and
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Registrar.sol":908:978  function close() onlyOwner public {... */
+    tag_9:
+      jumpi(tag_51, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_51:
+      tag_52
+      jump(tag_53)
+    tag_52:
+      stop
+        /* "contracts/Game.sol":3584:3841  function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) ... */
+    tag_10:
+      jumpi(tag_54, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_54:
+      tag_55
+      0x4
+      dup1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_56)
+    tag_55:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup6
+      dup2
+      mstore
+      0x20
+      add
+      dup5
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup7
+      dup2
+      dup2
+      mload
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_57:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_58
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_57)
+    tag_58:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      swap1
+      dup2
+      add
+      swap1
+      0x1f
+      and
+      dup1
+      iszero
+      tag_60
+      jumpi
+      dup1
+      dup3
+      sub
+      dup1
+      mload
+      0x1
+      dup4
+      0x20
+      sub
+      0x100
+      exp
+      sub
+      not
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+    tag_60:
+      pop
+      swap6
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":1564:1780  function buyGoods(uint256[] _toBuy) public returns (bool success)... */
+    tag_11:
+      jumpi(tag_61, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_61:
+      tag_62
+      0x4
+      dup1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      dup3
+      add
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup1
+      0x20
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap4
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      dup4
+      0x20
+      mul
+      dup1
+      dup3
+      dup5
+      calldatacopy
+      dup3
+      add
+      swap2
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_63)
+    tag_62:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+    tag_12:
+      jumpi(tag_64, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_64:
+      tag_65
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_66)
+    tag_65:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":286:326  mapping (address => Player) public games */
+    tag_13:
+      jumpi(tag_67, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_67:
+      tag_68
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_69)
+    tag_68:
+      mload(0x40)
+      dup1
+      dup7
+      not(0x0)
+      and
+      not(0x0)
+      and
+      dup2
+      mstore
+      0x20
+      add
+      dup6
+      dup2
+      mstore
+      0x20
+      add
+      dup5
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap6
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":4200:4617  function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)... */
+    tag_14:
+      jumpi(tag_70, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_70:
+      tag_71
+      0x4
+      dup1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      dup3
+      add
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap4
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      dup4
+      dup1
+      dup3
+      dup5
+      calldatacopy
+      dup3
+      add
+      swap2
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_72)
+    tag_71:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":1196:1560  function click() public returns (bool success) ... */
+    tag_15:
+      jumpi(tag_73, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_73:
+      tag_74
+      jump(tag_75)
+    tag_74:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":732:752  string public symbol */
+    tag_16:
+      jumpi(tag_76, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_76:
+      tag_77
+      jump(tag_78)
+    tag_77:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup4
+      dup2
+      dup2
+      mload
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_79:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_80
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_79)
+    tag_80:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      swap1
+      dup2
+      add
+      swap1
+      0x1f
+      and
+      dup1
+      iszero
+      tag_82
+      jumpi
+      dup1
+      dup3
+      sub
+      dup1
+      mload
+      0x1
+      dup4
+      0x20
+      sub
+      0x100
+      exp
+      sub
+      not
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+    tag_82:
+      pop
+      swap3
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+    tag_17:
+      jumpi(tag_83, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_83:
+      tag_84
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_85)
+    tag_84:
+      stop
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+    tag_18:
+      jumpi(tag_86, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_86:
+      tag_87
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_88)
+    tag_87:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":468:497  uint256 public tokensPerClick */
+    tag_19:
+      jumpi(tag_89, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_89:
+      tag_90
+      jump(tag_91)
+    tag_90:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":3845:4196  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)... */
+    tag_20:
+      jumpi(tag_92, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_92:
+      tag_93
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_94)
+    tag_93:
+      mload(0x40)
+      dup1
+      dup8
+      not(0x0)
+      and
+      not(0x0)
+      and
+      dup2
+      mstore
+      0x20
+      add
+      dup7
+      dup2
+      mstore
+      0x20
+      add
+      dup6
+      dup2
+      mstore
+      0x20
+      add
+      dup5
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      dup4
+      mul(0x20, 0xa)
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_95:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_96
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_95)
+    tag_96:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      add
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap7
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Game.sol":735:1192  function beginGame() public returns (bool success) ... */
+    tag_21:
+      jumpi(tag_98, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_98:
+      tag_99
+      jump(tag_100)
+    tag_99:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+    tag_22:
+      jumpi(tag_101, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_101:
+      tag_102
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_103)
+    tag_102:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":467:485  string public name */
+    tag_25:
+      0x4
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_104
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_105
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_104)
+    tag_105:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_106:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_106
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_104:
+      pop
+      pop
+      pop
+      pop
+      pop
+      dup2
+      jump	// out
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+    tag_32:
+        /* "contracts/StandardToken.sol":1507:1519  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":1568:1574  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1536:1543  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1536:1555  allowed[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":1544:1554  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1536:1555  allowed[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1536:1565  allowed[msg.sender][_spender] */
+      0x0
+        /* "contracts/StandardToken.sol":1556:1564  _spender */
+      dup6
+        /* "contracts/StandardToken.sol":1536:1565  allowed[msg.sender][_spender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1536:1574  allowed[msg.sender][_spender] = _value */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1605:1613  _spender */
+      dup3
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":1593:1603  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+        /* "contracts/StandardToken.sol":1615:1621  _value */
+      dup5
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":1639:1643  true */
+      0x1
+        /* "contracts/StandardToken.sol":1632:1643  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":1784:3076  function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)... */
+    tag_35:
+        /* "contracts/Game.sol":1859:1871  bool success */
+      0x0
+        /* "contracts/Game.sol":1977:1994  uint256 totalCost */
+      dup1
+        /* "contracts/Game.sol":2044:2062  uint256 totalSpeed */
+      0x0
+        /* "contracts/Game.sol":2123:2146  uint256 totalEfficiency */
+      dup1
+        /* "contracts/Game.sol":1945:1946  0 */
+      0x0
+        /* "contracts/Game.sol":1927:1941  goodIdentifier */
+      dup7
+        /* "contracts/Game.sol":1927:1946  goodIdentifier >= 0 */
+      lt
+      iszero
+        /* "contracts/Game.sol":1927:1970  goodIdentifier >= 0 && goodIdentifier <= 10 */
+      dup1
+      iszero
+      tag_109
+      jumpi
+      pop
+        /* "contracts/Game.sol":1968:1970  10 */
+      0xa
+        /* "contracts/Game.sol":1950:1964  goodIdentifier */
+      dup7
+        /* "contracts/Game.sol":1950:1970  goodIdentifier <= 10 */
+      gt
+      iszero
+        /* "contracts/Game.sol":1927:1970  goodIdentifier >= 0 && goodIdentifier <= 10 */
+    tag_109:
+        /* "contracts/Game.sol":1919:1971  require(goodIdentifier >= 0 && goodIdentifier <= 10) */
+      iszero
+      iszero
+      tag_110
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_110:
+        /* "contracts/Game.sol":1997:2038  mul(goods[goodIdentifier].cost, quantity) */
+      tag_111
+        /* "contracts/Game.sol":2001:2006  goods */
+      0x8
+        /* "contracts/Game.sol":2007:2021  goodIdentifier */
+      dup8
+        /* "contracts/Game.sol":2001:2022  goods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_112
+      jumpi
+      invalid
+    tag_112:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":2001:2027  goods[goodIdentifier].cost */
+      0x3
+      add
+      sload
+        /* "contracts/Game.sol":2029:2037  quantity */
+      dup7
+        /* "contracts/Game.sol":1997:2000  mul */
+      tag_114
+        /* "contracts/Game.sol":1997:2038  mul(goods[goodIdentifier].cost, quantity) */
+      jump	// in
+    tag_111:
+        /* "contracts/Game.sol":1977:2038  uint256 totalCost = mul(goods[goodIdentifier].cost, quantity) */
+      swap3
+      pop
+        /* "contracts/Game.sol":2065:2117  mul(goods[goodIdentifier].efficiencyBoost, quantity) */
+      tag_115
+        /* "contracts/Game.sol":2069:2074  goods */
+      0x8
+        /* "contracts/Game.sol":2075:2089  goodIdentifier */
+      dup8
+        /* "contracts/Game.sol":2069:2090  goods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_116
+      jumpi
+      invalid
+    tag_116:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":2069:2106  goods[goodIdentifier].efficiencyBoost */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":2108:2116  quantity */
+      dup7
+        /* "contracts/Game.sol":2065:2068  mul */
+      tag_114
+        /* "contracts/Game.sol":2065:2117  mul(goods[goodIdentifier].efficiencyBoost, quantity) */
+      jump	// in
+    tag_115:
+        /* "contracts/Game.sol":2044:2117  uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity) */
+      swap2
+      pop
+        /* "contracts/Game.sol":2149:2196  mul(goods[goodIdentifier].speedBoost, quantity) */
+      tag_118
+        /* "contracts/Game.sol":2153:2158  goods */
+      0x8
+        /* "contracts/Game.sol":2159:2173  goodIdentifier */
+      dup8
+        /* "contracts/Game.sol":2153:2174  goods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_119
+      jumpi
+      invalid
+    tag_119:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":2153:2185  goods[goodIdentifier].speedBoost */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":2187:2195  quantity */
+      dup7
+        /* "contracts/Game.sol":2149:2152  mul */
+      tag_114
+        /* "contracts/Game.sol":2149:2196  mul(goods[goodIdentifier].speedBoost, quantity) */
+      jump	// in
+    tag_118:
+        /* "contracts/Game.sol":2123:2196  uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity) */
+      swap1
+      pop
+        /* "contracts/Game.sol":2234:2243  totalCost */
+      dup3
+        /* "contracts/Game.sol":2210:2218  balances */
+      0x1
+        /* "contracts/Game.sol":2210:2230  balances[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2219:2229  msg.sender */
+      caller
+        /* "contracts/Game.sol":2210:2230  balances[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/Game.sol":2210:2243  balances[msg.sender] >= totalCost */
+      lt
+      iszero
+        /* "contracts/Game.sol":2202:2244  require(balances[msg.sender] >= totalCost) */
+      iszero
+      iszero
+      tag_121
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_121:
+        /* "contracts/Game.sol":2313:2318  games */
+      0x7
+        /* "contracts/Game.sol":2313:2330  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2319:2329  msg.sender */
+      caller
+        /* "contracts/Game.sol":2313:2330  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2313:2347  games[msg.sender].miningEfficiency */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":2295:2310  totalEfficiency */
+      dup2
+        /* "contracts/Game.sol":2258:2263  games */
+      0x7
+        /* "contracts/Game.sol":2258:2275  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2264:2274  msg.sender */
+      caller
+        /* "contracts/Game.sol":2258:2275  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2258:2292  games[msg.sender].miningEfficiency */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":2258:2310  games[msg.sender].miningEfficiency + totalEfficiency */
+      add
+        /* "contracts/Game.sol":2258:2347  games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency */
+      gt
+        /* "contracts/Game.sol":2250:2348  require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency) */
+      iszero
+      iszero
+      tag_122
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_122:
+        /* "contracts/Game.sol":2407:2412  games */
+      0x7
+        /* "contracts/Game.sol":2407:2424  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2413:2423  msg.sender */
+      caller
+        /* "contracts/Game.sol":2407:2424  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2407:2436  games[msg.sender].miningSpeed */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":2394:2404  totalSpeed */
+      dup3
+        /* "contracts/Game.sol":2362:2367  games */
+      0x7
+        /* "contracts/Game.sol":2362:2379  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2368:2378  msg.sender */
+      caller
+        /* "contracts/Game.sol":2362:2379  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2362:2391  games[msg.sender].miningSpeed */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":2362:2404  games[msg.sender].miningSpeed + totalSpeed */
+      add
+        /* "contracts/Game.sol":2362:2436  games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed */
+      gt
+        /* "contracts/Game.sol":2354:2437  require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed) */
+      iszero
+      iszero
+      tag_123
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_123:
+        /* "contracts/Game.sol":2509:2514  games */
+      0x7
+        /* "contracts/Game.sol":2509:2526  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2515:2525  msg.sender */
+      caller
+        /* "contracts/Game.sol":2509:2526  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2509:2537  games[msg.sender].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":2538:2552  goodIdentifier */
+      dup7
+        /* "contracts/Game.sol":2509:2553  games[msg.sender].ownedGoods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_124
+      jumpi
+      invalid
+    tag_124:
+      add
+      sload
+        /* "contracts/Game.sol":2498:2506  quantity */
+      dup6
+        /* "contracts/Game.sol":2451:2456  games */
+      0x7
+        /* "contracts/Game.sol":2451:2468  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2457:2467  msg.sender */
+      caller
+        /* "contracts/Game.sol":2451:2468  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2451:2479  games[msg.sender].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":2480:2494  goodIdentifier */
+      dup9
+        /* "contracts/Game.sol":2451:2495  games[msg.sender].ownedGoods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_126
+      jumpi
+      invalid
+    tag_126:
+      add
+      sload
+        /* "contracts/Game.sol":2451:2506  games[msg.sender].ownedGoods[goodIdentifier] + quantity */
+      add
+        /* "contracts/Game.sol":2451:2553  games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier] */
+      gt
+        /* "contracts/Game.sol":2443:2554  require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]) */
+      iszero
+      iszero
+      tag_128
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_128:
+        /* "contracts/Game.sol":2568:2573  games */
+      0x7
+        /* "contracts/Game.sol":2568:2585  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2574:2584  msg.sender */
+      caller
+        /* "contracts/Game.sol":2568:2585  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2568:2594  games[msg.sender].canSmelt */
+      0x3
+      add
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xff
+      and
+        /* "contracts/Game.sol":2560:2595  require(games[msg.sender].canSmelt) */
+      iszero
+      iszero
+      tag_129
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_129:
+        /* "contracts/Game.sol":2658:2663  games */
+      0x7
+        /* "contracts/Game.sol":2658:2675  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2664:2674  msg.sender */
+      caller
+        /* "contracts/Game.sol":2658:2675  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2658:2685  games[msg.sender].lastClick */
+      0xe
+      add
+      sload
+        /* "contracts/Game.sol":2627:2632  games */
+      0x7
+        /* "contracts/Game.sol":2627:2644  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2633:2643  msg.sender */
+      caller
+        /* "contracts/Game.sol":2627:2644  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2627:2654  games[msg.sender].lastClick */
+      0xe
+      add
+      sload
+        /* "contracts/Game.sol":2609:2624  block.timestamp */
+      timestamp
+        /* "contracts/Game.sol":2609:2654  block.timestamp - games[msg.sender].lastClick */
+      sub
+        /* "contracts/Game.sol":2609:2685  block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick */
+      gt
+      iszero
+        /* "contracts/Game.sol":2601:2686  require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick) */
+      iszero
+      iszero
+      tag_130
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_130:
+        /* "contracts/Game.sol":2692:2771  transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost) */
+      tag_131
+        /* "contracts/Game.sol":2705:2715  msg.sender */
+      caller
+        /* "contracts/Game.sol":2717:2759  0x0000000000000000000000000000000000000000 */
+      0x0
+        /* "contracts/Game.sol":2761:2770  totalCost */
+      dup6
+        /* "contracts/Game.sol":2692:2704  transferFrom */
+      tag_41
+        /* "contracts/Game.sol":2692:2771  transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost) */
+      jump	// in
+    tag_131:
+      pop
+        /* "contracts/Game.sol":2851:2866  totalEfficiency */
+      dup1
+        /* "contracts/Game.sol":2814:2819  games */
+      0x7
+        /* "contracts/Game.sol":2814:2831  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2820:2830  msg.sender */
+      caller
+        /* "contracts/Game.sol":2814:2831  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2814:2848  games[msg.sender].miningEfficiency */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":2814:2866  games[msg.sender].miningEfficiency + totalEfficiency */
+      add
+        /* "contracts/Game.sol":2777:2782  games */
+      0x7
+        /* "contracts/Game.sol":2777:2794  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2783:2793  msg.sender */
+      caller
+        /* "contracts/Game.sol":2777:2794  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2777:2811  games[msg.sender].miningEfficiency */
+      0x1
+      add
+        /* "contracts/Game.sol":2777:2866  games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":2936:2946  totalSpeed */
+      dup2
+        /* "contracts/Game.sol":2904:2909  games */
+      0x7
+        /* "contracts/Game.sol":2904:2921  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2910:2920  msg.sender */
+      caller
+        /* "contracts/Game.sol":2904:2921  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2904:2933  games[msg.sender].miningSpeed */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":2904:2946  games[msg.sender].miningSpeed + totalSpeed */
+      add
+        /* "contracts/Game.sol":2872:2877  games */
+      0x7
+        /* "contracts/Game.sol":2872:2889  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2878:2888  msg.sender */
+      caller
+        /* "contracts/Game.sol":2872:2889  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2872:2901  games[msg.sender].miningSpeed */
+      0x2
+      add
+        /* "contracts/Game.sol":2872:2946  games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":3046:3054  quantity */
+      dup5
+        /* "contracts/Game.sol":2999:3004  games */
+      0x7
+        /* "contracts/Game.sol":2999:3016  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":3005:3015  msg.sender */
+      caller
+        /* "contracts/Game.sol":2999:3016  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2999:3027  games[msg.sender].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":3028:3042  goodIdentifier */
+      dup8
+        /* "contracts/Game.sol":2999:3043  games[msg.sender].ownedGoods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_132
+      jumpi
+      invalid
+    tag_132:
+      add
+      sload
+        /* "contracts/Game.sol":2999:3054  games[msg.sender].ownedGoods[goodIdentifier] + quantity */
+      add
+        /* "contracts/Game.sol":2952:2957  games */
+      0x7
+        /* "contracts/Game.sol":2952:2969  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":2958:2968  msg.sender */
+      caller
+        /* "contracts/Game.sol":2952:2969  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":2952:2980  games[msg.sender].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":2981:2995  goodIdentifier */
+      dup8
+        /* "contracts/Game.sol":2952:2996  games[msg.sender].ownedGoods[goodIdentifier] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_134
+      jumpi
+      invalid
+    tag_134:
+      add
+        /* "contracts/Game.sol":2952:3054  games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":3067:3071  true */
+      0x1
+        /* "contracts/Game.sol":3060:3071  return true */
+      swap4
+      pop
+        /* "contracts/Game.sol":1784:3076  function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)... */
+      pop
+      pop
+      pop
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Token.sol":508:534  uint256 public totalSupply */
+    tag_38:
+      sload(0x0)
+      dup2
+      jump	// out
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+    tag_41:
+        /* "contracts/StandardToken.sol":787:799  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":951:957  _value */
+      dup2
+        /* "contracts/StandardToken.sol":932:940  balances */
+      0x1
+        /* "contracts/StandardToken.sol":932:947  balances[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":941:946  _from */
+      dup7
+        /* "contracts/StandardToken.sol":932:947  balances[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":932:957  balances[_from] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":932:997  balances[_from] >= _value && allowed[_from][msg.sender] >= _value */
+      dup1
+      iszero
+      tag_137
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":991:997  _value */
+      dup2
+        /* "contracts/StandardToken.sol":961:968  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":961:975  allowed[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":969:974  _from */
+      dup7
+        /* "contracts/StandardToken.sol":961:975  allowed[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":961:987  allowed[_from][msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":976:986  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":961:987  allowed[_from][msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":961:997  allowed[_from][msg.sender] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":932:997  balances[_from] >= _value && allowed[_from][msg.sender] >= _value */
+    tag_137:
+        /* "contracts/StandardToken.sol":932:1039  balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+      dup1
+      iszero
+      tag_138
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":1026:1034  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1026:1039  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1035:1038  _to */
+      dup5
+        /* "contracts/StandardToken.sol":1026:1039  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1017:1023  _value */
+      dup3
+        /* "contracts/StandardToken.sol":1001:1009  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1001:1014  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1010:1013  _to */
+      dup7
+        /* "contracts/StandardToken.sol":1001:1014  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1001:1023  balances[_to] + _value */
+      add
+        /* "contracts/StandardToken.sol":1001:1039  balances[_to] + _value > balances[_to] */
+      gt
+        /* "contracts/StandardToken.sol":932:1039  balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+    tag_138:
+        /* "contracts/StandardToken.sol":924:1040  require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to]) */
+      iszero
+      iszero
+      tag_139
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_139:
+        /* "contracts/StandardToken.sol":1153:1159  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1136:1144  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1136:1149  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1145:1148  _to */
+      dup6
+        /* "contracts/StandardToken.sol":1136:1149  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1136:1159  balances[_to] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1188:1194  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1169:1177  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1169:1184  balances[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":1178:1183  _from */
+      dup7
+        /* "contracts/StandardToken.sol":1169:1184  balances[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1169:1194  balances[_from] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1234:1240  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1204:1211  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1204:1218  allowed[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":1212:1217  _from */
+      dup7
+        /* "contracts/StandardToken.sol":1204:1218  allowed[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1204:1230  allowed[_from][msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":1219:1229  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1204:1230  allowed[_from][msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1204:1240  allowed[_from][msg.sender] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1266:1269  _to */
+      dup3
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":1259:1264  _from */
+      dup5
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        /* "contracts/StandardToken.sol":1271:1277  _value */
+      dup5
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":1295:1299  true */
+      0x1
+        /* "contracts/StandardToken.sol":1288:1299  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+      swap4
+      swap3
+      pop
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":440:461  Good[10] public goods */
+    tag_44:
+      0x8
+      dup2
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_140
+      jumpi
+      invalid
+    tag_140:
+      0x4
+      mul
+      add
+      0x0
+      swap2
+      pop
+      swap1
+      pop
+      dup1
+      0x0
+      add
+      swap1
+      dup1
+      0x1
+      add
+      sload
+      swap1
+      dup1
+      0x2
+      add
+      sload
+      swap1
+      dup1
+      0x3
+      add
+      sload
+      swap1
+      pop
+      dup5
+      jump	// out
+        /* "contracts/ClickMineToken.sol":538:559  uint8 public decimals */
+    tag_50:
+      0x5
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xff
+      and
+      dup2
+      jump	// out
+        /* "contracts/Registrar.sol":908:978  function close() onlyOwner public {... */
+    tag_53:
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_143
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_143:
+        /* "contracts/Registrar.sol":965:970  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":952:971  selfdestruct(owner) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      selfdestruct
+        /* "contracts/Game.sol":3584:3841  function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) ... */
+    tag_56:
+        /* "contracts/Game.sol":3646:3652  string */
+      tag_145
+      jump	// in(tag_146)
+    tag_145:
+        /* "contracts/Game.sol":3654:3661  uint256 */
+      0x0
+        /* "contracts/Game.sol":3663:3670  uint256 */
+      dup1
+        /* "contracts/Game.sol":3672:3679  uint256 */
+      0x0
+        /* "contracts/Game.sol":3708:3709  0 */
+      dup1
+        /* "contracts/Game.sol":3698:3704  _index */
+      dup6
+        /* "contracts/Game.sol":3698:3709  _index >= 0 */
+      lt
+      iszero
+        /* "contracts/Game.sol":3698:3725  _index >= 0 && _index <= 10 */
+      dup1
+      iszero
+      tag_148
+      jumpi
+      pop
+        /* "contracts/Game.sol":3723:3725  10 */
+      0xa
+        /* "contracts/Game.sol":3713:3719  _index */
+      dup6
+        /* "contracts/Game.sol":3713:3725  _index <= 10 */
+      gt
+      iszero
+        /* "contracts/Game.sol":3698:3725  _index >= 0 && _index <= 10 */
+    tag_148:
+        /* "contracts/Game.sol":3690:3726  require(_index >= 0 && _index <= 10) */
+      iszero
+      iszero
+      tag_149
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_149:
+        /* "contracts/Game.sol":3740:3745  goods */
+      0x8
+        /* "contracts/Game.sol":3746:3752  _index */
+      dup6
+        /* "contracts/Game.sol":3740:3753  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_150
+      jumpi
+      invalid
+    tag_150:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":3740:3758  goods[_index].name */
+      0x0
+      add
+        /* "contracts/Game.sol":3760:3765  goods */
+      0x8
+        /* "contracts/Game.sol":3766:3772  _index */
+      dup7
+        /* "contracts/Game.sol":3760:3773  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_152
+      jumpi
+      invalid
+    tag_152:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":3760:3789  goods[_index].efficiencyBoost */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":3791:3796  goods */
+      0x8
+        /* "contracts/Game.sol":3797:3803  _index */
+      dup8
+        /* "contracts/Game.sol":3791:3804  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_154
+      jumpi
+      invalid
+    tag_154:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":3791:3815  goods[_index].speedBoost */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":3817:3822  goods */
+      0x8
+        /* "contracts/Game.sol":3823:3829  _index */
+      dup9
+        /* "contracts/Game.sol":3817:3830  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_156
+      jumpi
+      invalid
+    tag_156:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":3817:3835  goods[_index].cost */
+      0x3
+      add
+      sload
+        /* "contracts/Game.sol":3732:3836  return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost) */
+      dup4
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_158
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_159
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_158)
+    tag_159:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_160:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_160
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_158:
+      pop
+      pop
+      pop
+      pop
+      pop
+      swap4
+      pop
+      swap4
+      pop
+      swap4
+      pop
+      swap4
+      pop
+      swap4
+      pop
+        /* "contracts/Game.sol":3584:3841  function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) ... */
+      swap2
+      swap4
+      pop
+      swap2
+      swap4
+      jump	// out
+        /* "contracts/Game.sol":1564:1780  function buyGoods(uint256[] _toBuy) public returns (bool success)... */
+    tag_63:
+        /* "contracts/Game.sol":1616:1628  bool success */
+      0x0
+        /* "contracts/Game.sol":1677:1687  uint ident */
+      dup1
+        /* "contracts/Game.sol":1663:1665  10 */
+      0xa
+        /* "contracts/Game.sol":1646:1652  _toBuy */
+      dup4
+        /* "contracts/Game.sol":1646:1659  _toBuy.length */
+      mload
+        /* "contracts/Game.sol":1646:1665  _toBuy.length == 10 */
+      eq
+        /* "contracts/Game.sol":1638:1666  require(_toBuy.length == 10) */
+      iszero
+      iszero
+      tag_162
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_162:
+        /* "contracts/Game.sol":1690:1691  0 */
+      0x0
+        /* "contracts/Game.sol":1677:1691  uint ident = 0 */
+      swap1
+      pop
+        /* "contracts/Game.sol":1672:1759  for (uint ident = 0; ident <= 10; ident++) {... */
+    tag_163:
+        /* "contracts/Game.sol":1702:1704  10 */
+      0xa
+        /* "contracts/Game.sol":1693:1698  ident */
+      dup2
+        /* "contracts/Game.sol":1693:1704  ident <= 10 */
+      gt
+      iszero
+        /* "contracts/Game.sol":1672:1759  for (uint ident = 0; ident <= 10; ident++) {... */
+      iszero
+      tag_164
+      jumpi
+        /* "contracts/Game.sol":1723:1752  buyGood(ident, _toBuy[ident]) */
+      tag_166
+        /* "contracts/Game.sol":1731:1736  ident */
+      dup2
+        /* "contracts/Game.sol":1738:1744  _toBuy */
+      dup5
+        /* "contracts/Game.sol":1745:1750  ident */
+      dup4
+        /* "contracts/Game.sol":1738:1751  _toBuy[ident] */
+      dup2
+      mload
+      dup2
+      lt
+      iszero
+      iszero
+      tag_167
+      jumpi
+      invalid
+    tag_167:
+      swap1
+      0x20
+      add
+      swap1
+      0x20
+      mul
+      add
+      mload
+        /* "contracts/Game.sol":1723:1730  buyGood */
+      tag_35
+        /* "contracts/Game.sol":1723:1752  buyGood(ident, _toBuy[ident]) */
+      jump	// in
+    tag_166:
+      pop
+        /* "contracts/Game.sol":1706:1713  ident++ */
+      dup1
+      dup1
+      0x1
+      add
+      swap2
+      pop
+      pop
+        /* "contracts/Game.sol":1672:1759  for (uint ident = 0; ident <= 10; ident++) {... */
+      jump(tag_163)
+    tag_164:
+        /* "contracts/Game.sol":1771:1775  true */
+      0x1
+        /* "contracts/Game.sol":1764:1775  return true */
+      swap2
+      pop
+        /* "contracts/Game.sol":1564:1780  function buyGoods(uint256[] _toBuy) public returns (bool success)... */
+      pop
+      swap2
+      swap1
+      pop
+      jump	// out
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+    tag_66:
+        /* "contracts/StandardToken.sol":1372:1387  uint256 balance */
+      0x0
+        /* "contracts/StandardToken.sol":1411:1419  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1411:1427  balances[_owner] */
+      0x0
+        /* "contracts/StandardToken.sol":1420:1426  _owner */
+      dup4
+        /* "contracts/StandardToken.sol":1411:1427  balances[_owner] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1404:1427  return balances[_owner] */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+      swap2
+      swap1
+      pop
+      jump	// out
+        /* "contracts/Game.sol":286:326  mapping (address => Player) public games */
+    tag_69:
+      mstore(0x20, 0x7)
+      dup1
+      0x0
+      mstore
+      keccak256(0x0, 0x40)
+      0x0
+      swap2
+      pop
+      swap1
+      pop
+      dup1
+      0x0
+      add
+      sload
+      swap1
+      dup1
+      0x1
+      add
+      sload
+      swap1
+      dup1
+      0x2
+      add
+      sload
+      swap1
+      dup1
+      0x3
+      add
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xff
+      and
+      swap1
+      dup1
+      0xe
+      add
+      sload
+      swap1
+      pop
+      dup6
+      jump	// out
+        /* "contracts/Game.sol":4200:4617  function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)... */
+    tag_72:
+        /* "contracts/Game.sol":4335:4347  bool success */
+      0x0
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_170
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_170:
+        /* "contracts/Game.sol":4415:4416  0 */
+      0x0
+        /* "contracts/Game.sol":4405:4411  _index */
+      dup7
+        /* "contracts/Game.sol":4405:4416  _index >= 0 */
+      lt
+      iszero
+        /* "contracts/Game.sol":4405:4432  _index >= 0 && _index <= 10 */
+      dup1
+      iszero
+      tag_172
+      jumpi
+      pop
+        /* "contracts/Game.sol":4430:4432  10 */
+      0xa
+        /* "contracts/Game.sol":4420:4426  _index */
+      dup7
+        /* "contracts/Game.sol":4420:4432  _index <= 10 */
+      gt
+      iszero
+        /* "contracts/Game.sol":4405:4432  _index >= 0 && _index <= 10 */
+    tag_172:
+        /* "contracts/Game.sol":4397:4433  require(_index >= 0 && _index <= 10) */
+      iszero
+      iszero
+      tag_173
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_173:
+        /* "contracts/Game.sol":4460:4465  _name */
+      dup5
+        /* "contracts/Game.sol":4439:4444  goods */
+      0x8
+        /* "contracts/Game.sol":4445:4451  _index */
+      dup8
+        /* "contracts/Game.sol":4439:4452  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_174
+      jumpi
+      invalid
+    tag_174:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":4439:4457  goods[_index].name */
+      0x0
+      add
+        /* "contracts/Game.sol":4439:4465  goods[_index].name = _name */
+      swap1
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      tag_176
+      swap3
+      swap2
+      swap1
+      jump	// in(tag_177)
+    tag_176:
+      pop
+        /* "contracts/Game.sol":4503:4519  _efficiencyBoost */
+      dup4
+        /* "contracts/Game.sol":4471:4476  goods */
+      0x8
+        /* "contracts/Game.sol":4477:4483  _index */
+      dup8
+        /* "contracts/Game.sol":4471:4484  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_178
+      jumpi
+      invalid
+    tag_178:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":4471:4500  goods[_index].efficiencyBoost */
+      0x1
+      add
+        /* "contracts/Game.sol":4471:4519  goods[_index].efficiencyBoost = _efficiencyBoost */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":4552:4563  _speedBoost */
+      dup3
+        /* "contracts/Game.sol":4525:4530  goods */
+      0x8
+        /* "contracts/Game.sol":4531:4537  _index */
+      dup8
+        /* "contracts/Game.sol":4525:4538  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_180
+      jumpi
+      invalid
+    tag_180:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":4525:4549  goods[_index].speedBoost */
+      0x2
+      add
+        /* "contracts/Game.sol":4525:4563  goods[_index].speedBoost = _speedBoost */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":4590:4595  _cost */
+      dup2
+        /* "contracts/Game.sol":4569:4574  goods */
+      0x8
+        /* "contracts/Game.sol":4575:4581  _index */
+      dup8
+        /* "contracts/Game.sol":4569:4582  goods[_index] */
+      0xa
+      dup2
+      lt
+      iszero
+      iszero
+      tag_182
+      jumpi
+      invalid
+    tag_182:
+      0x4
+      mul
+      add
+        /* "contracts/Game.sol":4569:4587  goods[_index].cost */
+      0x3
+      add
+        /* "contracts/Game.sol":4569:4595  goods[_index].cost = _cost */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":4608:4612  true */
+      0x1
+        /* "contracts/Game.sol":4601:4612  return true */
+      swap1
+      pop
+        /* "contracts/Game.sol":4200:4617  function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)... */
+      swap6
+      swap5
+      pop
+      pop
+      pop
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":1196:1560  function click() public returns (bool success) ... */
+    tag_75:
+        /* "contracts/Game.sol":1229:1241  bool success */
+      0x0
+        /* "contracts/Game.sol":1394:1413  uint256 totalPayout */
+      dup1
+        /* "contracts/Game.sol":1309:1314  games */
+      0x7
+        /* "contracts/Game.sol":1309:1326  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1315:1325  msg.sender */
+      caller
+        /* "contracts/Game.sol":1309:1326  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1309:1336  games[msg.sender].lastClick */
+      0xe
+      add
+      sload
+        /* "contracts/Game.sol":1278:1283  games */
+      0x7
+        /* "contracts/Game.sol":1278:1295  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1284:1294  msg.sender */
+      caller
+        /* "contracts/Game.sol":1278:1295  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1278:1305  games[msg.sender].lastClick */
+      0xe
+      add
+      sload
+        /* "contracts/Game.sol":1260:1275  block.timestamp */
+      timestamp
+        /* "contracts/Game.sol":1260:1305  block.timestamp - games[msg.sender].lastClick */
+      sub
+        /* "contracts/Game.sol":1260:1336  block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick */
+      gt
+      iszero
+        /* "contracts/Game.sol":1252:1337  require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick) */
+      iszero
+      iszero
+      tag_185
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_185:
+        /* "contracts/Game.sol":1373:1388  block.timestamp */
+      timestamp
+        /* "contracts/Game.sol":1343:1348  games */
+      0x7
+        /* "contracts/Game.sol":1343:1360  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1349:1359  msg.sender */
+      caller
+        /* "contracts/Game.sol":1343:1360  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1343:1370  games[msg.sender].lastClick */
+      0xe
+      add
+        /* "contracts/Game.sol":1343:1388  games[msg.sender].lastClick = block.timestamp */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":1416:1471  mul(games[msg.sender].miningEfficiency, tokensPerClick) */
+      tag_186
+        /* "contracts/Game.sol":1420:1425  games */
+      0x7
+        /* "contracts/Game.sol":1420:1437  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1426:1436  msg.sender */
+      caller
+        /* "contracts/Game.sol":1420:1437  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1420:1454  games[msg.sender].miningEfficiency */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":1456:1470  tokensPerClick */
+      sload(0x30)
+        /* "contracts/Game.sol":1416:1419  mul */
+      tag_114
+        /* "contracts/Game.sol":1416:1471  mul(games[msg.sender].miningEfficiency, tokensPerClick) */
+      jump	// in
+    tag_186:
+        /* "contracts/Game.sol":1394:1471  uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick) */
+      swap1
+      pop
+        /* "contracts/Game.sol":1477:1506  mint(msg.sender, totalPayout) */
+      tag_187
+        /* "contracts/Game.sol":1482:1492  msg.sender */
+      caller
+        /* "contracts/Game.sol":1494:1505  totalPayout */
+      dup3
+        /* "contracts/Game.sol":1477:1481  mint */
+      tag_188
+        /* "contracts/Game.sol":1477:1506  mint(msg.sender, totalPayout) */
+      jump	// in
+    tag_187:
+      pop
+        /* "contracts/Game.sol":1519:1523  true */
+      0x1
+        /* "contracts/Game.sol":1512:1523  return true */
+      swap2
+      pop
+        /* "contracts/Game.sol":1196:1560  function click() public returns (bool success) ... */
+      pop
+      swap1
+      jump	// out
+        /* "contracts/ClickMineToken.sol":732:752  string public symbol */
+    tag_78:
+      0x6
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_189
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_190
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_189)
+    tag_190:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_191:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_191
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_189:
+      pop
+      pop
+      pop
+      pop
+      pop
+      dup2
+      jump	// out
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+    tag_85:
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_193
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_193:
+        /* "contracts/Registrar.sol":636:644  newOwner */
+      dup1
+        /* "contracts/Registrar.sol":628:633  owner */
+      0x3
+      0x0
+        /* "contracts/Registrar.sol":628:644  owner = newOwner */
+      0x100
+      exp
+      dup2
+      sload
+      dup2
+      0xffffffffffffffffffffffffffffffffffffffff
+      mul
+      not
+      and
+      swap1
+      dup4
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      mul
+      or
+      swap1
+      sstore
+      pop
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+      pop
+      jump	// out
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+    tag_88:
+        /* "contracts/StandardToken.sol":150:162  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":455:461  _value */
+      dup2
+        /* "contracts/StandardToken.sol":431:439  balances */
+      0x1
+        /* "contracts/StandardToken.sol":431:451  balances[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":440:450  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":431:451  balances[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":431:461  balances[msg.sender] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":431:503  balances[msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+      dup1
+      iszero
+      tag_196
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":490:498  balances */
+      0x1
+        /* "contracts/StandardToken.sol":490:503  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":499:502  _to */
+      dup5
+        /* "contracts/StandardToken.sol":490:503  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":481:487  _value */
+      dup3
+        /* "contracts/StandardToken.sol":465:473  balances */
+      0x1
+        /* "contracts/StandardToken.sol":465:478  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":474:477  _to */
+      dup7
+        /* "contracts/StandardToken.sol":465:478  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":465:487  balances[_to] + _value */
+      add
+        /* "contracts/StandardToken.sol":465:503  balances[_to] + _value > balances[_to] */
+      gt
+        /* "contracts/StandardToken.sol":431:503  balances[msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+    tag_196:
+        /* "contracts/StandardToken.sol":423:504  require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]) */
+      iszero
+      iszero
+      tag_197
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_197:
+        /* "contracts/StandardToken.sol":589:595  _value */
+      dup2
+        /* "contracts/StandardToken.sol":565:573  balances */
+      0x1
+        /* "contracts/StandardToken.sol":565:585  balances[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":574:584  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":565:585  balances[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":565:595  balances[msg.sender] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":622:628  _value */
+      dup2
+        /* "contracts/StandardToken.sol":605:613  balances */
+      0x1
+        /* "contracts/StandardToken.sol":605:618  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":614:617  _to */
+      dup6
+        /* "contracts/StandardToken.sol":605:618  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":605:628  balances[_to] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":659:662  _to */
+      dup3
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":647:657  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        /* "contracts/StandardToken.sol":664:670  _value */
+      dup5
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":688:692  true */
+      0x1
+        /* "contracts/StandardToken.sol":681:692  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":468:497  uint256 public tokensPerClick */
+    tag_91:
+      sload(0x30)
+      dup2
+      jump	// out
+        /* "contracts/Game.sol":3845:4196  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)... */
+    tag_94:
+        /* "contracts/Game.sol":3909:3916  bytes32 */
+      0x0
+        /* "contracts/Game.sol":3918:3925  uint256 */
+      dup1
+        /* "contracts/Game.sol":3927:3934  uint256 */
+      0x0
+        /* "contracts/Game.sol":3936:3940  bool */
+      dup1
+        /* "contracts/Game.sol":3942:3953  uint256[10] */
+      tag_198
+      jump	// in(tag_199)
+    tag_198:
+        /* "contracts/Game.sol":3955:3959  uint */
+      0x0
+        /* "contracts/Game.sol":4026:4031  games */
+      0x7
+        /* "contracts/Game.sol":4026:4040  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4032:4039  _player */
+      dup9
+        /* "contracts/Game.sol":4026:4040  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4026:4045  games[_player].seed */
+      0x0
+      add
+      sload
+        /* "contracts/Game.sol":4047:4052  games */
+      0x7
+        /* "contracts/Game.sol":4047:4061  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4053:4060  _player */
+      dup10
+        /* "contracts/Game.sol":4047:4061  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4047:4078  games[_player].miningEfficiency */
+      0x1
+      add
+      sload
+        /* "contracts/Game.sol":4086:4091  games */
+      0x7
+        /* "contracts/Game.sol":4086:4100  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4092:4099  _player */
+      dup11
+        /* "contracts/Game.sol":4086:4100  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4086:4112  games[_player].miningSpeed */
+      0x2
+      add
+      sload
+        /* "contracts/Game.sol":4114:4119  games */
+      0x7
+        /* "contracts/Game.sol":4114:4128  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4120:4127  _player */
+      dup12
+        /* "contracts/Game.sol":4114:4128  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4114:4137  games[_player].canSmelt */
+      0x3
+      add
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xff
+      and
+        /* "contracts/Game.sol":4139:4144  games */
+      0x7
+        /* "contracts/Game.sol":4139:4153  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4145:4152  _player */
+      dup13
+        /* "contracts/Game.sol":4139:4153  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4139:4164  games[_player].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":4166:4171  games */
+      0x7
+        /* "contracts/Game.sol":4166:4180  games[_player] */
+      0x0
+        /* "contracts/Game.sol":4172:4179  _player */
+      dup14
+        /* "contracts/Game.sol":4166:4180  games[_player] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":4166:4190  games[_player].lastClick */
+      0xe
+      add
+      sload
+        /* "contracts/Game.sol":4018:4191  return (games[_player].seed, games[_player].miningEfficiency,... */
+      dup2
+      0xa
+      dup1
+      0x20
+      mul
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup3
+      0xa
+      dup1
+      iszero
+      tag_201
+      jumpi
+      0x20
+      mul
+      dup3
+      add
+      swap2
+    tag_202:
+      dup2
+      sload
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      0x1
+      add
+      swap1
+      dup1
+      dup4
+      gt
+      tag_202
+      jumpi
+    tag_201:
+      pop
+      pop
+      pop
+      pop
+      pop
+      swap2
+      pop
+      swap6
+      pop
+      swap6
+      pop
+      swap6
+      pop
+      swap6
+      pop
+      swap6
+      pop
+      swap6
+      pop
+        /* "contracts/Game.sol":3845:4196  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)... */
+      swap2
+      swap4
+      swap6
+      pop
+      swap2
+      swap4
+      swap6
+      jump	// out
+        /* "contracts/Game.sol":735:1192  function beginGame() public returns (bool success) ... */
+    tag_100:
+        /* "contracts/Game.sol":772:784  bool success */
+      0x0
+        /* "contracts/Game.sol":936:937  1 */
+      0x1
+        /* "contracts/Game.sol":921:933  block.number */
+      number
+        /* "contracts/Game.sol":921:937  block.number - 1 */
+      sub
+        /* "contracts/Game.sol":905:938  block.blockhash(block.number - 1) */
+      blockhash
+        /* "contracts/Game.sol":880:885  games */
+      0x7
+        /* "contracts/Game.sol":880:897  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":886:896  msg.sender */
+      caller
+        /* "contracts/Game.sol":880:897  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":880:902  games[msg.sender].seed */
+      0x0
+      add
+        /* "contracts/Game.sol":880:938  games[msg.sender].seed = block.blockhash(block.number - 1) */
+      dup2
+      not(0x0)
+      and
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":981:982  0 */
+      0x0
+        /* "contracts/Game.sol":944:949  games */
+      0x7
+        /* "contracts/Game.sol":944:961  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":950:960  msg.sender */
+      caller
+        /* "contracts/Game.sol":944:961  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":944:978  games[msg.sender].miningEfficiency */
+      0x1
+      add
+        /* "contracts/Game.sol":944:982  games[msg.sender].miningEfficiency = 0 */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":1020:1021  0 */
+      0x0
+        /* "contracts/Game.sol":988:993  games */
+      0x7
+        /* "contracts/Game.sol":988:1005  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":994:1004  msg.sender */
+      caller
+        /* "contracts/Game.sol":988:1005  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":988:1017  games[msg.sender].miningSpeed */
+      0x2
+      add
+        /* "contracts/Game.sol":988:1021  games[msg.sender].miningSpeed = 0 */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":1056:1061  false */
+      0x0
+        /* "contracts/Game.sol":1027:1032  games */
+      0x7
+        /* "contracts/Game.sol":1027:1044  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1033:1043  msg.sender */
+      caller
+        /* "contracts/Game.sol":1027:1044  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1027:1053  games[msg.sender].canSmelt */
+      0x3
+      add
+      0x0
+        /* "contracts/Game.sol":1027:1061  games[msg.sender].canSmelt = false */
+      0x100
+      exp
+      dup2
+      sload
+      dup2
+      0xff
+      mul
+      not
+      and
+      swap1
+      dup4
+      iszero
+      iszero
+      mul
+      or
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0x140
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+        /* "contracts/Game.sol":1099:1100  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1101:1102  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1103:1104  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1105:1106  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1107:1108  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1109:1110  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1111:1112  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1113:1114  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1115:1116  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+        /* "contracts/Game.sol":1117:1118  0 */
+      0x0
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      0xff
+      and
+      dup2
+      mstore
+      pop
+        /* "contracts/Game.sol":1067:1072  games */
+      0x7
+        /* "contracts/Game.sol":1067:1084  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1073:1083  msg.sender */
+      caller
+        /* "contracts/Game.sol":1067:1084  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1067:1095  games[msg.sender].ownedGoods */
+      0x4
+      add
+        /* "contracts/Game.sol":1067:1119  games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0] */
+      swap1
+      0xa
+      tag_204
+      swap3
+      swap2
+      swap1
+      jump	// in(tag_205)
+    tag_204:
+      pop
+        /* "contracts/Game.sol":1155:1170  block.timestamp */
+      timestamp
+        /* "contracts/Game.sol":1125:1130  games */
+      0x7
+        /* "contracts/Game.sol":1125:1142  games[msg.sender] */
+      0x0
+        /* "contracts/Game.sol":1131:1141  msg.sender */
+      caller
+        /* "contracts/Game.sol":1125:1142  games[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/Game.sol":1125:1152  games[msg.sender].lastClick */
+      0xe
+      add
+        /* "contracts/Game.sol":1125:1170  games[msg.sender].lastClick = block.timestamp */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/Game.sol":1183:1187  true */
+      0x1
+        /* "contracts/Game.sol":1176:1187  return true */
+      swap1
+      pop
+        /* "contracts/Game.sol":735:1192  function beginGame() public returns (bool success) ... */
+      swap1
+      jump	// out
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+    tag_103:
+        /* "contracts/StandardToken.sol":1734:1751  uint256 remaining */
+      0x0
+        /* "contracts/StandardToken.sol":1773:1780  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1773:1788  allowed[_owner] */
+      0x0
+        /* "contracts/StandardToken.sol":1781:1787  _owner */
+      dup5
+        /* "contracts/StandardToken.sol":1773:1788  allowed[_owner] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1773:1798  allowed[_owner][_spender] */
+      0x0
+        /* "contracts/StandardToken.sol":1789:1797  _spender */
+      dup4
+        /* "contracts/StandardToken.sol":1773:1798  allowed[_owner][_spender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1766:1798  return allowed[_owner][_spender] */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":3080:3232  function mul(uint256 a, uint256 b) internal pure returns (uint256) ... */
+    tag_114:
+        /* "contracts/Game.sol":3138:3145  uint256 */
+      0x0
+        /* "contracts/Game.sol":3158:3167  uint256 c */
+      dup1
+        /* "contracts/Game.sol":3174:3175  b */
+      dup3
+        /* "contracts/Game.sol":3170:3171  a */
+      dup5
+        /* "contracts/Game.sol":3170:3175  a * b */
+      mul
+        /* "contracts/Game.sol":3158:3175  uint256 c = a * b */
+      swap1
+      pop
+        /* "contracts/Game.sol":3195:3196  0 */
+      0x0
+        /* "contracts/Game.sol":3190:3191  a */
+      dup5
+        /* "contracts/Game.sol":3190:3196  a == 0 */
+      eq
+        /* "contracts/Game.sol":3190:3210  a == 0 || c / a == b */
+      dup1
+      tag_208
+      jumpi
+      pop
+        /* "contracts/Game.sol":3209:3210  b */
+      dup3
+        /* "contracts/Game.sol":3204:3205  a */
+      dup5
+        /* "contracts/Game.sol":3200:3201  c */
+      dup3
+        /* "contracts/Game.sol":3200:3205  c / a */
+      dup2
+      iszero
+      iszero
+      tag_209
+      jumpi
+      invalid
+    tag_209:
+      div
+        /* "contracts/Game.sol":3200:3210  c / a == b */
+      eq
+        /* "contracts/Game.sol":3190:3210  a == 0 || c / a == b */
+    tag_208:
+        /* "contracts/Game.sol":3183:3211  assert(a == 0 || c / a == b) */
+      iszero
+      iszero
+      tag_210
+      jumpi
+      invalid
+    tag_210:
+        /* "contracts/Game.sol":3226:3227  c */
+      dup1
+        /* "contracts/Game.sol":3219:3227  return c */
+      swap2
+      pop
+        /* "contracts/Game.sol":3080:3232  function mul(uint256 a, uint256 b) internal pure returns (uint256) ... */
+      pop
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/ClickMineToken.sol":2093:2440  function mint(address _to, uint256 _value) internal returns (bool success)... */
+    tag_188:
+        /* "contracts/ClickMineToken.sol":2154:2166  bool success */
+      0x0
+        /* "contracts/ClickMineToken.sol":2215:2223  balances */
+      0x1
+        /* "contracts/ClickMineToken.sol":2215:2228  balances[_to] */
+      0x0
+        /* "contracts/ClickMineToken.sol":2224:2227  _to */
+      dup5
+        /* "contracts/ClickMineToken.sol":2215:2228  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/ClickMineToken.sol":2206:2212  _value */
+      dup3
+        /* "contracts/ClickMineToken.sol":2190:2198  balances */
+      0x1
+        /* "contracts/ClickMineToken.sol":2190:2203  balances[_to] */
+      0x0
+        /* "contracts/ClickMineToken.sol":2199:2202  _to */
+      dup7
+        /* "contracts/ClickMineToken.sol":2190:2203  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/ClickMineToken.sol":2190:2212  balances[_to] + _value */
+      add
+        /* "contracts/ClickMineToken.sol":2190:2228  balances[_to] + _value > balances[_to] */
+      gt
+        /* "contracts/ClickMineToken.sol":2182:2229  require(balances[_to] + _value > balances[_to]) */
+      iszero
+      iszero
+      tag_212
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_212:
+        /* "contracts/ClickMineToken.sol":2256:2262  _value */
+      dup2
+        /* "contracts/ClickMineToken.sol":2239:2247  balances */
+      0x1
+        /* "contracts/ClickMineToken.sol":2239:2252  balances[_to] */
+      0x0
+        /* "contracts/ClickMineToken.sol":2248:2251  _to */
+      dup6
+        /* "contracts/ClickMineToken.sol":2239:2252  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/ClickMineToken.sol":2239:2262  balances[_to] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/ClickMineToken.sol":2294:2300  _value */
+      dup2
+        /* "contracts/ClickMineToken.sol":2272:2279  allowed */
+      0x2
+        /* "contracts/ClickMineToken.sol":2272:2284  allowed[_to] */
+      0x0
+        /* "contracts/ClickMineToken.sol":2280:2283  _to */
+      dup6
+        /* "contracts/ClickMineToken.sol":2272:2284  allowed[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/ClickMineToken.sol":2272:2290  allowed[_to][this] */
+      0x0
+        /* "contracts/ClickMineToken.sol":2285:2289  this */
+      address
+        /* "contracts/ClickMineToken.sol":2272:2290  allowed[_to][this] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/ClickMineToken.sol":2272:2300  allowed[_to][this] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/ClickMineToken.sol":2363:2366  _to */
+      dup3
+        /* "contracts/ClickMineToken.sol":2310:2375  Transfer(0x0000000000000000000000000000000000000000, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/ClickMineToken.sol":2319:2361  0x0000000000000000000000000000000000000000 */
+      0x0
+        /* "contracts/ClickMineToken.sol":2310:2375  Transfer(0x0000000000000000000000000000000000000000, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        /* "contracts/ClickMineToken.sol":2368:2374  _value */
+      dup5
+        /* "contracts/ClickMineToken.sol":2310:2375  Transfer(0x0000000000000000000000000000000000000000, _to, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/ClickMineToken.sol":2399:2403  this */
+      address
+        /* "contracts/ClickMineToken.sol":2385:2412  Approval(_to, this, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/ClickMineToken.sol":2394:2397  _to */
+      dup4
+        /* "contracts/ClickMineToken.sol":2385:2412  Approval(_to, this, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+        /* "contracts/ClickMineToken.sol":2405:2411  _value */
+      dup5
+        /* "contracts/ClickMineToken.sol":2385:2412  Approval(_to, this, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/ClickMineToken.sol":2429:2433  true */
+      0x1
+        /* "contracts/ClickMineToken.sol":2422:2433  return true */
+      swap1
+      pop
+        /* "contracts/ClickMineToken.sol":2093:2440  function mint(address _to, uint256 _value) internal returns (bool success)... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Game.sol":84:4620  contract Game is ClickMineToken {... */
+    tag_146:
+      0x20
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      0x0
+      dup2
+      mstore
+      pop
+      swap1
+      jump	// out
+    tag_177:
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+      0x1f
+      add
+      0x20
+      swap1
+      div
+      dup2
+      add
+      swap3
+      dup3
+      0x1f
+      lt
+      tag_214
+      jumpi
+      dup1
+      mload
+      not(0xff)
+      and
+      dup4
+      dup1
+      add
+      or
+      dup6
+      sstore
+      jump(tag_213)
+    tag_214:
+      dup3
+      dup1
+      add
+      0x1
+      add
+      dup6
+      sstore
+      dup3
+      iszero
+      tag_213
+      jumpi
+      swap2
+      dup3
+      add
+    tag_215:
+      dup3
+      dup2
+      gt
+      iszero
+      tag_216
+      jumpi
+      dup3
+      mload
+      dup3
+      sstore
+      swap2
+      0x20
+      add
+      swap2
+      swap1
+      0x1
+      add
+      swap1
+      jump(tag_215)
+    tag_216:
+    tag_213:
+      pop
+      swap1
+      pop
+      tag_217
+      swap2
+      swap1
+      jump	// in(tag_218)
+    tag_217:
+      pop
+      swap1
+      jump	// out
+    tag_199:
+      0x140
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      0xa
+      swap1
+    tag_219:
+      0x0
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      0x1
+      swap1
+      sub
+      swap1
+      dup2
+      tag_219
+      jumpi
+      swap1
+      pop
+      pop
+      swap1
+      jump	// out
+    tag_205:
+      dup3
+      0xa
+      dup2
+      add
+      swap3
+      dup3
+      iszero
+      tag_220
+      jumpi
+      swap2
+      0x20
+      mul
+      dup3
+      add
+    tag_221:
+      dup3
+      dup2
+      gt
+      iszero
+      tag_222
+      jumpi
+      dup3
+      mload
+      dup3
+      swap1
+      0xff
+      and
+      swap1
+      sstore
+      swap2
+      0x20
+      add
+      swap2
+      swap1
+      0x1
+      add
+      swap1
+      jump(tag_221)
+    tag_222:
+    tag_220:
+      pop
+      swap1
+      pop
+      tag_223
+      swap2
+      swap1
+      jump	// in(tag_218)
+    tag_223:
+      pop
+      swap1
+      jump	// out
+    tag_218:
+      tag_224
+      swap2
+      swap1
+    tag_225:
+      dup1
+      dup3
+      gt
+      iszero
+      tag_226
+      jumpi
+      0x0
+      dup2
+      0x0
+      swap1
+      sstore
+      pop
+      0x1
+      add
+      jump(tag_225)
+    tag_226:
+      pop
+      swap1
+      jump
+    tag_224:
+      swap1
+      jump	// out
+
+    auxdata: 0xa165627a7a7230582060cd438282bd29513a89c151df789313924a32da26ee0cb7ff2185e066f3cc6f0029
+}

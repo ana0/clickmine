@@ -1,7 +1,7 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.15;
 
 contract owned {
-    function owned() { owner = msg.sender; }
+    function owned() public { owner = msg.sender; }
     address owner;
 
     // This contract only defines a modifier but does not use
@@ -16,7 +16,7 @@ contract owned {
         _;
     }
 
-    function changeOwner(address newOwner) onlyOwner {
+    function changeOwner(address newOwner) onlyOwner public {
         owner = newOwner;
     }
 }
@@ -26,7 +26,7 @@ contract mortal is owned {
     // "owned" and applies it to the "close"-function, which
     // causes that calls to "close" only have an effect if
     // they are made by the stored owner.
-    function close() onlyOwner {
+    function close() onlyOwner public {
         selfdestruct(owner);
     }
 }
@@ -34,9 +34,10 @@ contract mortal is owned {
 contract Registrar is mortal {
     address public GameAddress;
 
-    function Registrar(address adrs) { GameAddress = adrs; }
+    function Registrar(address adrs) public { GameAddress = adrs; }
 
-    function updateGameAddress(address adrs) onlyOwner returns (bool success) {
+    function updateGameAddress(address adrs) onlyOwner public returns (bool success)
+    {
       GameAddress = adrs;
       return true;
     }

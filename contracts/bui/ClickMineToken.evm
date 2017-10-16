@@ -1,0 +1,2045 @@
+    /* "contracts/ClickMineToken.sol":83:2442  contract ClickMineToken is StandardToken, mortal {... */
+  mstore(0x40, 0x60)
+    /* "contracts/ClickMineToken.sol":799:1204  function ClickMineToken(string _tokenName, uint8 _decimalUnits, string _tokenSymbol) public... */
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+  mload(0x40)
+  sub(codesize, bytecodeSize)
+  dup1
+  bytecodeSize
+  dup4
+  codecopy
+  dup2
+  add
+  0x40
+  mstore
+  dup1
+  dup1
+  mload
+  dup3
+  add
+  swap2
+  swap1
+  0x20
+  add
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  swap2
+  swap1
+  dup1
+  mload
+  dup3
+  add
+  swap2
+  swap1
+  pop
+  pop
+    /* "contracts/Registrar.sol":81:91  msg.sender */
+  caller
+    /* "contracts/Registrar.sol":73:78  owner */
+  0x3
+  0x0
+    /* "contracts/Registrar.sol":73:91  owner = msg.sender */
+  0x100
+  exp
+  dup2
+  sload
+  dup2
+  0xffffffffffffffffffffffffffffffffffffffff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xffffffffffffffffffffffffffffffffffffffff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "contracts/ClickMineToken.sol":912:922  _tokenName */
+  dup3
+    /* "contracts/ClickMineToken.sol":905:909  name */
+  0x4
+    /* "contracts/ClickMineToken.sol":905:922  name = _tokenName */
+  swap1
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  tag_6
+  swap3
+  swap2
+  swap1
+  jump	// in(tag_7)
+tag_6:
+  pop
+    /* "contracts/ClickMineToken.sol":1014:1027  _decimalUnits */
+  dup2
+    /* "contracts/ClickMineToken.sol":1003:1011  decimals */
+  0x5
+  0x0
+    /* "contracts/ClickMineToken.sol":1003:1027  decimals = _decimalUnits */
+  0x100
+  exp
+  dup2
+  sload
+  dup2
+  0xff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "contracts/ClickMineToken.sol":1116:1128  _tokenSymbol */
+  dup1
+    /* "contracts/ClickMineToken.sol":1107:1113  symbol */
+  0x6
+    /* "contracts/ClickMineToken.sol":1107:1128  symbol = _tokenSymbol */
+  swap1
+  dup1
+  mload
+  swap1
+  0x20
+  add
+  swap1
+  tag_8
+  swap3
+  swap2
+  swap1
+  jump	// in(tag_7)
+tag_8:
+  pop
+    /* "contracts/ClickMineToken.sol":799:1204  function ClickMineToken(string _tokenName, uint8 _decimalUnits, string _tokenSymbol) public... */
+  pop
+  pop
+  pop
+    /* "contracts/ClickMineToken.sol":83:2442  contract ClickMineToken is StandardToken, mortal {... */
+  jump(tag_9)
+tag_7:
+  dup3
+  dup1
+  sload
+  0x1
+  dup2
+  0x1
+  and
+  iszero
+  0x100
+  mul
+  sub
+  and
+  0x2
+  swap1
+  div
+  swap1
+  0x0
+  mstore
+  keccak256(0x0, 0x20)
+  swap1
+  0x1f
+  add
+  0x20
+  swap1
+  div
+  dup2
+  add
+  swap3
+  dup3
+  0x1f
+  lt
+  tag_11
+  jumpi
+  dup1
+  mload
+  not(0xff)
+  and
+  dup4
+  dup1
+  add
+  or
+  dup6
+  sstore
+  jump(tag_10)
+tag_11:
+  dup3
+  dup1
+  add
+  0x1
+  add
+  dup6
+  sstore
+  dup3
+  iszero
+  tag_10
+  jumpi
+  swap2
+  dup3
+  add
+tag_12:
+  dup3
+  dup2
+  gt
+  iszero
+  tag_13
+  jumpi
+  dup3
+  mload
+  dup3
+  sstore
+  swap2
+  0x20
+  add
+  swap2
+  swap1
+  0x1
+  add
+  swap1
+  jump(tag_12)
+tag_13:
+tag_10:
+  pop
+  swap1
+  pop
+  tag_14
+  swap2
+  swap1
+  jump	// in(tag_15)
+tag_14:
+  pop
+  swap1
+  jump	// out
+tag_15:
+  tag_16
+  swap2
+  swap1
+tag_17:
+  dup1
+  dup3
+  gt
+  iszero
+  tag_18
+  jumpi
+  0x0
+  dup2
+  0x0
+  swap1
+  sstore
+  pop
+  0x1
+  add
+  jump(tag_17)
+tag_18:
+  pop
+  swap1
+  jump
+tag_16:
+  swap1
+  jump	// out
+tag_9:
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+        /* "contracts/ClickMineToken.sol":83:2442  contract ClickMineToken is StandardToken, mortal {... */
+      mstore(0x40, 0x60)
+      jumpi(tag_1, iszero(calldatasize))
+      calldataload(0x0)
+      0x100000000000000000000000000000000000000000000000000000000
+      swap1
+      div
+      0xffffffff
+      and
+      dup1
+      0x6fdde03
+      eq
+      tag_2
+      jumpi
+      dup1
+      0x95ea7b3
+      eq
+      tag_3
+      jumpi
+      dup1
+      0x18160ddd
+      eq
+      tag_4
+      jumpi
+      dup1
+      0x23b872dd
+      eq
+      tag_5
+      jumpi
+      dup1
+      0x313ce567
+      eq
+      tag_6
+      jumpi
+      dup1
+      0x43d726d6
+      eq
+      tag_7
+      jumpi
+      dup1
+      0x70a08231
+      eq
+      tag_8
+      jumpi
+      dup1
+      0x95d89b41
+      eq
+      tag_9
+      jumpi
+      dup1
+      0xa6f9dae1
+      eq
+      tag_10
+      jumpi
+      dup1
+      0xa9059cbb
+      eq
+      tag_11
+      jumpi
+      dup1
+      0xdd62ed3e
+      eq
+      tag_12
+      jumpi
+    tag_1:
+      0x0
+      dup1
+      revert
+        /* "contracts/ClickMineToken.sol":467:485  string public name */
+    tag_2:
+      jumpi(tag_13, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_13:
+      tag_14
+      jump(tag_15)
+    tag_14:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup4
+      dup2
+      dup2
+      mload
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_16:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_17
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_16)
+    tag_17:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      swap1
+      dup2
+      add
+      swap1
+      0x1f
+      and
+      dup1
+      iszero
+      tag_19
+      jumpi
+      dup1
+      dup3
+      sub
+      dup1
+      mload
+      0x1
+      dup4
+      0x20
+      sub
+      0x100
+      exp
+      sub
+      not
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+    tag_19:
+      pop
+      swap3
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+    tag_3:
+      jumpi(tag_20, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_20:
+      tag_21
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_22)
+    tag_21:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Token.sol":508:534  uint256 public totalSupply */
+    tag_4:
+      jumpi(tag_23, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_23:
+      tag_24
+      jump(tag_25)
+    tag_24:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+    tag_5:
+      jumpi(tag_26, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_26:
+      tag_27
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_28)
+    tag_27:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":538:559  uint8 public decimals */
+    tag_6:
+      jumpi(tag_29, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_29:
+      tag_30
+      jump(tag_31)
+    tag_30:
+      mload(0x40)
+      dup1
+      dup3
+      0xff
+      and
+      0xff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Registrar.sol":908:978  function close() onlyOwner public {... */
+    tag_7:
+      jumpi(tag_32, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_32:
+      tag_33
+      jump(tag_34)
+    tag_33:
+      stop
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+    tag_8:
+      jumpi(tag_35, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_35:
+      tag_36
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_37)
+    tag_36:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":732:752  string public symbol */
+    tag_9:
+      jumpi(tag_38, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_38:
+      tag_39
+      jump(tag_40)
+    tag_39:
+      mload(0x40)
+      dup1
+      dup1
+      0x20
+      add
+      dup3
+      dup2
+      sub
+      dup3
+      mstore
+      dup4
+      dup2
+      dup2
+      mload
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      dup1
+      mload
+      swap1
+      0x20
+      add
+      swap1
+      dup1
+      dup4
+      dup4
+        /* "--CODEGEN--":23:24   */
+      0x0
+        /* "--CODEGEN--":8:108   */
+    tag_41:
+        /* "--CODEGEN--":33:36   */
+      dup4
+        /* "--CODEGEN--":30:31   */
+      dup2
+        /* "--CODEGEN--":27:29   */
+      lt
+        /* "--CODEGEN--":8:108   */
+      iszero
+      tag_42
+      jumpi
+        /* "--CODEGEN--":99:100   */
+      dup1
+        /* "--CODEGEN--":94:97   */
+      dup3
+        /* "--CODEGEN--":90:93   */
+      add
+        /* "--CODEGEN--":84:89   */
+      mload
+        /* "--CODEGEN--":80:81   */
+      dup2
+        /* "--CODEGEN--":75:78   */
+      dup5
+        /* "--CODEGEN--":71:74   */
+      add
+        /* "--CODEGEN--":64:70   */
+      mstore
+        /* "--CODEGEN--":52:54   */
+      0x20
+        /* "--CODEGEN--":49:50   */
+      dup2
+        /* "--CODEGEN--":45:48   */
+      add
+        /* "--CODEGEN--":40:55   */
+      swap1
+      pop
+        /* "--CODEGEN--":8:108   */
+      jump(tag_41)
+    tag_42:
+        /* "--CODEGEN--":12:26   */
+      pop
+        /* "--CODEGEN--":3:112   */
+      pop
+      pop
+      pop
+      swap1
+      pop
+      swap1
+      dup2
+      add
+      swap1
+      0x1f
+      and
+      dup1
+      iszero
+      tag_44
+      jumpi
+      dup1
+      dup3
+      sub
+      dup1
+      mload
+      0x1
+      dup4
+      0x20
+      sub
+      0x100
+      exp
+      sub
+      not
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+    tag_44:
+      pop
+      swap3
+      pop
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+    tag_10:
+      jumpi(tag_45, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_45:
+      tag_46
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_47)
+    tag_46:
+      stop
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+    tag_11:
+      jumpi(tag_48, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_48:
+      tag_49
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_50)
+    tag_49:
+      mload(0x40)
+      dup1
+      dup3
+      iszero
+      iszero
+      iszero
+      iszero
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+    tag_12:
+      jumpi(tag_51, iszero(callvalue))
+      0x0
+      dup1
+      revert
+    tag_51:
+      tag_52
+      0x4
+      dup1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      dup1
+      calldataload
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      swap1
+      0x20
+      add
+      swap1
+      swap2
+      swap1
+      pop
+      pop
+      jump(tag_53)
+    tag_52:
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      return
+        /* "contracts/ClickMineToken.sol":467:485  string public name */
+    tag_15:
+      0x4
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_54
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_55
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_54)
+    tag_55:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_56:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_56
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_54:
+      pop
+      pop
+      pop
+      pop
+      pop
+      dup2
+      jump	// out
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+    tag_22:
+        /* "contracts/StandardToken.sol":1507:1519  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":1568:1574  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1536:1543  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1536:1555  allowed[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":1544:1554  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1536:1555  allowed[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1536:1565  allowed[msg.sender][_spender] */
+      0x0
+        /* "contracts/StandardToken.sol":1556:1564  _spender */
+      dup6
+        /* "contracts/StandardToken.sol":1536:1565  allowed[msg.sender][_spender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1536:1574  allowed[msg.sender][_spender] = _value */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1605:1613  _spender */
+      dup3
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":1593:1603  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+        /* "contracts/StandardToken.sol":1615:1621  _value */
+      dup5
+        /* "contracts/StandardToken.sol":1584:1622  Approval(msg.sender, _spender, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":1639:1643  true */
+      0x1
+        /* "contracts/StandardToken.sol":1632:1643  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1440:1650  function approve(address _spender, uint256 _value) public returns (bool success) ... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/Token.sol":508:534  uint256 public totalSupply */
+    tag_25:
+      sload(0x0)
+      dup2
+      jump	// out
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+    tag_28:
+        /* "contracts/StandardToken.sol":787:799  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":951:957  _value */
+      dup2
+        /* "contracts/StandardToken.sol":932:940  balances */
+      0x1
+        /* "contracts/StandardToken.sol":932:947  balances[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":941:946  _from */
+      dup7
+        /* "contracts/StandardToken.sol":932:947  balances[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":932:957  balances[_from] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":932:997  balances[_from] >= _value && allowed[_from][msg.sender] >= _value */
+      dup1
+      iszero
+      tag_59
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":991:997  _value */
+      dup2
+        /* "contracts/StandardToken.sol":961:968  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":961:975  allowed[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":969:974  _from */
+      dup7
+        /* "contracts/StandardToken.sol":961:975  allowed[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":961:987  allowed[_from][msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":976:986  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":961:987  allowed[_from][msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":961:997  allowed[_from][msg.sender] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":932:997  balances[_from] >= _value && allowed[_from][msg.sender] >= _value */
+    tag_59:
+        /* "contracts/StandardToken.sol":932:1039  balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+      dup1
+      iszero
+      tag_60
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":1026:1034  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1026:1039  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1035:1038  _to */
+      dup5
+        /* "contracts/StandardToken.sol":1026:1039  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1017:1023  _value */
+      dup3
+        /* "contracts/StandardToken.sol":1001:1009  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1001:1014  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1010:1013  _to */
+      dup7
+        /* "contracts/StandardToken.sol":1001:1014  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1001:1023  balances[_to] + _value */
+      add
+        /* "contracts/StandardToken.sol":1001:1039  balances[_to] + _value > balances[_to] */
+      gt
+        /* "contracts/StandardToken.sol":932:1039  balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+    tag_60:
+        /* "contracts/StandardToken.sol":924:1040  require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to]) */
+      iszero
+      iszero
+      tag_61
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_61:
+        /* "contracts/StandardToken.sol":1153:1159  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1136:1144  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1136:1149  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":1145:1148  _to */
+      dup6
+        /* "contracts/StandardToken.sol":1136:1149  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1136:1159  balances[_to] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1188:1194  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1169:1177  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1169:1184  balances[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":1178:1183  _from */
+      dup7
+        /* "contracts/StandardToken.sol":1169:1184  balances[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1169:1194  balances[_from] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1234:1240  _value */
+      dup2
+        /* "contracts/StandardToken.sol":1204:1211  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1204:1218  allowed[_from] */
+      0x0
+        /* "contracts/StandardToken.sol":1212:1217  _from */
+      dup7
+        /* "contracts/StandardToken.sol":1204:1218  allowed[_from] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1204:1230  allowed[_from][msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":1219:1229  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":1204:1230  allowed[_from][msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":1204:1240  allowed[_from][msg.sender] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":1266:1269  _to */
+      dup3
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":1259:1264  _from */
+      dup5
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        /* "contracts/StandardToken.sol":1271:1277  _value */
+      dup5
+        /* "contracts/StandardToken.sol":1250:1278  Transfer(_from, _to, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":1295:1299  true */
+      0x1
+        /* "contracts/StandardToken.sol":1288:1299  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":705:1306  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)... */
+      swap4
+      swap3
+      pop
+      pop
+      pop
+      jump	// out
+        /* "contracts/ClickMineToken.sol":538:559  uint8 public decimals */
+    tag_31:
+      0x5
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xff
+      and
+      dup2
+      jump	// out
+        /* "contracts/Registrar.sol":908:978  function close() onlyOwner public {... */
+    tag_34:
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_63
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_63:
+        /* "contracts/Registrar.sol":965:970  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":952:971  selfdestruct(owner) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      selfdestruct
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+    tag_37:
+        /* "contracts/StandardToken.sol":1372:1387  uint256 balance */
+      0x0
+        /* "contracts/StandardToken.sol":1411:1419  balances */
+      0x1
+        /* "contracts/StandardToken.sol":1411:1427  balances[_owner] */
+      0x0
+        /* "contracts/StandardToken.sol":1420:1426  _owner */
+      dup4
+        /* "contracts/StandardToken.sol":1411:1427  balances[_owner] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1404:1427  return balances[_owner] */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1312:1434  function balanceOf(address _owner) constant public returns (uint256 balance) ... */
+      swap2
+      swap1
+      pop
+      jump	// out
+        /* "contracts/ClickMineToken.sol":732:752  string public symbol */
+    tag_40:
+      0x6
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      0x1f
+      add
+      0x20
+      dup1
+      swap2
+      div
+      mul
+      0x20
+      add
+      mload(0x40)
+      swap1
+      dup2
+      add
+      0x40
+      mstore
+      dup1
+      swap3
+      swap2
+      swap1
+      dup2
+      dup2
+      mstore
+      0x20
+      add
+      dup3
+      dup1
+      sload
+      0x1
+      dup2
+      0x1
+      and
+      iszero
+      0x100
+      mul
+      sub
+      and
+      0x2
+      swap1
+      div
+      dup1
+      iszero
+      tag_66
+      jumpi
+      dup1
+      0x1f
+      lt
+      tag_67
+      jumpi
+      0x100
+      dup1
+      dup4
+      sload
+      div
+      mul
+      dup4
+      mstore
+      swap2
+      0x20
+      add
+      swap2
+      jump(tag_66)
+    tag_67:
+      dup3
+      add
+      swap2
+      swap1
+      0x0
+      mstore
+      keccak256(0x0, 0x20)
+      swap1
+    tag_68:
+      dup2
+      sload
+      dup2
+      mstore
+      swap1
+      0x1
+      add
+      swap1
+      0x20
+      add
+      dup1
+      dup4
+      gt
+      tag_68
+      jumpi
+      dup3
+      swap1
+      sub
+      0x1f
+      and
+      dup3
+      add
+      swap2
+    tag_66:
+      pop
+      pop
+      pop
+      pop
+      pop
+      dup2
+      jump	// out
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+    tag_47:
+        /* "contracts/Registrar.sol":532:537  owner */
+      0x3
+      0x0
+      swap1
+      sload
+      swap1
+      0x100
+      exp
+      swap1
+      div
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/Registrar.sol":518:528  msg.sender */
+      caller
+        /* "contracts/Registrar.sol":518:537  msg.sender == owner */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      eq
+        /* "contracts/Registrar.sol":510:538  require(msg.sender == owner) */
+      iszero
+      iszero
+      tag_70
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_70:
+        /* "contracts/Registrar.sol":636:644  newOwner */
+      dup1
+        /* "contracts/Registrar.sol":628:633  owner */
+      0x3
+      0x0
+        /* "contracts/Registrar.sol":628:644  owner = newOwner */
+      0x100
+      exp
+      dup2
+      sload
+      dup2
+      0xffffffffffffffffffffffffffffffffffffffff
+      mul
+      not
+      and
+      swap1
+      dup4
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      mul
+      or
+      swap1
+      sstore
+      pop
+        /* "contracts/Registrar.sol":562:651  function changeOwner(address newOwner) onlyOwner public {... */
+      pop
+      jump	// out
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+    tag_50:
+        /* "contracts/StandardToken.sol":150:162  bool success */
+      0x0
+        /* "contracts/StandardToken.sol":455:461  _value */
+      dup2
+        /* "contracts/StandardToken.sol":431:439  balances */
+      0x1
+        /* "contracts/StandardToken.sol":431:451  balances[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":440:450  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":431:451  balances[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":431:461  balances[msg.sender] >= _value */
+      lt
+      iszero
+        /* "contracts/StandardToken.sol":431:503  balances[msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+      dup1
+      iszero
+      tag_73
+      jumpi
+      pop
+        /* "contracts/StandardToken.sol":490:498  balances */
+      0x1
+        /* "contracts/StandardToken.sol":490:503  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":499:502  _to */
+      dup5
+        /* "contracts/StandardToken.sol":490:503  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":481:487  _value */
+      dup3
+        /* "contracts/StandardToken.sol":465:473  balances */
+      0x1
+        /* "contracts/StandardToken.sol":465:478  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":474:477  _to */
+      dup7
+        /* "contracts/StandardToken.sol":465:478  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":465:487  balances[_to] + _value */
+      add
+        /* "contracts/StandardToken.sol":465:503  balances[_to] + _value > balances[_to] */
+      gt
+        /* "contracts/StandardToken.sol":431:503  balances[msg.sender] >= _value && balances[_to] + _value > balances[_to] */
+    tag_73:
+        /* "contracts/StandardToken.sol":423:504  require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]) */
+      iszero
+      iszero
+      tag_74
+      jumpi
+      0x0
+      dup1
+      revert
+    tag_74:
+        /* "contracts/StandardToken.sol":589:595  _value */
+      dup2
+        /* "contracts/StandardToken.sol":565:573  balances */
+      0x1
+        /* "contracts/StandardToken.sol":565:585  balances[msg.sender] */
+      0x0
+        /* "contracts/StandardToken.sol":574:584  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":565:585  balances[msg.sender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":565:595  balances[msg.sender] -= _value */
+      dup3
+      dup3
+      sload
+      sub
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":622:628  _value */
+      dup2
+        /* "contracts/StandardToken.sol":605:613  balances */
+      0x1
+        /* "contracts/StandardToken.sol":605:618  balances[_to] */
+      0x0
+        /* "contracts/StandardToken.sol":614:617  _to */
+      dup6
+        /* "contracts/StandardToken.sol":605:618  balances[_to] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      0x0
+        /* "contracts/StandardToken.sol":605:628  balances[_to] += _value */
+      dup3
+      dup3
+      sload
+      add
+      swap3
+      pop
+      pop
+      dup2
+      swap1
+      sstore
+      pop
+        /* "contracts/StandardToken.sol":659:662  _to */
+      dup3
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+        /* "contracts/StandardToken.sol":647:657  msg.sender */
+      caller
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        /* "contracts/StandardToken.sol":664:670  _value */
+      dup5
+        /* "contracts/StandardToken.sol":638:671  Transfer(msg.sender, _to, _value) */
+      mload(0x40)
+      dup1
+      dup3
+      dup2
+      mstore
+      0x20
+      add
+      swap2
+      pop
+      pop
+      mload(0x40)
+      dup1
+      swap2
+      sub
+      swap1
+      log3
+        /* "contracts/StandardToken.sol":688:692  true */
+      0x1
+        /* "contracts/StandardToken.sol":681:692  return true */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":87:699  function transfer(address _to, uint256 _value) public returns (bool success)... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+    tag_53:
+        /* "contracts/StandardToken.sol":1734:1751  uint256 remaining */
+      0x0
+        /* "contracts/StandardToken.sol":1773:1780  allowed */
+      0x2
+        /* "contracts/StandardToken.sol":1773:1788  allowed[_owner] */
+      0x0
+        /* "contracts/StandardToken.sol":1781:1787  _owner */
+      dup5
+        /* "contracts/StandardToken.sol":1773:1788  allowed[_owner] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+        /* "contracts/StandardToken.sol":1773:1798  allowed[_owner][_spender] */
+      0x0
+        /* "contracts/StandardToken.sol":1789:1797  _spender */
+      dup4
+        /* "contracts/StandardToken.sol":1773:1798  allowed[_owner][_spender] */
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      0xffffffffffffffffffffffffffffffffffffffff
+      and
+      dup2
+      mstore
+      0x20
+      add
+      swap1
+      dup2
+      mstore
+      0x20
+      add
+      0x0
+      keccak256
+      sload
+        /* "contracts/StandardToken.sol":1766:1798  return allowed[_owner][_spender] */
+      swap1
+      pop
+        /* "contracts/StandardToken.sol":1656:1805  function allowance(address _owner, address _spender) constant public returns (uint256 remaining) ... */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+
+    auxdata: 0xa165627a7a72305820c5f2c529a4cf0fbef721ad5253018ccd00f7b35ea170c80ea92b8b7c193c07fa0029
+}

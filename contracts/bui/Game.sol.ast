@@ -1,0 +1,1617 @@
+ImportDirective "./Registrar.sol"
+   Source: "import \"./Registrar.sol\";"
+ImportDirective "./ClickMineToken.sol"
+   Source: "import \"./ClickMineToken.sol\";"
+PragmaDirective
+   Source: "pragma solidity ^0.4.15;"
+ContractDefinition "Game"
+   Source: "contract Game is ClickMineToken {\n\n  struct Player {\n    bytes32 seed;\n    uint256 miningEfficiency;\n    uint256 miningSpeed;\n    bool canSmelt;\n    uint256[10] ownedGoods;\n    uint lastClick;\n  }\n  \n  mapping (address => Player) public games;\n\n  struct Good {\n    string name;\n    uint256 efficiencyBoost;\n    uint256 speedBoost;\n    uint256 cost;\n  }\n\n  Good[10] public goods;\n  \n  uint256 public tokensPerClick;\n  \n  function Game(uint256 tokens, string _tokenName, uint8 _decimalUnits, string _tokenSymbol)\n    ClickMineToken(_tokenName, _decimalUnits, _tokenSymbol) public\n  { tokensPerClick = tokens; }\n\n  //functions available to the player\n\n  function beginGame() public returns (bool success) \n  {\n    //set initial game state \n    //will wipe game state if it exists\n    //no mercy\n    games[msg.sender].seed = block.blockhash(block.number - 1);\n    games[msg.sender].miningEfficiency = 0;\n    games[msg.sender].miningSpeed = 0;\n    games[msg.sender].canSmelt = false;\n    games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];\n    games[msg.sender].lastClick = block.timestamp;\n    return true;\n  }\n\n  function click() public returns (bool success) \n  {\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    games[msg.sender].lastClick = block.timestamp;\n    uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);\n    mint(msg.sender, totalPayout);\n    return true;\n    // should add buying goods?\n  }\n\n  function buyGoods(uint256[] _toBuy) public returns (bool success)\n  {\n    require(_toBuy.length == 10);\n    for (uint ident = 0; ident <= 10; ident++) {\n      buyGood(ident, _toBuy[ident]);\n    }\n    return true;\n  }\n\n  function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)\n  {\n    //buy any number of a single good\n    require(goodIdentifier >= 0 && goodIdentifier <= 10);\n    uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);\n    uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);\n    uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);\n    require(balances[msg.sender] >= totalCost);\n    require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);\n    require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed);\n    require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);\n    require(games[msg.sender].canSmelt);\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);\n    games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;\n    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed;\n    games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;\n    return true;\n  }\n\n  function mul(uint256 a, uint256 b) internal pure returns (uint256) \n  {\n      uint256 c = a * b;\n      assert(a == 0 || c / a == b);\n      return c;\n  }\n\n    // function socialClick(address _friend) {\n    //   //costs small amount of coin\n    //   //mints more coins than costs at friends address\n    //   //subject to miningSpeed and miningEfficiency\n    // }\n\n    // function smelt(address _friend) {\n    //   //turns ephemeral coin into real coin . . . but how is it different from click?\n    // }\n\n  function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) \n  {\n    require(_index >= 0 && _index <= 10);\n    return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost);\n  }\n\n  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)\n  {\n    //returns all relevant data for given player\n    return (games[_player].seed, games[_player].miningEfficiency,\n      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick);\n  }\n\n  function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)\n  {\n    //used up to ten times to add goods\n    require(_index >= 0 && _index <= 10);\n    goods[_index].name = _name;\n    goods[_index].efficiencyBoost = _efficiencyBoost;\n    goods[_index].speedBoost = _speedBoost;\n    goods[_index].cost = _cost;\n    return true;\n  }\n\n}"
+  InheritanceSpecifier
+     Source: "ClickMineToken"
+    UserDefinedTypeName "ClickMineToken"
+       Source: "ClickMineToken"
+  StructDefinition "Player"
+     Source: "struct Player {\n    bytes32 seed;\n    uint256 miningEfficiency;\n    uint256 miningSpeed;\n    bool canSmelt;\n    uint256[10] ownedGoods;\n    uint lastClick;\n  }"
+    VariableDeclaration "seed"
+       Type: bytes32
+       Source: "bytes32 seed"
+      ElementaryTypeName bytes32
+         Source: "bytes32"
+    VariableDeclaration "miningEfficiency"
+       Type: uint256
+       Source: "uint256 miningEfficiency"
+      ElementaryTypeName uint256
+         Source: "uint256"
+    VariableDeclaration "miningSpeed"
+       Type: uint256
+       Source: "uint256 miningSpeed"
+      ElementaryTypeName uint256
+         Source: "uint256"
+    VariableDeclaration "canSmelt"
+       Type: bool
+       Source: "bool canSmelt"
+      ElementaryTypeName bool
+         Source: "bool"
+    VariableDeclaration "ownedGoods"
+       Type: uint256[10] storage pointer
+       Source: "uint256[10] ownedGoods"
+      ArrayTypeName
+         Source: "uint256[10]"
+        ElementaryTypeName uint256
+           Source: "uint256"
+        Literal, token: [no token] value: 10
+           Type: int_const 10
+           Source: "10"
+    VariableDeclaration "lastClick"
+       Type: uint256
+       Source: "uint lastClick"
+      ElementaryTypeName uint
+         Source: "uint"
+  VariableDeclaration "games"
+     Type: mapping(address => struct Game.Player storage ref)
+     Source: "mapping (address => Player) public games"
+    Mapping
+       Source: "mapping (address => Player)"
+      ElementaryTypeName address
+         Source: "address"
+      UserDefinedTypeName "Player"
+         Source: "Player"
+  StructDefinition "Good"
+     Source: "struct Good {\n    string name;\n    uint256 efficiencyBoost;\n    uint256 speedBoost;\n    uint256 cost;\n  }"
+    VariableDeclaration "name"
+       Type: string storage pointer
+       Source: "string name"
+      ElementaryTypeName string
+         Source: "string"
+    VariableDeclaration "efficiencyBoost"
+       Type: uint256
+       Source: "uint256 efficiencyBoost"
+      ElementaryTypeName uint256
+         Source: "uint256"
+    VariableDeclaration "speedBoost"
+       Type: uint256
+       Source: "uint256 speedBoost"
+      ElementaryTypeName uint256
+         Source: "uint256"
+    VariableDeclaration "cost"
+       Type: uint256
+       Source: "uint256 cost"
+      ElementaryTypeName uint256
+         Source: "uint256"
+  VariableDeclaration "goods"
+     Type: struct Game.Good storage ref[10] storage ref
+     Source: "Good[10] public goods"
+    ArrayTypeName
+       Source: "Good[10]"
+      UserDefinedTypeName "Good"
+         Source: "Good"
+      Literal, token: [no token] value: 10
+         Type: int_const 10
+         Source: "10"
+  VariableDeclaration "tokensPerClick"
+     Type: uint256
+     Source: "uint256 public tokensPerClick"
+    ElementaryTypeName uint256
+       Source: "uint256"
+  FunctionDefinition "Game" - public
+     Source: "function Game(uint256 tokens, string _tokenName, uint8 _decimalUnits, string _tokenSymbol)\n    ClickMineToken(_tokenName, _decimalUnits, _tokenSymbol) public\n  { tokensPerClick = tokens; }"
+    ParameterList
+       Source: "(uint256 tokens, string _tokenName, uint8 _decimalUnits, string _tokenSymbol)"
+      VariableDeclaration "tokens"
+         Type: uint256
+         Source: "uint256 tokens"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "_tokenName"
+         Type: string memory
+         Source: "string _tokenName"
+        ElementaryTypeName string
+           Source: "string"
+      VariableDeclaration "_decimalUnits"
+         Type: uint8
+         Source: "uint8 _decimalUnits"
+        ElementaryTypeName uint8
+           Source: "uint8"
+      VariableDeclaration "_tokenSymbol"
+         Type: string memory
+         Source: "string _tokenSymbol"
+        ElementaryTypeName string
+           Source: "string"
+    ParameterList
+       Source: ""
+    ModifierInvocation "ClickMineToken"
+       Source: "ClickMineToken(_tokenName, _decimalUnits, _tokenSymbol)"
+      Identifier ClickMineToken
+         Type: type(contract ClickMineToken)
+         Source: "ClickMineToken"
+      Identifier _tokenName
+         Type: string memory
+         Source: "_tokenName"
+      Identifier _decimalUnits
+         Type: uint8
+         Source: "_decimalUnits"
+      Identifier _tokenSymbol
+         Type: string memory
+         Source: "_tokenSymbol"
+    Block
+       Source: "{ tokensPerClick = tokens; }"
+      ExpressionStatement
+         Source: "tokensPerClick = tokens"
+        Assignment using operator =
+           Type: uint256
+           Source: "tokensPerClick = tokens"
+          Identifier tokensPerClick
+             Type: uint256
+             Source: "tokensPerClick"
+          Identifier tokens
+             Type: uint256
+             Source: "tokens"
+  FunctionDefinition "beginGame" - public
+     Source: "function beginGame() public returns (bool success) \n  {\n    //set initial game state \n    //will wipe game state if it exists\n    //no mercy\n    games[msg.sender].seed = block.blockhash(block.number - 1);\n    games[msg.sender].miningEfficiency = 0;\n    games[msg.sender].miningSpeed = 0;\n    games[msg.sender].canSmelt = false;\n    games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];\n    games[msg.sender].lastClick = block.timestamp;\n    return true;\n  }"
+    ParameterList
+       Source: "()"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    Block
+       Source: "{\n    //set initial game state \n    //will wipe game state if it exists\n    //no mercy\n    games[msg.sender].seed = block.blockhash(block.number - 1);\n    games[msg.sender].miningEfficiency = 0;\n    games[msg.sender].miningSpeed = 0;\n    games[msg.sender].canSmelt = false;\n    games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];\n    games[msg.sender].lastClick = block.timestamp;\n    return true;\n  }"
+      ExpressionStatement
+         Source: "games[msg.sender].seed = block.blockhash(block.number - 1)"
+        Assignment using operator =
+           Type: bytes32
+           Source: "games[msg.sender].seed = block.blockhash(block.number - 1)"
+          MemberAccess to member seed
+             Type: bytes32
+             Source: "games[msg.sender].seed"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          FunctionCall
+             Type: bytes32
+             Source: "block.blockhash(block.number - 1)"
+            MemberAccess to member blockhash
+               Type: function (uint256) view returns (bytes32)
+               Source: "block.blockhash"
+              Identifier block
+                 Type: block
+                 Source: "block"
+            BinaryOperation using operator -
+               Type: uint256
+               Source: "block.number - 1"
+              MemberAccess to member number
+                 Type: uint256
+                 Source: "block.number"
+                Identifier block
+                   Type: block
+                   Source: "block"
+              Literal, token: [no token] value: 1
+                 Type: int_const 1
+                 Source: "1"
+      ExpressionStatement
+         Source: "games[msg.sender].miningEfficiency = 0"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].miningEfficiency = 0"
+          MemberAccess to member miningEfficiency
+             Type: uint256
+             Source: "games[msg.sender].miningEfficiency"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          Literal, token: [no token] value: 0
+             Type: int_const 0
+             Source: "0"
+      ExpressionStatement
+         Source: "games[msg.sender].miningSpeed = 0"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].miningSpeed = 0"
+          MemberAccess to member miningSpeed
+             Type: uint256
+             Source: "games[msg.sender].miningSpeed"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          Literal, token: [no token] value: 0
+             Type: int_const 0
+             Source: "0"
+      ExpressionStatement
+         Source: "games[msg.sender].canSmelt = false"
+        Assignment using operator =
+           Type: bool
+           Source: "games[msg.sender].canSmelt = false"
+          MemberAccess to member canSmelt
+             Type: bool
+             Source: "games[msg.sender].canSmelt"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          Literal, token: false value: false
+             Type: bool
+             Source: "false"
+      ExpressionStatement
+         Source: "games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0]"
+        Assignment using operator =
+           Type: uint256[10] storage ref
+           Source: "games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0]"
+          MemberAccess to member ownedGoods
+             Type: uint256[10] storage ref
+             Source: "games[msg.sender].ownedGoods"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          TupleExpression
+             Type: uint8[10] memory
+             Source: "[0,0,0,0,0,0,0,0,0,0]"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+            Literal, token: [no token] value: 0
+               Type: int_const 0
+               Source: "0"
+      ExpressionStatement
+         Source: "games[msg.sender].lastClick = block.timestamp"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].lastClick = block.timestamp"
+          MemberAccess to member lastClick
+             Type: uint256
+             Source: "games[msg.sender].lastClick"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          MemberAccess to member timestamp
+             Type: uint256
+             Source: "block.timestamp"
+            Identifier block
+               Type: block
+               Source: "block"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"
+  FunctionDefinition "click" - public
+     Source: "function click() public returns (bool success) \n  {\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    games[msg.sender].lastClick = block.timestamp;\n    uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);\n    mint(msg.sender, totalPayout);\n    return true;\n    // should add buying goods?\n  }"
+    ParameterList
+       Source: "()"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    Block
+       Source: "{\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    games[msg.sender].lastClick = block.timestamp;\n    uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);\n    mint(msg.sender, totalPayout);\n    return true;\n    // should add buying goods?\n  }"
+      ExpressionStatement
+         Source: "require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator <=
+             Type: bool
+             Source: "block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick"
+            BinaryOperation using operator -
+               Type: uint256
+               Source: "block.timestamp - games[msg.sender].lastClick"
+              MemberAccess to member timestamp
+                 Type: uint256
+                 Source: "block.timestamp"
+                Identifier block
+                   Type: block
+                   Source: "block"
+              MemberAccess to member lastClick
+                 Type: uint256
+                 Source: "games[msg.sender].lastClick"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+            MemberAccess to member lastClick
+               Type: uint256
+               Source: "games[msg.sender].lastClick"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+      ExpressionStatement
+         Source: "games[msg.sender].lastClick = block.timestamp"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].lastClick = block.timestamp"
+          MemberAccess to member lastClick
+             Type: uint256
+             Source: "games[msg.sender].lastClick"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          MemberAccess to member timestamp
+             Type: uint256
+             Source: "block.timestamp"
+            Identifier block
+               Type: block
+               Source: "block"
+      VariableDeclarationStatement
+         Source: "uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick)"
+        VariableDeclaration "totalPayout"
+           Type: uint256
+           Source: "uint256 totalPayout"
+          ElementaryTypeName uint256
+             Source: "uint256"
+        FunctionCall
+           Type: uint256
+           Source: "mul(games[msg.sender].miningEfficiency, tokensPerClick)"
+          Identifier mul
+             Type: function (uint256,uint256) pure returns (uint256)
+             Source: "mul"
+          MemberAccess to member miningEfficiency
+             Type: uint256
+             Source: "games[msg.sender].miningEfficiency"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          Identifier tokensPerClick
+             Type: uint256
+             Source: "tokensPerClick"
+      ExpressionStatement
+         Source: "mint(msg.sender, totalPayout)"
+        FunctionCall
+           Type: bool
+           Source: "mint(msg.sender, totalPayout)"
+          Identifier mint
+             Type: function (address,uint256) returns (bool)
+             Source: "mint"
+          MemberAccess to member sender
+             Type: address
+             Source: "msg.sender"
+            Identifier msg
+               Type: msg
+               Source: "msg"
+          Identifier totalPayout
+             Type: uint256
+             Source: "totalPayout"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"
+  FunctionDefinition "buyGoods" - public
+     Source: "function buyGoods(uint256[] _toBuy) public returns (bool success)\n  {\n    require(_toBuy.length == 10);\n    for (uint ident = 0; ident <= 10; ident++) {\n      buyGood(ident, _toBuy[ident]);\n    }\n    return true;\n  }"
+    ParameterList
+       Source: "(uint256[] _toBuy)"
+      VariableDeclaration "_toBuy"
+         Type: uint256[] memory
+         Source: "uint256[] _toBuy"
+        ArrayTypeName
+           Source: "uint256[]"
+          ElementaryTypeName uint256
+             Source: "uint256"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    Block
+       Source: "{\n    require(_toBuy.length == 10);\n    for (uint ident = 0; ident <= 10; ident++) {\n      buyGood(ident, _toBuy[ident]);\n    }\n    return true;\n  }"
+      ExpressionStatement
+         Source: "require(_toBuy.length == 10)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(_toBuy.length == 10)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator ==
+             Type: bool
+             Source: "_toBuy.length == 10"
+            MemberAccess to member length
+               Type: uint256
+               Source: "_toBuy.length"
+              Identifier _toBuy
+                 Type: uint256[] memory
+                 Source: "_toBuy"
+            Literal, token: [no token] value: 10
+               Type: int_const 10
+               Source: "10"
+      ForStatement
+         Source: "for (uint ident = 0; ident <= 10; ident++) {\n      buyGood(ident, _toBuy[ident]);\n    }"
+        VariableDeclarationStatement
+           Source: "uint ident = 0"
+          VariableDeclaration "ident"
+             Type: uint256
+             Source: "uint ident"
+            ElementaryTypeName uint
+               Source: "uint"
+          Literal, token: [no token] value: 0
+             Type: int_const 0
+             Source: "0"
+        BinaryOperation using operator <=
+           Type: bool
+           Source: "ident <= 10"
+          Identifier ident
+             Type: uint256
+             Source: "ident"
+          Literal, token: [no token] value: 10
+             Type: int_const 10
+             Source: "10"
+        ExpressionStatement
+           Source: "ident++"
+          UnaryOperation (postfix) ++
+             Type: uint256
+             Source: "ident++"
+            Identifier ident
+               Type: uint256
+               Source: "ident"
+        Block
+           Source: "{\n      buyGood(ident, _toBuy[ident]);\n    }"
+          ExpressionStatement
+             Source: "buyGood(ident, _toBuy[ident])"
+            FunctionCall
+               Type: bool
+               Source: "buyGood(ident, _toBuy[ident])"
+              Identifier buyGood
+                 Type: function (uint256,uint256) returns (bool)
+                 Source: "buyGood"
+              Identifier ident
+                 Type: uint256
+                 Source: "ident"
+              IndexAccess
+                 Type: uint256
+                 Source: "_toBuy[ident]"
+                Identifier _toBuy
+                   Type: uint256[] memory
+                   Source: "_toBuy"
+                Identifier ident
+                   Type: uint256
+                   Source: "ident"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"
+  FunctionDefinition "buyGood" - public
+     Source: "function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)\n  {\n    //buy any number of a single good\n    require(goodIdentifier >= 0 && goodIdentifier <= 10);\n    uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);\n    uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);\n    uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);\n    require(balances[msg.sender] >= totalCost);\n    require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);\n    require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed);\n    require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);\n    require(games[msg.sender].canSmelt);\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);\n    games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;\n    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed;\n    games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;\n    return true;\n  }"
+    ParameterList
+       Source: "(uint256 goodIdentifier, uint256 quantity)"
+      VariableDeclaration "goodIdentifier"
+         Type: uint256
+         Source: "uint256 goodIdentifier"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "quantity"
+         Type: uint256
+         Source: "uint256 quantity"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    Block
+       Source: "{\n    //buy any number of a single good\n    require(goodIdentifier >= 0 && goodIdentifier <= 10);\n    uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);\n    uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);\n    uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);\n    require(balances[msg.sender] >= totalCost);\n    require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);\n    require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed);\n    require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);\n    require(games[msg.sender].canSmelt);\n    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);\n    transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);\n    games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;\n    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed;\n    games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;\n    return true;\n  }"
+      ExpressionStatement
+         Source: "require(goodIdentifier >= 0 && goodIdentifier <= 10)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(goodIdentifier >= 0 && goodIdentifier <= 10)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator &&
+             Type: bool
+             Source: "goodIdentifier >= 0 && goodIdentifier <= 10"
+            BinaryOperation using operator >=
+               Type: bool
+               Source: "goodIdentifier >= 0"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+              Literal, token: [no token] value: 0
+                 Type: int_const 0
+                 Source: "0"
+            BinaryOperation using operator <=
+               Type: bool
+               Source: "goodIdentifier <= 10"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+              Literal, token: [no token] value: 10
+                 Type: int_const 10
+                 Source: "10"
+      VariableDeclarationStatement
+         Source: "uint256 totalCost = mul(goods[goodIdentifier].cost, quantity)"
+        VariableDeclaration "totalCost"
+           Type: uint256
+           Source: "uint256 totalCost"
+          ElementaryTypeName uint256
+             Source: "uint256"
+        FunctionCall
+           Type: uint256
+           Source: "mul(goods[goodIdentifier].cost, quantity)"
+          Identifier mul
+             Type: function (uint256,uint256) pure returns (uint256)
+             Source: "mul"
+          MemberAccess to member cost
+             Type: uint256
+             Source: "goods[goodIdentifier].cost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[goodIdentifier]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+          Identifier quantity
+             Type: uint256
+             Source: "quantity"
+      VariableDeclarationStatement
+         Source: "uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity)"
+        VariableDeclaration "totalSpeed"
+           Type: uint256
+           Source: "uint256 totalSpeed"
+          ElementaryTypeName uint256
+             Source: "uint256"
+        FunctionCall
+           Type: uint256
+           Source: "mul(goods[goodIdentifier].efficiencyBoost, quantity)"
+          Identifier mul
+             Type: function (uint256,uint256) pure returns (uint256)
+             Source: "mul"
+          MemberAccess to member efficiencyBoost
+             Type: uint256
+             Source: "goods[goodIdentifier].efficiencyBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[goodIdentifier]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+          Identifier quantity
+             Type: uint256
+             Source: "quantity"
+      VariableDeclarationStatement
+         Source: "uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity)"
+        VariableDeclaration "totalEfficiency"
+           Type: uint256
+           Source: "uint256 totalEfficiency"
+          ElementaryTypeName uint256
+             Source: "uint256"
+        FunctionCall
+           Type: uint256
+           Source: "mul(goods[goodIdentifier].speedBoost, quantity)"
+          Identifier mul
+             Type: function (uint256,uint256) pure returns (uint256)
+             Source: "mul"
+          MemberAccess to member speedBoost
+             Type: uint256
+             Source: "goods[goodIdentifier].speedBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[goodIdentifier]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+          Identifier quantity
+             Type: uint256
+             Source: "quantity"
+      ExpressionStatement
+         Source: "require(balances[msg.sender] >= totalCost)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(balances[msg.sender] >= totalCost)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator >=
+             Type: bool
+             Source: "balances[msg.sender] >= totalCost"
+            IndexAccess
+               Type: uint256
+               Source: "balances[msg.sender]"
+              Identifier balances
+                 Type: mapping(address => uint256)
+                 Source: "balances"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+            Identifier totalCost
+               Type: uint256
+               Source: "totalCost"
+      ExpressionStatement
+         Source: "require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator >
+             Type: bool
+             Source: "games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency"
+            BinaryOperation using operator +
+               Type: uint256
+               Source: "games[msg.sender].miningEfficiency + totalEfficiency"
+              MemberAccess to member miningEfficiency
+                 Type: uint256
+                 Source: "games[msg.sender].miningEfficiency"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+              Identifier totalEfficiency
+                 Type: uint256
+                 Source: "totalEfficiency"
+            MemberAccess to member miningEfficiency
+               Type: uint256
+               Source: "games[msg.sender].miningEfficiency"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+      ExpressionStatement
+         Source: "require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator >
+             Type: bool
+             Source: "games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed"
+            BinaryOperation using operator +
+               Type: uint256
+               Source: "games[msg.sender].miningSpeed + totalSpeed"
+              MemberAccess to member miningSpeed
+                 Type: uint256
+                 Source: "games[msg.sender].miningSpeed"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+              Identifier totalSpeed
+                 Type: uint256
+                 Source: "totalSpeed"
+            MemberAccess to member miningSpeed
+               Type: uint256
+               Source: "games[msg.sender].miningSpeed"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+      ExpressionStatement
+         Source: "require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier])"
+        FunctionCall
+           Type: tuple()
+           Source: "require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier])"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator >
+             Type: bool
+             Source: "games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]"
+            BinaryOperation using operator +
+               Type: uint256
+               Source: "games[msg.sender].ownedGoods[goodIdentifier] + quantity"
+              IndexAccess
+                 Type: uint256
+                 Source: "games[msg.sender].ownedGoods[goodIdentifier]"
+                MemberAccess to member ownedGoods
+                   Type: uint256[10] storage ref
+                   Source: "games[msg.sender].ownedGoods"
+                  IndexAccess
+                     Type: struct Game.Player storage ref
+                     Source: "games[msg.sender]"
+                    Identifier games
+                       Type: mapping(address => struct Game.Player storage ref)
+                       Source: "games"
+                    MemberAccess to member sender
+                       Type: address
+                       Source: "msg.sender"
+                      Identifier msg
+                         Type: msg
+                         Source: "msg"
+                Identifier goodIdentifier
+                   Type: uint256
+                   Source: "goodIdentifier"
+              Identifier quantity
+                 Type: uint256
+                 Source: "quantity"
+            IndexAccess
+               Type: uint256
+               Source: "games[msg.sender].ownedGoods[goodIdentifier]"
+              MemberAccess to member ownedGoods
+                 Type: uint256[10] storage ref
+                 Source: "games[msg.sender].ownedGoods"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+      ExpressionStatement
+         Source: "require(games[msg.sender].canSmelt)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(games[msg.sender].canSmelt)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          MemberAccess to member canSmelt
+             Type: bool
+             Source: "games[msg.sender].canSmelt"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+      ExpressionStatement
+         Source: "require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator <=
+             Type: bool
+             Source: "block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick"
+            BinaryOperation using operator -
+               Type: uint256
+               Source: "block.timestamp - games[msg.sender].lastClick"
+              MemberAccess to member timestamp
+                 Type: uint256
+                 Source: "block.timestamp"
+                Identifier block
+                   Type: block
+                   Source: "block"
+              MemberAccess to member lastClick
+                 Type: uint256
+                 Source: "games[msg.sender].lastClick"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+            MemberAccess to member lastClick
+               Type: uint256
+               Source: "games[msg.sender].lastClick"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+      ExpressionStatement
+         Source: "transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost)"
+        FunctionCall
+           Type: bool
+           Source: "transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost)"
+          Identifier transferFrom
+             Type: function (address,address,uint256) returns (bool)
+             Source: "transferFrom"
+          MemberAccess to member sender
+             Type: address
+             Source: "msg.sender"
+            Identifier msg
+               Type: msg
+               Source: "msg"
+          Literal, token: [no token] value: 0x0000000000000000000000000000000000000000
+             Type: address
+             Source: "0x0000000000000000000000000000000000000000"
+          Identifier totalCost
+             Type: uint256
+             Source: "totalCost"
+      ExpressionStatement
+         Source: "games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency"
+          MemberAccess to member miningEfficiency
+             Type: uint256
+             Source: "games[msg.sender].miningEfficiency"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          BinaryOperation using operator +
+             Type: uint256
+             Source: "games[msg.sender].miningEfficiency + totalEfficiency"
+            MemberAccess to member miningEfficiency
+               Type: uint256
+               Source: "games[msg.sender].miningEfficiency"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+            Identifier totalEfficiency
+               Type: uint256
+               Source: "totalEfficiency"
+      ExpressionStatement
+         Source: "games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed"
+          MemberAccess to member miningSpeed
+             Type: uint256
+             Source: "games[msg.sender].miningSpeed"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[msg.sender]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              MemberAccess to member sender
+                 Type: address
+                 Source: "msg.sender"
+                Identifier msg
+                   Type: msg
+                   Source: "msg"
+          BinaryOperation using operator +
+             Type: uint256
+             Source: "games[msg.sender].miningSpeed + totalSpeed"
+            MemberAccess to member miningSpeed
+               Type: uint256
+               Source: "games[msg.sender].miningSpeed"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+            Identifier totalSpeed
+               Type: uint256
+               Source: "totalSpeed"
+      ExpressionStatement
+         Source: "games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity"
+        Assignment using operator =
+           Type: uint256
+           Source: "games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity"
+          IndexAccess
+             Type: uint256
+             Source: "games[msg.sender].ownedGoods[goodIdentifier]"
+            MemberAccess to member ownedGoods
+               Type: uint256[10] storage ref
+               Source: "games[msg.sender].ownedGoods"
+              IndexAccess
+                 Type: struct Game.Player storage ref
+                 Source: "games[msg.sender]"
+                Identifier games
+                   Type: mapping(address => struct Game.Player storage ref)
+                   Source: "games"
+                MemberAccess to member sender
+                   Type: address
+                   Source: "msg.sender"
+                  Identifier msg
+                     Type: msg
+                     Source: "msg"
+            Identifier goodIdentifier
+               Type: uint256
+               Source: "goodIdentifier"
+          BinaryOperation using operator +
+             Type: uint256
+             Source: "games[msg.sender].ownedGoods[goodIdentifier] + quantity"
+            IndexAccess
+               Type: uint256
+               Source: "games[msg.sender].ownedGoods[goodIdentifier]"
+              MemberAccess to member ownedGoods
+                 Type: uint256[10] storage ref
+                 Source: "games[msg.sender].ownedGoods"
+                IndexAccess
+                   Type: struct Game.Player storage ref
+                   Source: "games[msg.sender]"
+                  Identifier games
+                     Type: mapping(address => struct Game.Player storage ref)
+                     Source: "games"
+                  MemberAccess to member sender
+                     Type: address
+                     Source: "msg.sender"
+                    Identifier msg
+                       Type: msg
+                       Source: "msg"
+              Identifier goodIdentifier
+                 Type: uint256
+                 Source: "goodIdentifier"
+            Identifier quantity
+               Type: uint256
+               Source: "quantity"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"
+  FunctionDefinition "mul"
+     Source: "function mul(uint256 a, uint256 b) internal pure returns (uint256) \n  {\n      uint256 c = a * b;\n      assert(a == 0 || c / a == b);\n      return c;\n  }"
+    ParameterList
+       Source: "(uint256 a, uint256 b)"
+      VariableDeclaration "a"
+         Type: uint256
+         Source: "uint256 a"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "b"
+         Type: uint256
+         Source: "uint256 b"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    ParameterList
+       Source: "(uint256)"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    Block
+       Source: "{\n      uint256 c = a * b;\n      assert(a == 0 || c / a == b);\n      return c;\n  }"
+      VariableDeclarationStatement
+         Source: "uint256 c = a * b"
+        VariableDeclaration "c"
+           Type: uint256
+           Source: "uint256 c"
+          ElementaryTypeName uint256
+             Source: "uint256"
+        BinaryOperation using operator *
+           Type: uint256
+           Source: "a * b"
+          Identifier a
+             Type: uint256
+             Source: "a"
+          Identifier b
+             Type: uint256
+             Source: "b"
+      ExpressionStatement
+         Source: "assert(a == 0 || c / a == b)"
+        FunctionCall
+           Type: tuple()
+           Source: "assert(a == 0 || c / a == b)"
+          Identifier assert
+             Type: function (bool) pure
+             Source: "assert"
+          BinaryOperation using operator ||
+             Type: bool
+             Source: "a == 0 || c / a == b"
+            BinaryOperation using operator ==
+               Type: bool
+               Source: "a == 0"
+              Identifier a
+                 Type: uint256
+                 Source: "a"
+              Literal, token: [no token] value: 0
+                 Type: int_const 0
+                 Source: "0"
+            BinaryOperation using operator ==
+               Type: bool
+               Source: "c / a == b"
+              BinaryOperation using operator /
+                 Type: uint256
+                 Source: "c / a"
+                Identifier c
+                   Type: uint256
+                   Source: "c"
+                Identifier a
+                   Type: uint256
+                   Source: "a"
+              Identifier b
+                 Type: uint256
+                 Source: "b"
+      Return
+         Source: "return c"
+        Identifier c
+           Type: uint256
+           Source: "c"
+  FunctionDefinition "goodsGetter" - public - const
+     Source: "function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) \n  {\n    require(_index >= 0 && _index <= 10);\n    return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost);\n  }"
+    ParameterList
+       Source: "(uint256 _index)"
+      VariableDeclaration "_index"
+         Type: uint256
+         Source: "uint256 _index"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    ParameterList
+       Source: "(string, uint256, uint256, uint256)"
+      VariableDeclaration ""
+         Type: string memory
+         Source: "string"
+        ElementaryTypeName string
+           Source: "string"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    Block
+       Source: "{\n    require(_index >= 0 && _index <= 10);\n    return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost);\n  }"
+      ExpressionStatement
+         Source: "require(_index >= 0 && _index <= 10)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(_index >= 0 && _index <= 10)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator &&
+             Type: bool
+             Source: "_index >= 0 && _index <= 10"
+            BinaryOperation using operator >=
+               Type: bool
+               Source: "_index >= 0"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+              Literal, token: [no token] value: 0
+                 Type: int_const 0
+                 Source: "0"
+            BinaryOperation using operator <=
+               Type: bool
+               Source: "_index <= 10"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+              Literal, token: [no token] value: 10
+                 Type: int_const 10
+                 Source: "10"
+      Return
+         Source: "return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost)"
+        TupleExpression
+           Type: tuple(string storage ref,uint256,uint256,uint256)
+           Source: "(goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost)"
+          MemberAccess to member name
+             Type: string storage ref
+             Source: "goods[_index].name"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          MemberAccess to member efficiencyBoost
+             Type: uint256
+             Source: "goods[_index].efficiencyBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          MemberAccess to member speedBoost
+             Type: uint256
+             Source: "goods[_index].speedBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          MemberAccess to member cost
+             Type: uint256
+             Source: "goods[_index].cost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+  FunctionDefinition "playerGetter" - public - const
+     Source: "function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)\n  {\n    //returns all relevant data for given player\n    return (games[_player].seed, games[_player].miningEfficiency,\n      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick);\n  }"
+    ParameterList
+       Source: "(address _player)"
+      VariableDeclaration "_player"
+         Type: address
+         Source: "address _player"
+        ElementaryTypeName address
+           Source: "address"
+    ParameterList
+       Source: "(bytes32, uint256, uint256, bool, uint256[10], uint)"
+      VariableDeclaration ""
+         Type: bytes32
+         Source: "bytes32"
+        ElementaryTypeName bytes32
+           Source: "bytes32"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint256"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration ""
+         Type: bool
+         Source: "bool"
+        ElementaryTypeName bool
+           Source: "bool"
+      VariableDeclaration ""
+         Type: uint256[10] memory
+         Source: "uint256[10]"
+        ArrayTypeName
+           Source: "uint256[10]"
+          ElementaryTypeName uint256
+             Source: "uint256"
+          Literal, token: [no token] value: 10
+             Type: int_const 10
+             Source: "10"
+      VariableDeclaration ""
+         Type: uint256
+         Source: "uint"
+        ElementaryTypeName uint
+           Source: "uint"
+    Block
+       Source: "{\n    //returns all relevant data for given player\n    return (games[_player].seed, games[_player].miningEfficiency,\n      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick);\n  }"
+      Return
+         Source: "return (games[_player].seed, games[_player].miningEfficiency,\n      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick)"
+        TupleExpression
+           Type: tuple(bytes32,uint256,uint256,bool,uint256[10] storage ref,uint256)
+           Source: "(games[_player].seed, games[_player].miningEfficiency,\n      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick)"
+          MemberAccess to member seed
+             Type: bytes32
+             Source: "games[_player].seed"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+          MemberAccess to member miningEfficiency
+             Type: uint256
+             Source: "games[_player].miningEfficiency"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+          MemberAccess to member miningSpeed
+             Type: uint256
+             Source: "games[_player].miningSpeed"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+          MemberAccess to member canSmelt
+             Type: bool
+             Source: "games[_player].canSmelt"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+          MemberAccess to member ownedGoods
+             Type: uint256[10] storage ref
+             Source: "games[_player].ownedGoods"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+          MemberAccess to member lastClick
+             Type: uint256
+             Source: "games[_player].lastClick"
+            IndexAccess
+               Type: struct Game.Player storage ref
+               Source: "games[_player]"
+              Identifier games
+                 Type: mapping(address => struct Game.Player storage ref)
+                 Source: "games"
+              Identifier _player
+                 Type: address
+                 Source: "_player"
+  FunctionDefinition "addGood" - public
+     Source: "function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)\n  {\n    //used up to ten times to add goods\n    require(_index >= 0 && _index <= 10);\n    goods[_index].name = _name;\n    goods[_index].efficiencyBoost = _efficiencyBoost;\n    goods[_index].speedBoost = _speedBoost;\n    goods[_index].cost = _cost;\n    return true;\n  }"
+    ParameterList
+       Source: "(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost)"
+      VariableDeclaration "_index"
+         Type: uint256
+         Source: "uint256 _index"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "_name"
+         Type: string memory
+         Source: "string _name"
+        ElementaryTypeName string
+           Source: "string"
+      VariableDeclaration "_efficiencyBoost"
+         Type: uint256
+         Source: "uint256 _efficiencyBoost"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "_speedBoost"
+         Type: uint256
+         Source: "uint256 _speedBoost"
+        ElementaryTypeName uint256
+           Source: "uint256"
+      VariableDeclaration "_cost"
+         Type: uint256
+         Source: "uint256 _cost"
+        ElementaryTypeName uint256
+           Source: "uint256"
+    ParameterList
+       Source: "(bool success)"
+      VariableDeclaration "success"
+         Type: bool
+         Source: "bool success"
+        ElementaryTypeName bool
+           Source: "bool"
+    ModifierInvocation "onlyOwner"
+       Source: "onlyOwner"
+      Identifier onlyOwner
+         Type: modifier ()
+         Source: "onlyOwner"
+    Block
+       Source: "{\n    //used up to ten times to add goods\n    require(_index >= 0 && _index <= 10);\n    goods[_index].name = _name;\n    goods[_index].efficiencyBoost = _efficiencyBoost;\n    goods[_index].speedBoost = _speedBoost;\n    goods[_index].cost = _cost;\n    return true;\n  }"
+      ExpressionStatement
+         Source: "require(_index >= 0 && _index <= 10)"
+        FunctionCall
+           Type: tuple()
+           Source: "require(_index >= 0 && _index <= 10)"
+          Identifier require
+             Type: function (bool) pure
+             Source: "require"
+          BinaryOperation using operator &&
+             Type: bool
+             Source: "_index >= 0 && _index <= 10"
+            BinaryOperation using operator >=
+               Type: bool
+               Source: "_index >= 0"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+              Literal, token: [no token] value: 0
+                 Type: int_const 0
+                 Source: "0"
+            BinaryOperation using operator <=
+               Type: bool
+               Source: "_index <= 10"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+              Literal, token: [no token] value: 10
+                 Type: int_const 10
+                 Source: "10"
+      ExpressionStatement
+         Source: "goods[_index].name = _name"
+        Assignment using operator =
+           Type: string storage ref
+           Source: "goods[_index].name = _name"
+          MemberAccess to member name
+             Type: string storage ref
+             Source: "goods[_index].name"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          Identifier _name
+             Type: string memory
+             Source: "_name"
+      ExpressionStatement
+         Source: "goods[_index].efficiencyBoost = _efficiencyBoost"
+        Assignment using operator =
+           Type: uint256
+           Source: "goods[_index].efficiencyBoost = _efficiencyBoost"
+          MemberAccess to member efficiencyBoost
+             Type: uint256
+             Source: "goods[_index].efficiencyBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          Identifier _efficiencyBoost
+             Type: uint256
+             Source: "_efficiencyBoost"
+      ExpressionStatement
+         Source: "goods[_index].speedBoost = _speedBoost"
+        Assignment using operator =
+           Type: uint256
+           Source: "goods[_index].speedBoost = _speedBoost"
+          MemberAccess to member speedBoost
+             Type: uint256
+             Source: "goods[_index].speedBoost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          Identifier _speedBoost
+             Type: uint256
+             Source: "_speedBoost"
+      ExpressionStatement
+         Source: "goods[_index].cost = _cost"
+        Assignment using operator =
+           Type: uint256
+           Source: "goods[_index].cost = _cost"
+          MemberAccess to member cost
+             Type: uint256
+             Source: "goods[_index].cost"
+            IndexAccess
+               Type: struct Game.Good storage ref
+               Source: "goods[_index]"
+              Identifier goods
+                 Type: struct Game.Good storage ref[10] storage ref
+                 Source: "goods"
+              Identifier _index
+                 Type: uint256
+                 Source: "_index"
+          Identifier _cost
+             Type: uint256
+             Source: "_cost"
+      Return
+         Source: "return true"
+        Literal, token: true value: true
+           Type: bool
+           Source: "true"
