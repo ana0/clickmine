@@ -6,6 +6,10 @@ var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
+var registrarAddress = "0x111058368f29c1ea5642ac6d11760bb20cf0e003"
+var gameAddress = ""
+var registrar;
+var game;
 
 detectMetaMask();
 init();
@@ -23,13 +27,32 @@ function detectMetaMask() {
       // Use Mist/MetaMask's provider
       window.web3 = new Web3(web3.currentProvider);
       console.log('Found MetaMasks')
+      createContracts();
     } else {
       console.log('No web3? You should consider trying MetaMask!')
       // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
       window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     }
     // Now you can start your app & access web3 freely:
+
   })
+}
+
+function createContracts() {
+  var Registrar = web3.eth.contract(registrarAbi);
+  registrar = Registrar.at(registrarAddress);
+  registrar.GameAddress((err, result) => {
+    if (err) console.log(err)
+    else {
+      gameAddress = result
+      var Game = web3.eth.contract(gameAbi);
+      game = Game.at(gameAddress);
+      game.tokensPerClick((err, result) => {
+        console.log(result.toString())
+      })
+    }
+  });
+  //web3.eth.getTransactionReceipt('0x6f2e68a1b6cab73a335079262589772c106bec01019d2c928113ed0792b7b87e')
 }
 
 function getSeed(seedInt) {

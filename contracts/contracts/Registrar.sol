@@ -31,10 +31,11 @@ contract mortal is owned {
     }
 }
 
+
 contract Registrar is mortal {
     address public GameAddress;
 
-    function Registrar(address adrs) public { GameAddress = adrs; }
+    function Registrar(address adrs) owned() public { GameAddress = adrs; }
 
     function updateGameAddress(address adrs) onlyOwner public returns (bool success)
     {
