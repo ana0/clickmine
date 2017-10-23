@@ -14,18 +14,45 @@
 				font-family:georgia;
 				text-align:center;
 			}
+			#wallet {
+				border: solid;
+				border-width: 5px;
+				border-radius: 20px 0 0 0;
+				border-color: #38f209;
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				margin-left: 20px;
+				margin-top: 20px;
+				opacity: .8;
+			}
+			#shop {
+				border: solid;
+				border-width: 5px;
+				border-radius: 0 20px 0 0;
+				border-color: #38f209;
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				right: 20px;
+				margin-top: 20px;
+				opacity: .8;
+			}
 		</style>
 	</head>
 
 	<body>
 		<script src="three.min.js"></script>
 		<script src="web3.min.js"></script>
+		<script src="bignumber.min.js"></script>
 		<script type="text/javascript" src="gameabi.json"></script>
 		<script type="text/javascript" src="registrarabi.json"></script>
 
 		<!-- <script src="js/Detector.js"></script> -->
 
 		<script src="scene.js"></script>
-		<div
+
+		<div id="wallet"></div>
+		<div id="shop"></div>
 	</body>
 </html>

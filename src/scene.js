@@ -6,19 +6,16 @@ var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
+var allowedBrowser = false;
 var registrarAddress = "0x111058368f29c1ea5642ac6d11760bb20cf0e003"
 var gameAddress = ""
 var registrar;
 var game;
 
 detectMetaMask();
-init();
 
-canvas = document.getElementById('mainCanvas')
+//init();
 
-canvas.addEventListener('click', click, false);
-
-animate();
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
@@ -27,11 +24,16 @@ function detectMetaMask() {
       // Use Mist/MetaMask's provider
       window.web3 = new Web3(web3.currentProvider);
       console.log('Found MetaMasks')
-      createContracts();
+      allowedBrowser = true;
+      init();
+      canvas = document.getElementById('mainCanvas')
+      canvas.addEventListener('click', click, false);
+      animate();
     } else {
       console.log('No web3? You should consider trying MetaMask!')
+      window.alert("You must have a dapp browser or metamask installed to play!")
       // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-      window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+      // window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     }
     // Now you can start your app & access web3 freely:
 
@@ -39,25 +41,49 @@ function detectMetaMask() {
 }
 
 function createContracts() {
-  var Registrar = web3.eth.contract(registrarAbi);
-  registrar = Registrar.at(registrarAddress);
-  registrar.GameAddress((err, result) => {
-    if (err) console.log(err)
-    else {
+  return new Promise((res, rej) => {
+    var Registrar = web3.eth.contract(registrarAbi);
+    registrar = Registrar.at(registrarAddress);
+    registrar.GameAddress((err, result) => {
+      if (err) return rej(err)
       gameAddress = result
       var Game = web3.eth.contract(gameAbi);
       game = Game.at(gameAddress);
       game.tokensPerClick((err, result) => {
+        if (err) return rej(err)
         console.log(result.toString())
+        res();
       })
-    }
-  });
-  //web3.eth.getTransactionReceipt('0x6f2e68a1b6cab73a335079262589772c106bec01019d2c928113ed0792b7b87e')
+    });
+  })
+}
+
+function checkForGame() {
+  return new Promise((res, rej) => {
+    web3.eth.getAccounts((err, accounts) => {
+      console.log(accounts)
+      game.playerGetter(accounts[0], (err, player) => {
+        console.log(player)
+        const seedCheck = new BigNumber(player[0])
+        if (seedCheck.equals(0)) {
+          game.beginGame((err, result) => {
+            console.log(result)
+          })
+        } else {
+          console.log(player[0])
+          numClicks = player[7];
+          clickCycle();
+        }
+      })
+    })
+    // game.playerGetter((err, player) => {
+    //   console.log(player)
+    // })
+  })
 }
 
 function getSeed(seedInt) {
   if (seedInt >= strippedSeed.length) { 
-    console.log('resetSeedInt')
     seedInt = 0;
   } else {
     seedInt += 1;
@@ -88,7 +114,6 @@ function makeGroundMaterial(texture, alpha, geometry) {
     map: texture,
     alphaMap: alpha
   });
-  console.log(darkness);
   var mesh = new THREE.Mesh( geometry, material );
   //mesh.position.y = 5 * 0.25;
   mesh.rotation.x = - Math.PI / 2;
@@ -103,7 +128,6 @@ function genQuad(label, identfier, zIndex) {
     .then((alpha) => {
       mesh = makeGroundMaterial(texture, alpha, geometry)
       scene.add(mesh);
-      //console.log(mesh)
       return mesh;
     })
   })
@@ -112,16 +136,13 @@ function genQuad(label, identfier, zIndex) {
 function updateQuad(quad, layer) {
   getTexture("Mask", layer)
   .then((alpha) => {
-    console.log(quad)
     quad.position.z = layer;
     quad.material.alphaMap = alpha
   })
 }
 
 function clickCycle () {
-  //Debug.Log("called cycle");
   var layer = numClicks;
-  console.log("Numclicks" + numClicks);
   if (dirtLayers.length > maxMask) {
     dirtLayers.splice(0, 1);
   }
@@ -133,31 +154,31 @@ function clickCycle () {
   }
   var layer = dirtLayers.length;
   for (let i = 0; i < dirtLayers.length; i++) {
-    //Debug.Log ("cond true");
-    console.log("moving " + i + " to " + layer);
     updateQuad(dirtLayers[i], layer);
     layer -= 1;
   } 
   var rand = random(0, 8);
   seedInt += 1;
-  console.log(seedInt);
   genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
     dirtLayers.push(newMesh);
   })
-  // console.log(newMesh)
-  // dirtLayers.push(newMesh);
 }
 
 function click () {
   // send transaction
-  //when received, set numclicks, then call clickCycle()
+  // when received, set numclicks, then call clickCycle()
   clickCycle();
-  //Debug.Log("incrementing");
   numClicks += 1;
 }
 
 function init() {
+  if (allowedBrowser) { 
+    createContracts()
+    .then(() => {
+      checkForGame()
+    })
+  }
   camera = new THREE.OrthographicCamera( 
     window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
   camera.position.set( 0, 100, 10 );
@@ -188,14 +209,15 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.domElement.id = 'mainCanvas';
   document.body.appendChild( renderer.domElement );
-  //
   window.addEventListener( 'resize', onWindowResize, false );
 }
+
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
 function generateTexture() {
   var canvas = document.createElement( 'canvas' );
   canvas.width = 512;
@@ -211,11 +233,12 @@ function generateTexture() {
   context.globalCompositeOperation = 'lighter';
   return canvas;
 }
-//
+
 function animate() {
   requestAnimationFrame( animate );
   render();
 }
+
 function render() {
   var time = Date.now() / 6000;
   // camera.position.x = 80 * Math.cos( time );

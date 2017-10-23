@@ -12,6 +12,7 @@ contract Game is ClickMineToken {
     bool canSmelt;
     uint256[10] ownedGoods;
     uint lastClick;
+    uint numClicks;
   }
   
   mapping (address => Player) public games;
@@ -44,13 +45,16 @@ contract Game is ClickMineToken {
     games[msg.sender].canSmelt = false;
     games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
     games[msg.sender].lastClick = block.timestamp;
+    games[msg.sender].numClicks = 0;
     return true;
   }
 
   function click() public returns (bool success) 
   {
     require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
+    require(games[msg.sender].numClicks + 1 >= games[msg.sender].numClicks);
     games[msg.sender].lastClick = block.timestamp;
+    games[msg.sender].numClicks = games[msg.sender].numClicks + 1;
     uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);
     mint(msg.sender, totalPayout);
     return true;
@@ -113,7 +117,8 @@ contract Game is ClickMineToken {
   {
     //returns all relevant data for given player
     return (games[_player].seed, games[_player].miningEfficiency,
-      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick);
+      games[_player].miningSpeed, games[_player].canSmelt, games[_player].ownedGoods, games[_player].lastClick,
+      games[_player].numClicks);
   }
 
   function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)
