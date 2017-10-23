@@ -14,7 +14,25 @@ var game;
 
 detectMetaMask();
 
-//init();
+
+function trimSvgWhitespace() {
+  console.log('called')
+  // get all SVG objects in the DOM
+  var svgs = document.getElementsByTagName("svg");
+  console.log(svgs.length)
+
+  // go through each one and add a viewbox that ensures all children are visible
+  for (var i=0, l=svgs.length; i<l; i++) {
+    console.log(svgs[i])
+
+    var svg = svgs[i],
+        box = svg.getBBox(), // <- get the visual boundary required to view all children
+        viewBox = [box.x, box.y, box.width, box.height].join(" ");
+    console.log(box)
+    // set viewable area based on value above
+    svg.setAttribute("viewBox", viewBox);
+  }
+}
 
 
 function detectMetaMask() {
@@ -32,6 +50,7 @@ function detectMetaMask() {
     } else {
       console.log('No web3? You should consider trying MetaMask!')
       window.alert("You must have a dapp browser or metamask installed to play!")
+      //trimSvgWhitespace()
       // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
       // window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     }
@@ -169,7 +188,12 @@ function click () {
   // send transaction
   // when received, set numclicks, then call clickCycle()
   clickCycle();
+  console.log(numClicks)
   numClicks += 1;
+}
+
+function makeWallet() {
+  body.appendChild()
 }
 
 function init() {
