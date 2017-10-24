@@ -1,6 +1,9 @@
 var seed = "0x5d52bc658e15e9cade11cc73503f3e083988d38c9fa42806caf40c353368ff4e";
 var strippedSeed = seed.substring(2, seed.length);
-var numClicks = 0;
+var miningEfficiency = 10;
+var miningSpeed = 10;
+var canSmelt = false;
+var numClicks = new BigNumber(0);
 var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
@@ -29,7 +32,6 @@ function trimSvgWhitespace() {
     var svg = svgs[i],
         box = svg.getBBox(), // <- get the visual boundary required to view all children
         viewBox = [box.x, box.y, box.width, box.height].join(" ");
-    console.log(box)
     // set viewable area based on value above
     svg.setAttribute("viewBox", viewBox);
   }
@@ -38,9 +40,7 @@ function trimSvgWhitespace() {
 function nugIncrementer() {
   var nugsCount = document.getElementById("nugsCount");
   setInterval(() => {
-    console.log(nugsCount.firstChild.textContent)
     var int = new BigNumber(nugsCount.firstChild.textContent);
-    console.log(nugsIncrement)
     int = int.plus(nugsIncrement);
     nugsCount.innerHTML = int.toString();
   }, 500);
@@ -127,22 +127,48 @@ function startUpUi() {
   nugIncrementer();
 }
 
+function getPlayerAndSetVars(account) {
+  return new Promise((res, rej) => {
+    game.playerGetter(account, (err, player) => {
+      const seedCheck = new BigNumber(player[0])
+      if (seedCheck.equals(0)) {
+        res(false);
+      } 
+      seed = player[0];
+      strippedSeed = seed.substring(2, seed.length);
+      miningEfficiency = new BigNumber(player[1]);
+      miningSpeed = new BigNumber(player[2]);
+      canSmelt = player[3];
+      lastClick = player[5];
+      numClicks = new BigNumber(player[6]);
+      res(true);
+    })
+  })  
+}
+
 function checkForGame() {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
       console.log(accounts)
-      game.playerGetter(accounts[0], (err, player) => {
+      getPlayerAndSetVars(accounts[0])
+      .then((player) => {
         console.log(player)
-        const seedCheck = new BigNumber(player[0])
-        if (seedCheck.equals(0)) {
-          prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame)
-        } else {
-          console.log(player[0])
-          numClicks = player[7];
-          startUpUi();
-          clickCycle();
-        }
+        if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
+        startUpUi();
+        clickCycle();
       })
+      // game.playerGetter(accounts[0], (err, player) => {
+      //   console.log(player)
+      //   const seedCheck = new BigNumber(player[0])
+      //   if (seedCheck.equals(0)) {
+      //     prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame)
+      //   } else {
+      //     console.log(player[0])
+      //     numClicks = new BigNumber(player[6]);
+      //     startUpUi();
+      //     clickCycle();
+      //   }
+      // })
     })
     // game.playerGetter((err, player) => {
     //   console.log(player)
@@ -156,6 +182,7 @@ function getSeed(seedInt) {
   } else {
     seedInt += 1;
   }
+  console.log(`0x${strippedSeed.charAt(seedInt)}`)
   return `0x${strippedSeed.charAt(seedInt)}`;
 }
 
@@ -210,12 +237,12 @@ function updateQuad(quad, layer) {
 }
 
 function clickCycle () {
-  var layer = numClicks;
+  // var layer = numClicks;
   if (dirtLayers.length > maxMask) {
     dirtLayers.splice(0, 1);
   }
   console.log('darkness is ' + darkness)
-  if (numClicks > 5 && darkness > 30) {
+  if (numClicks.lessThan(5) && darkness > 30) {
     darkness -= 45;
   } else if (darkness <= 30) {
     darkness = 0;
@@ -227,6 +254,7 @@ function clickCycle () {
   } 
   var rand = random(0, 8);
   seedInt += 1;
+  console.log(rand)
   genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
     dirtLayers.push(newMesh);
@@ -238,7 +266,7 @@ function click () {
   // when received, set numclicks, then call clickCycle()
   clickCycle();
   console.log(numClicks)
-  numClicks += 1;
+  numClicks = numClicks.plus(new BigNumber(1));
 }
 
 function makeWallet() {
