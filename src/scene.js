@@ -1,9 +1,12 @@
 var seed = "0x5d52bc658e15e9cade11cc73503f3e083988d38c9fa42806caf40c353368ff4e";
 var strippedSeed = seed.substring(2, seed.length);
-var miningEfficiency = 10;
+var miningEfficiency = 1;
+var efficiencySliderHeight = 0;
+var efficiencySliderY = 300
 var miningSpeed = 10;
 var canSmelt = false;
 var numClicks = new BigNumber(0);
+var balance = new BigNumber(0);
 var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
@@ -11,6 +14,7 @@ var maxMask = 5;
 var darkness = 255;
 var nugsIncrement = 10;
 var allowedBrowser = false;
+var playerAddress = ''
 var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
@@ -35,6 +39,47 @@ function trimSvgWhitespace() {
     // set viewable area based on value above
     svg.setAttribute("viewBox", viewBox);
   }
+}
+
+function speedTimeout() {
+  var value = new BigNumber(0);
+  var count = miningSpeed.times(0.003)
+  var interval = setInterval(() => {}, 1000)
+
+  var draw = () => { 
+    value = value.plus(count);
+    sliderAdjust('speedSlider', value, miningSpeed, 300, 70);
+  };
+
+  var adjustableTimeout = () => {
+    value = new BigNumber(0);
+    clearInterval(interval)
+    interval = setInterval(draw, miningSpeed/270)
+    setTimeout(adjustableTimeout, miningSpeed)
+  }
+
+  setTimeout(adjustableTimeout, miningSpeed)
+
+// var counter = 10;
+// var myFunction = function() {
+//     counter *= 10;
+//     setTimeout(myFunction, counter);
+// }
+// setTimeout(myFunction, counter);
+
+//   sliderAdjust('speedSlider', value, paramMax, 230, 70)
+}
+
+function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
+  var slider = document.getElementById(slider); 
+  //console.log(slider)
+  var max = new BigNumber(sliderMax);
+  var normalizedHeight = value.dividedBy(paramMax); // 100 is max for now
+  var denormalizedToZero = normalizedHeight.times(max)
+  var diff = max.minus(denormalizedToZero)
+  slider.style.height = denormalizedToZero.toString(); //from 0 to 230  (value-min)/(max-min)
+  slider.style.y = diff.greaterThan(cutoff) ? diff : cutoff;//from 70 to 230
+  console.log(slider.style.y)
 }
 
 function nugIncrementer() {
@@ -86,10 +131,6 @@ function detectMetaMask() {
     } else {
       console.log('No web3? You should consider trying MetaMask!')
       prompt("You must have a dapp browser or metamask installed to play!", "Ok", hidePrompt)
-      // window.alert("You must have a dapp browser or metamask installed to play!")
-      //trimSvgWhitespace()
-      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-      // window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     }
     // Now you can start your app & access web3 freely:
 
@@ -97,10 +138,13 @@ function detectMetaMask() {
 }
 
 function createContracts() {
+  console.log('called create')
   return new Promise((res, rej) => {
     var Registrar = web3.eth.contract(registrarAbi);
     registrar = Registrar.at(registrarAddress);
+    console.log('attempting to get game address')
     registrar.GameAddress((err, result) => {
+      console.log(err)
       if (err) return rej(err)
       console.log(result)
       gameAddress = result
@@ -118,30 +162,51 @@ function createContracts() {
 function beginGame() {
   hidePrompt();
   game.beginGame((err, result) => {
-    console.log(result)
-    startUpUi()
+    getPlayerAndSetVars(playerAddress)
+    .then(() => {
+      startUpUi()
+    })
+    // startUpUi()
   })
+}
+
+function updateUiCoinBal() {
+  var coinsCount = document.getElementById("coinsCount");
+  coinsCount.innerHTML = balance.toString();
 }
 
 function startUpUi() {
   nugIncrementer();
+  updateUiCoinBal();
+  speedTimeout();
 }
 
 function getPlayerAndSetVars(account) {
   return new Promise((res, rej) => {
+    console.log('getting player')
     game.playerGetter(account, (err, player) => {
+      if (err) return rej(err);
       const seedCheck = new BigNumber(player[0])
       if (seedCheck.equals(0)) {
-        res(false);
+        console.log('seed check is zero')
+        return res(false);
       } 
       seed = player[0];
       strippedSeed = seed.substring(2, seed.length);
       miningEfficiency = new BigNumber(player[1]);
-      miningSpeed = new BigNumber(player[2]);
+      miningSpeed = new BigNumber(10000);
+       //new BigNumber(player[2]);
       canSmelt = player[3];
       lastClick = player[5];
+      console.log(lastClick.toString())
       numClicks = new BigNumber(player[6]);
-      res(true);
+      game.balanceOf(account, (errr, bal) => {
+        if (err) return rej(err);
+        console.log('got bal')
+        balance = new BigNumber(bal);
+        sliderAdjust('efficiencySlider', miningEfficiency, 1000, 300, 30)
+        res(true);
+      })
     })
   })  
 }
@@ -150,29 +215,15 @@ function checkForGame() {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
       console.log(accounts)
-      getPlayerAndSetVars(accounts[0])
+      playerAddress = accounts[0];
+      getPlayerAndSetVars(playerAddress)
       .then((player) => {
         console.log(player)
         if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
         startUpUi();
         clickCycle();
       })
-      // game.playerGetter(accounts[0], (err, player) => {
-      //   console.log(player)
-      //   const seedCheck = new BigNumber(player[0])
-      //   if (seedCheck.equals(0)) {
-      //     prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame)
-      //   } else {
-      //     console.log(player[0])
-      //     numClicks = new BigNumber(player[6]);
-      //     startUpUi();
-      //     clickCycle();
-      //   }
-      // })
     })
-    // game.playerGetter((err, player) => {
-    //   console.log(player)
-    // })
   })
 }
 
@@ -280,6 +331,7 @@ function init() {
       checkForGame()
     })
   }
+  console.log(allowedBrowser)
   camera = new THREE.OrthographicCamera( 
     window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
   camera.position.set( 0, 100, 10 );
