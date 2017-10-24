@@ -6,6 +6,7 @@ var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
+var nugsIncrement = 10;
 var allowedBrowser = false;
 var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
@@ -32,6 +33,17 @@ function trimSvgWhitespace() {
     // set viewable area based on value above
     svg.setAttribute("viewBox", viewBox);
   }
+}
+
+function nugIncrementer() {
+  var nugsCount = document.getElementById("nugsCount");
+  setInterval(() => {
+    console.log(nugsCount.firstChild.textContent)
+    var int = new BigNumber(nugsCount.firstChild.textContent);
+    console.log(nugsIncrement)
+    int = int.plus(nugsIncrement);
+    nugsCount.innerHTML = int.toString();
+  }, 500);
 }
 
 function prompt(text, dialog1, callback1, dialog2, callback2) {
@@ -107,7 +119,12 @@ function beginGame() {
   hidePrompt();
   game.beginGame((err, result) => {
     console.log(result)
+    startUpUi()
   })
+}
+
+function startUpUi() {
+  nugIncrementer();
 }
 
 function checkForGame() {
@@ -122,6 +139,7 @@ function checkForGame() {
         } else {
           console.log(player[0])
           numClicks = player[7];
+          startUpUi();
           clickCycle();
         }
       })

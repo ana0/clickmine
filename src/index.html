@@ -29,6 +29,10 @@
 				-ms-transform: scale(0.8, 0.8);
 				-webkit-transform: scale(0.8, 0.8);
 			}
+			.uiTable {
+				padding: 10px;
+				/*opacity: .9;*/
+			}
 			#button1 {
 				border: solid;
 				border-width: 5px;
@@ -78,8 +82,6 @@
 				border-width: 5px;
 				border-radius: 20px 0 0 0;
 				border-color: #38f209;
-				width: 100px;
-				height: 100px;
 				position: absolute;
 				margin-left: 20px;
 				margin-top: 20px;
@@ -90,8 +92,6 @@
 				border-width: 5px;
 				border-radius: 0 20px 0 0;
 				border-color: #38f209;
-				width: 100px;
-				height: 100px;
 				position: absolute;
 				right: 20px;
 				margin-top: 20px;
@@ -112,8 +112,40 @@
 		<script src="scene.js"></script>
 
 		<div id="alert"><button id="button2"></button><button id="button1"></button></div>
-		<div id="wallet"></div>
-		<div id="shop"></div>
+		<div id="wallet">
+		    <table class="uiTable">
+		        <tr>
+		            <td><img src="assets/nugget.png"></td>
+		            <td><p id="nugsCount">0</p></td>
+		        </tr>
+		        <tr>
+		            <td><img src="assets/coin.png"></td>
+                    <td><p id="coinsCount">0</p></td>
+		        </tr>
+		    </table>
+		</div>
+		<div id="shop">
+		    <table class="uiTable">
+		        <tr>
+		            <td><p id="shop1">0</p></td>
+		        </tr>
+		        <tr>
+                    <td><p id="shop2">0</p></td>
+		        </tr>
+		        <tr>
+                    <td><p id="shop3">0</p></td>
+		        </tr>
+		        <tr>
+                    <td><p id="shop4">0</p></td>
+		        </tr>
+		        <tr>
+                    <td><p id="shop5">0</p></td>
+		        </tr>
+		        <tr>
+                    <td><p id="shop6">0</p></td>
+		        </tr>
+		    </table>
+		</div>
 <!-- 		<img src="assets/slider.svg" class="efficiency" alt="slider">
 		<img src="assets/slider.svg" class="speed" alt="slider"> -->
 		<svg version="1.1" class="efficiency" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
