@@ -241,6 +241,10 @@ var gameAbi = [
         {
           "name": "lastClick",
           "type": "uint256"
+        },
+        {
+          "name": "numClicks",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -383,6 +387,10 @@ var gameAbi = [
         {
           "name": "",
           "type": "uint256[10]"
+        },
+        {
+          "name": "",
+          "type": "uint256"
         },
         {
           "name": "",

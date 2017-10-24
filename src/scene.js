@@ -7,7 +7,7 @@ var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
 var allowedBrowser = false;
-var registrarAddress = "0x111058368f29c1ea5642ac6d11760bb20cf0e003"
+var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
 var game;
@@ -34,6 +34,30 @@ function trimSvgWhitespace() {
   }
 }
 
+function prompt(text, dialog1, callback1, dialog2, callback2) {
+  var prompt = document.getElementById("alert");
+  prompt.style.display = 'block';
+  text = document.createTextNode(text);
+  prompt.insertBefore(text, prompt.firstChild);
+  if (dialog1) {
+    var button1 = document.getElementById("button1");
+    button1.style.display = 'block';
+    button1.innerHTML = dialog1
+    button1.onclick = callback1;
+  }
+  if (dialog2) {
+    var button2 = document.getElementById("button2");
+    button2.style.display = 'block';
+    button2.innerHTML = dialog2
+    button2.onclick = callback2;
+  }
+}
+
+function hidePrompt() {
+  var prompt = document.getElementById("alert");
+  prompt.removeChild(prompt.firstChild);
+  prompt.style.display = 'none';
+}
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
@@ -49,7 +73,8 @@ function detectMetaMask() {
       animate();
     } else {
       console.log('No web3? You should consider trying MetaMask!')
-      window.alert("You must have a dapp browser or metamask installed to play!")
+      prompt("You must have a dapp browser or metamask installed to play!", "Ok", hidePrompt)
+      // window.alert("You must have a dapp browser or metamask installed to play!")
       //trimSvgWhitespace()
       // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
       // window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -65,6 +90,7 @@ function createContracts() {
     registrar = Registrar.at(registrarAddress);
     registrar.GameAddress((err, result) => {
       if (err) return rej(err)
+      console.log(result)
       gameAddress = result
       var Game = web3.eth.contract(gameAbi);
       game = Game.at(gameAddress);
@@ -77,6 +103,13 @@ function createContracts() {
   })
 }
 
+function beginGame() {
+  hidePrompt();
+  game.beginGame((err, result) => {
+    console.log(result)
+  })
+}
+
 function checkForGame() {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
@@ -85,9 +118,7 @@ function checkForGame() {
         console.log(player)
         const seedCheck = new BigNumber(player[0])
         if (seedCheck.equals(0)) {
-          game.beginGame((err, result) => {
-            console.log(result)
-          })
+          prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame)
         } else {
           console.log(player[0])
           numClicks = player[7];

@@ -113,7 +113,7 @@ contract Game is ClickMineToken {
     return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost);
   }
 
-  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint)
+  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint, uint)
   {
     //returns all relevant data for given player
     return (games[_player].seed, games[_player].miningEfficiency,
