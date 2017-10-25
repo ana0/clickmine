@@ -55,7 +55,7 @@ function speedTimeout() {
     value = new BigNumber(0);
     clearInterval(interval)
     interval = setInterval(draw, miningSpeed/270)
-    //setTimeout(adjustableTimeout, miningSpeed)
+    setTimeout(adjustableTimeout, miningSpeed)
   }
 
   setTimeout(adjustableTimeout, miningSpeed)
