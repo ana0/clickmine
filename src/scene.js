@@ -55,19 +55,11 @@ function speedTimeout() {
     value = new BigNumber(0);
     clearInterval(interval)
     interval = setInterval(draw, miningSpeed/270)
-    setTimeout(adjustableTimeout, miningSpeed)
+    //setTimeout(adjustableTimeout, miningSpeed)
   }
 
   setTimeout(adjustableTimeout, miningSpeed)
 
-// var counter = 10;
-// var myFunction = function() {
-//     counter *= 10;
-//     setTimeout(myFunction, counter);
-// }
-// setTimeout(myFunction, counter);
-
-//   sliderAdjust('speedSlider', value, paramMax, 230, 70)
 }
 
 function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
@@ -79,7 +71,6 @@ function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
   var diff = max.minus(denormalizedToZero)
   slider.style.height = denormalizedToZero.toString(); //from 0 to 230  (value-min)/(max-min)
   slider.style.y = diff.greaterThan(cutoff) ? diff : cutoff;//from 70 to 230
-  console.log(slider.style.y)
 }
 
 function nugIncrementer() {
@@ -200,10 +191,12 @@ function getPlayerAndSetVars(account) {
       lastClick = player[5];
       console.log(lastClick.toString())
       numClicks = new BigNumber(player[6]);
+      console.log(`numclicks is ${numClicks}`)
       game.balanceOf(account, (errr, bal) => {
         if (err) return rej(err);
         console.log('got bal')
         balance = new BigNumber(bal);
+        updateUiCoinBal();
         sliderAdjust('efficiencySlider', miningEfficiency, 1000, 300, 30)
         res(true);
       })
@@ -315,9 +308,15 @@ function clickCycle () {
 function click () {
   // send transaction
   // when received, set numclicks, then call clickCycle()
-  clickCycle();
-  console.log(numClicks)
-  numClicks = numClicks.plus(new BigNumber(1));
+  game.click((err, result) => {
+    getPlayerAndSetVars(playerAddress)
+    .then(() => {
+      clickCycle();
+    })
+  })
+  // clickCycle();
+  // console.log(numClicks)
+  // numClicks = numClicks.plus(new BigNumber(1));
 }
 
 function makeWallet() {
