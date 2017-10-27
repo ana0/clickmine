@@ -3,7 +3,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = 1;
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var miningSpeed = 10;
+var miningSpeed = new BigNumber(10);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
@@ -13,6 +13,7 @@ var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
 var nugsIncrement = 10;
+var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = ''
 var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
@@ -41,25 +42,37 @@ function trimSvgWhitespace() {
   }
 }
 
-function speedTimeout() {
+function speedTimeout(timeout) {
   var value = new BigNumber(0);
-  var count = miningSpeed.times(0.003)
+  var count = miningSpeed.times(0.002)
   var interval = setInterval(() => {}, 1000)
 
   var draw = () => { 
     value = value.plus(count);
+    if (value.greaterThanOrEqualTo(miningSpeed)) {
+      clickAllowed = true;
+      clearInterval(interval)
+    }
     sliderAdjust('speedSlider', value, miningSpeed, 300, 70);
   };
 
   var adjustableTimeout = () => {
+    console.log('adjustable called')
     value = new BigNumber(0);
     clearInterval(interval)
-    interval = setInterval(draw, miningSpeed/270)
-    setTimeout(adjustableTimeout, miningSpeed)
+    interval = setInterval(draw, miningSpeed/230)
+    //setTimeout(adjustableTimeout, miningSpeed)
   }
 
-  setTimeout(adjustableTimeout, miningSpeed)
+  setTimeout(adjustableTimeout, timeout)
 
+}
+
+function denormalizeToCutOff(value, max, min) {
+  var a = min.minus(max);
+  var b = value.times(a);
+  var c = b.plus(max)
+  return c;
 }
 
 function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
@@ -68,9 +81,10 @@ function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
   var max = new BigNumber(sliderMax);
   var normalizedHeight = value.dividedBy(paramMax); // 100 is max for now
   var denormalizedToZero = normalizedHeight.times(max)
+  var denormalizedToCutOff = denormalizeToCutOff(normalizedHeight, max, new BigNumber(cutoff))
   var diff = max.minus(denormalizedToZero)
   slider.style.height = denormalizedToZero.toString(); //from 0 to 230  (value-min)/(max-min)
-  slider.style.y = diff.greaterThan(cutoff) ? diff : cutoff;//from 70 to 230
+  slider.style.y = denormalizedToCutOff.toString(); //from 70 to 230
 }
 
 function nugIncrementer() {
@@ -169,7 +183,7 @@ function updateUiCoinBal() {
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
-  speedTimeout();
+  speedTimeout(1);
 }
 
 function getPlayerAndSetVars(account) {
@@ -308,10 +322,13 @@ function clickCycle () {
 function click () {
   // send transaction
   // when received, set numclicks, then call clickCycle()
+  if (!clickAllowed) return;
   game.click((err, result) => {
     getPlayerAndSetVars(playerAddress)
     .then(() => {
       clickCycle();
+      speedTimeout(1);
+      clickAllowed = false;
     })
   })
   // clickCycle();
