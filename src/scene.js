@@ -77,14 +77,13 @@ function denormalizeToCutOff(value, max, min) {
 
 function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
   var slider = document.getElementById(slider); 
-  //console.log(slider)
   var max = new BigNumber(sliderMax);
-  var normalizedHeight = value.dividedBy(paramMax); // 100 is max for now
+  var normalizedHeight = value.dividedBy(paramMax); 
   var denormalizedToZero = normalizedHeight.times(max)
   var denormalizedToCutOff = denormalizeToCutOff(normalizedHeight, max, new BigNumber(cutoff))
   var diff = max.minus(denormalizedToZero)
-  slider.style.height = denormalizedToZero.toString(); //from 0 to 230  (value-min)/(max-min)
-  slider.style.y = denormalizedToCutOff.toString(); //from 70 to 230
+  slider.style.height = denormalizedToZero.toString(); 
+  slider.style.y = denormalizedToCutOff.toString(); 
 }
 
 function nugIncrementer() {
@@ -99,8 +98,11 @@ function nugIncrementer() {
 function prompt(text, dialog1, callback1, dialog2, callback2) {
   var prompt = document.getElementById("alert");
   prompt.style.display = 'block';
+  var p = document.createElement('p');
   text = document.createTextNode(text);
-  prompt.insertBefore(text, prompt.firstChild);
+  p.appendChild(text)
+  p.style.padding = '5px';
+  prompt.insertBefore(p, prompt.firstChild);
   if (dialog1) {
     var button1 = document.getElementById("button1");
     button1.style.display = 'block';
