@@ -20,6 +20,7 @@ var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
 var game;
+var totalGoods = 9;
 
 detectMetaMask();
 
@@ -40,6 +41,17 @@ function trimSvgWhitespace() {
     // set viewable area based on value above
     svg.setAttribute("viewBox", viewBox);
   }
+}
+
+function getGoods() {
+  var goodsPromises = []
+  for (let i = 0; i < totalGoods; i++) {
+    goodsPromises.push(game.goodsGetter(i));
+  }
+  return Promise.all(goodsPromises)
+  .then((values) => {
+    // parse 'em and populate
+  })
 }
 
 function speedTimeout(timeout) {
