@@ -202,8 +202,7 @@ function getPlayerAndSetVars(account) {
       seed = player[0];
       strippedSeed = seed.substring(2, seed.length);
       miningEfficiency = new BigNumber(player[1]);
-      miningSpeed = new BigNumber(10000);
-       //new BigNumber(player[2]);
+      miningSpeed = new BigNumber(player[2]);
       canSmelt = player[3];
       lastClick = player[5];
       console.log(lastClick.toString())
@@ -338,7 +337,7 @@ function clickCycle (scopedNumClicks) {
     dirtLayers.splice(0, 1);
   }
   console.log('darkness is ' + darkness)
-  if (scopedNumClicks.lessThan(5) && darkness > 30) {
+  if (scopedNumClicks.lessThan(6) && darkness > 30) {
     darkness -= 45;
   } else if (darkness <= 30) {
     darkness = 0;
