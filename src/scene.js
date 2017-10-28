@@ -129,7 +129,7 @@ function detectMetaMask() {
     if (typeof web3 !== 'undefined') {
       // Use Mist/MetaMask's provider
       window.web3 = new Web3(web3.currentProvider);
-      console.log('Found MetaMasks')
+      console.log('Found MetaMask')
       allowedBrowser = true;
       init();
       canvas = document.getElementById('mainCanvas')
@@ -186,6 +186,7 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
+  rerenderClickCycle(new BigNumber(-1));
 }
 
 function getPlayerAndSetVars(account) {
@@ -223,14 +224,16 @@ function getPlayerAndSetVars(account) {
 function checkForGame() {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
-      console.log(accounts)
+      if (accounts.length === 0) {
+        prompt("Unable to find your account, is metamask unlocked?", "Ok", checkForGame)
+        return;
+      }
       playerAddress = accounts[0];
       getPlayerAndSetVars(playerAddress)
       .then((player) => {
         console.log(player)
         if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
         startUpUi();
-        clickCycle();
       })
     })
   })
@@ -288,6 +291,19 @@ function genQuad(label, identfier, zIndex) {
   })
 }
 
+function genQuadNoMask(label, identfier, zIndex) {
+  var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
+  return getTexture(label, identfier)
+  .then(texture => {
+    return getTexture("Mask", "Null")
+    .then((alpha) => {
+      mesh = makeGroundMaterial(texture, alpha, geometry)
+      scene.add(mesh);
+      return mesh;
+    })
+  })
+}
+
 function updateQuad(quad, layer) {
   getTexture("Mask", layer)
   .then((alpha) => {
@@ -296,39 +312,65 @@ function updateQuad(quad, layer) {
   })
 }
 
-function clickCycle () {
+function rerenderClickCycle(counter) {
+  if (counter.equals(numClicks)) return;
+  counter = counter.plus(1);
+  return clickCycle(counter)
+  .then(() => {
+    return rerenderClickCycle(counter);
+  })
+}
+
+function clickCycle (scopedNumClicks) {
   // var layer = numClicks;
+  console.log(scopedNumClicks.toString())
+  if (scopedNumClicks.equals(0)) {
+    console.log('equals zero')
+    return genQuadNoMask("Grass", 0, 0)
+    .then((newMesh) => {
+      console.log('pushing to dirtlayers')
+      dirtLayers.push(newMesh);
+      return;
+    })
+  }
   if (dirtLayers.length > maxMask) {
+    console.log('removing item from dirtLayers')
     dirtLayers.splice(0, 1);
   }
   console.log('darkness is ' + darkness)
-  if (numClicks.lessThan(5) && darkness > 30) {
+  if (scopedNumClicks.lessThan(5) && darkness > 30) {
     darkness -= 45;
   } else if (darkness <= 30) {
     darkness = 0;
   }
   var layer = dirtLayers.length;
+  console.log(`dirt layers is ${dirtLayers.length}`)
   for (let i = 0; i < dirtLayers.length; i++) {
+    console.log(`called updateQuad layer is ${layer}`)
     updateQuad(dirtLayers[i], layer);
     layer -= 1;
   } 
   var rand = random(0, 8);
   seedInt += 1;
   console.log(rand)
-  genQuad("Dirt", rand, dirtLayers.length + 1)
+  return genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
     dirtLayers.push(newMesh);
+    return;
   })
 }
 
 function click () {
   // send transaction
   // when received, set numclicks, then call clickCycle()
-  if (!clickAllowed) return;
+  if (!clickAllowed) { 
+    prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
+    return;
+  }
   game.click((err, result) => {
     getPlayerAndSetVars(playerAddress)
     .then(() => {
-      clickCycle();
+      clickCycle(numClicks);
       speedTimeout(1);
       clickAllowed = false;
     })
@@ -355,26 +397,6 @@ function init() {
   camera.position.set( 0, 100, 10 );
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0x000000 );
-  //genQuad("Dirt", 1)
-    // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.FrontSide, map: texture, alphaMap: alpha} );
-    // var plane = new THREE.Mesh( geometry, material );
-  // var geometry = new THREE.PlaneGeometry( 100, 100 );
-  // var texture = new THREE.CanvasTexture( generateTexture() );
-  // for ( var i = 0; i < 15; i ++ ) {
-  //  var material = new THREE.MeshBasicMaterial( {
-  //    color: new THREE.Color().setHSL( 0.3, 0.75, ( i / 15 ) * 0.4 + 0.1 ),
-  //    map: texture,
-  //    depthTest: false,
-  //    depthWrite: false,
-  //    transparent: true
-  //  } );
-  //  var mesh = new THREE.Mesh( geometry, material );
-  //  mesh.position.y = i * 0.25;
-  //  mesh.rotation.x = - Math.PI / 2;
-  //  scene.add( mesh );
-  // }
-  // scene.children.reverse();
-  //scene.add(plane);
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
