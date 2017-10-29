@@ -386,7 +386,7 @@ var gameAbi = [
         },
         {
           "name": "",
-          "type": "uint256[10]"
+          "type": "uint256[12]"
         },
         {
           "name": "",

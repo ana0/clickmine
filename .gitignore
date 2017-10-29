@@ -14,6 +14,7 @@ ClickMine/Library/
 ClickMine/Assets/AssetStoreTools*
 *.jpg
 src/assets/*
+.fuse*
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
