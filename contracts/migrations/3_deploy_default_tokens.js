@@ -18,7 +18,7 @@ module.exports = function(deployer) {
           gameInstance.addGood(5, 'Mecha-sluice', 34, 5, 245),
           gameInstance.addGood(6, 'Refinery', 5, 5, 325),
           gameInstance.addGood(7, 'Bucketwheel', 51, 102, 535),
-          gameInstance.addGood(8, 'Drilling Machine', 80, 330, 1080),
+          gameInstance.addGood(8, 'Propaganda Machine', 80, 330, 1080),
           gameInstance.addGood(9, 'Tailings Dozer', 95, 710, 5550),
           gameInstance.addGood(10, 'Hydraulic Shovel', 145, 805, 10045),
           gameInstance.addGood(11, 'Haul Truck Behemoth', 170, 1204, 60060)

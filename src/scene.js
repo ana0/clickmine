@@ -3,7 +3,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var miningSpeed = new BigNumber(60000);
+var miningSpeed = new BigNumber(1000);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
@@ -16,11 +16,12 @@ var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = ''
-var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
+var registrarAddress = "0xcd8af56d71742ef278d56d95c8c8e901749d315c"
 var gameAddress = ""
 var registrar;
 var game;
 var totalGoods = 12;
+var cacheGoods;
 
 detectMetaMask();
 
@@ -58,6 +59,7 @@ function getGoods() {
   return Promise.all(goodsPromises)
   .then((values) => {
     console.log(values)
+    cacheGoods = values;
     for (let i = 0; i < totalGoods; i++) {
       populateGood(i, values);
     }
@@ -101,7 +103,7 @@ function orderMenuButtons() {
 
 function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
-  row.addEventListener('click', () => buyGood(ident), false);
+  row.addEventListener('click', () => orderMenu(ident), false);
   var coinsColumn = row.getElementsByTagName('p')[1]
   coinsColumn.innerHTML = goods[ident][3].toString()
   console.log(goods[ident][3].toString())
@@ -111,14 +113,24 @@ function orderMenu(ident) {
   var menu = document.getElementById("orderMenu");
   menu.style.display = 'block';
   var query = document.getElementById("query");
-  query.innerHTML = `How many ${good[ident][0]}s would you like to buy?`;
+  console.log(cacheGoods)
+  query.innerHTML = `How many ${cacheGoods[ident][0]}s would you like to buy?`;
   var buy = document.getElementById("buy");
+  // buy.removeEventListener('click');
+  buy.onclick = () => { buyGood(ident) }
 }
 
-function buyGood(ident, quantity) {
+function buyGood(ident) {
   return new Promise((res, rej) => {
-    game.buyGood(ident, quantity, (err, result) => {
-      if (err) return rej(err);
+    var quantity = document.getElementById("quantity");
+    var int = parseInt(quantity.firstChild.textContent);
+    ident = parseInt(ident)
+    game.buyGood(ident, int, (err, result) => {
+      if (err) {
+        console.log(err)
+        return rej(err);
+      }
+      console.log(result)
       res(result)
     })
   })
@@ -280,7 +292,7 @@ function startUpUi() {
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   getGoods();
-  upAndDownButtons();
+  orderMenuButtons();
 }
 
 function getPlayerAndSetVars(account) {
@@ -296,7 +308,7 @@ function getPlayerAndSetVars(account) {
       seed = player[0];
       strippedSeed = seed.substring(2, seed.length);
       miningEfficiency = new BigNumber(player[1]);
-      miningSpeed = new BigNumber(player[2]);
+      miningSpeed = new BigNumber(1000);//new BigNumber(player[2]);
       canSmelt = player[3];
       lastClick = player[5];
       console.log(lastClick.toString())

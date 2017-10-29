@@ -74,19 +74,22 @@ contract Game is ClickMineToken {
   {
     //buy any number of a single good
     require(goodIdentifier >= 0 && goodIdentifier <= 11);
-    uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);
-    uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);
-    uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);
+    // uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);
+    // uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);
+    // uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);
+    uint256 totalEfficiency = goods[goodIdentifier].efficiencyBoost;
+    uint256 totalSpeed = goods[goodIdentifier].speedBoost;
+    uint256 totalCost = goods[goodIdentifier].cost;
     require(balances[msg.sender] >= totalCost);
-    require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);
-    require(games[msg.sender].miningSpeed - totalSpeed < games[msg.sender].miningSpeed);
+    require(balances[msg.sender] - totalCost <= balances[msg.sender]);
+    require(games[msg.sender].miningEfficiency + totalEfficiency >= games[msg.sender].miningEfficiency);
+    require(games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed);
     require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
-    require(games[msg.sender].canSmelt);
-    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
-    transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);
+    balances[msg.sender] -= totalCost;
     games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
     games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
     games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
+    Transfer(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);
     return true;
   }
 
