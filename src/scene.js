@@ -1,6 +1,6 @@
 var seed = "0x5d52bc658e15e9cade11cc73503f3e083988d38c9fa42806caf40c353368ff4e";
 var strippedSeed = seed.substring(2, seed.length);
-var miningEfficiency = 1;
+var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
 var miningSpeed = new BigNumber(60000);
@@ -16,7 +16,7 @@ var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = ''
-var registrarAddress = "0x6f74bc1f32f0702f527d1222f272a8d3bb46b667"
+var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
 var game;
@@ -119,32 +119,36 @@ function nugIncrementer() {
 function prompt(text, dialog1, callback1, dialog2, callback2) {
   var prompt = document.getElementById("alert");
   prompt.style.display = 'block';
+  if (prompt.firstChild.type !== 'submit') {
+    prompt.removeChild(prompt.firstChild);
+  } 
   var p = document.createElement('p');
   text = document.createTextNode(text);
   p.appendChild(text)
   p.style.padding = '5px';
   prompt.insertBefore(p, prompt.firstChild);
+  var button1 = document.getElementById("button1");
   if (dialog1) {
-    var button1 = document.getElementById("button1");
     button1.style.display = 'block';
     button1.innerHTML = dialog1
     button1.onclick = callback1;
+  } else {
+    button1.style.display = 'none';
   }
+  var button2 = document.getElementById("button2");
   if (dialog2) {
-    var button2 = document.getElementById("button2");
     button2.style.display = 'block';
     button2.innerHTML = dialog2
     button2.onclick = callback2;
+  } else {
+    button2.style.display = 'none';
   }
 }
 
 function hidePrompt() {
   var prompt = document.getElementById("alert");
   console.log(`prompt ${prompt.firstChild.type}`)
-  if (prompt.firstChild.type !== 'submit') {
-    prompt.removeChild(prompt.firstChild);
-    prompt.style.display = 'none';
-  }
+  prompt.style.display = 'none';
 }
 
 function detectMetaMask() {
@@ -210,7 +214,8 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
-  sliderAdjust('efficiencySlider', miningEfficiency, 1000, 300, 30)
+  console.log(`set efficiency to ${miningEfficiency}`)
+  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   getGoods();
 }
@@ -239,7 +244,7 @@ function getPlayerAndSetVars(account) {
         console.log('got bal')
         balance = new BigNumber(bal);
         updateUiCoinBal();
-        sliderAdjust('efficiencySlider', miningEfficiency, 1000, 300, 30)
+        sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
         res(true);
       })
     })
