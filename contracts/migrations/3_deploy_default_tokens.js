@@ -20,8 +20,8 @@ module.exports = function(deployer) {
           gameInstance.addGood(7, 'Bucketwheel', 51, 102, 535),
           gameInstance.addGood(8, 'Drilling Machine', 80, 330, 1080),
           gameInstance.addGood(9, 'Tailings Dozer', 95, 710, 5550),
-          // Game.addGood(10, 'Hydraulic Shovel', 145, 805, 10045)
-          // Game.addGood(11, 'Haul Truck Behemoth', 170, 1204, 60060)
+          gameInstance.addGood(10, 'Hydraulic Shovel', 145, 805, 10045),
+          gameInstance.addGood(11, 'Haul Truck Behemoth', 170, 1204, 60060)
         ]
         Promise.all(addGoods).then((values) => {
           console.log(values)

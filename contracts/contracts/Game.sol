@@ -10,7 +10,7 @@ contract Game is ClickMineToken {
     uint256 miningEfficiency;
     uint256 miningSpeed;
     bool canSmelt;
-    uint256[10] ownedGoods;
+    uint256[12] ownedGoods;
     uint lastClick;
     uint numClicks;
   }
@@ -24,7 +24,7 @@ contract Game is ClickMineToken {
     uint256 cost;
   }
 
-  Good[10] public goods;
+  Good[12] public goods;
   
   uint256 public tokensPerClick;
   
@@ -63,8 +63,8 @@ contract Game is ClickMineToken {
 
   function buyGoods(uint256[] _toBuy) public returns (bool success)
   {
-    require(_toBuy.length == 10);
-    for (uint ident = 0; ident <= 10; ident++) {
+    require(_toBuy.length == 12);
+    for (uint ident = 0; ident <= 11; ident++) {
       buyGood(ident, _toBuy[ident]);
     }
     return true;
@@ -73,19 +73,19 @@ contract Game is ClickMineToken {
   function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)
   {
     //buy any number of a single good
-    require(goodIdentifier >= 0 && goodIdentifier <= 10);
+    require(goodIdentifier >= 0 && goodIdentifier <= 11);
     uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);
     uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);
     uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);
     require(balances[msg.sender] >= totalCost);
     require(games[msg.sender].miningEfficiency + totalEfficiency > games[msg.sender].miningEfficiency);
-    require(games[msg.sender].miningSpeed + totalSpeed > games[msg.sender].miningSpeed);
+    require(games[msg.sender].miningSpeed - totalSpeed < games[msg.sender].miningSpeed);
     require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
     require(games[msg.sender].canSmelt);
     require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
     transferFrom(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);
     games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
-    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed + totalSpeed;
+    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
     games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
     return true;
   }
@@ -109,11 +109,11 @@ contract Game is ClickMineToken {
 
   function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) 
   {
-    require(_index >= 0 && _index <= 10);
+    require(_index >= 0 && _index <= 11);
     return (goods[_index].name, goods[_index].efficiencyBoost, goods[_index].speedBoost, goods[_index].cost);
   }
 
-  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[10], uint, uint)
+  function playerGetter(address _player) constant public returns (bytes32, uint256, uint256, bool, uint256[12], uint, uint)
   {
     //returns all relevant data for given player
     return (games[_player].seed, games[_player].miningEfficiency,
@@ -124,7 +124,7 @@ contract Game is ClickMineToken {
   function addGood(uint256 _index, string _name, uint256 _efficiencyBoost, uint256 _speedBoost, uint256 _cost) onlyOwner public returns (bool success)
   {
     //used up to ten times to add goods
-    require(_index >= 0 && _index <= 10);
+    require(_index >= 0 && _index <= 11);
     goods[_index].name = _name;
     goods[_index].efficiencyBoost = _efficiencyBoost;
     goods[_index].speedBoost = _speedBoost;

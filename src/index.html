@@ -39,8 +39,16 @@
 				-webkit-transform: scale(0.8, 0.8);
 			}
 			.uiTable {
-				padding: 10px;
+				padding: 10px 10px 10px 10px;
 				/*opacity: .9;*/
+			}
+			.shrinkImg {
+			    height: 14pt;
+			    padding-right: 2px;
+			}
+			.name {
+				text-align: left;
+				padding-right: 5px;
 			}
 			#button1 {
 				border: solid;
@@ -105,6 +113,7 @@
 				margin-left: 20px;
 				margin-top: 20px;
 				opacity: .8;
+				background-color: rgba(0,0,0,.5);
 			}
 			#shop {
 				border: solid;
@@ -116,18 +125,40 @@
 				margin-top: 20px;
 				opacity: .8;
 				line-height: 0px;
+				background-color: rgba(0,0,0,.5);
+				height: 50%;
+			}
+			#shop-content {
+				overflow-y: scroll;
+				border-radius: 0 10px 0 0;
+				height: 98%;
+				margin-top: 3px;
+				margin-right: 3px;
 			}
 			#shop table {
 				display: inline-block;
 				font-size: 12pt;
                 line-height: 0px;
-                text-align: left;
+                text-align: right;
 			}
 			#shop table p {
 				/*//display: inline-block;*/
 				padding: 0px;
 				display: inline;
                 line-height: 16px;
+			}
+			div::-webkit-scrollbar {
+				width: 10px;
+			    background-color: transparent;
+			}
+			div::-webkit-scrollbar-track {
+			    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			}
+			div::-webkit-scrollbar-thumb
+			{
+				border-radius: 10px;
+				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+				background-color: rgba(0,0,0,.5); 
 			}
 		</style>
 	</head>
@@ -156,58 +187,118 @@
 		        </tr>
 		    </table>
 		</div>
-		<div id="shop">
+		<div id="shop"><div id="shop-content">
 		    <table class="uiTable">
 		        <tr>
-		            <td>SHOVEL</td>
-		            <td><p id="shop1">0</p></td>
+		            <td class="name">SHOVEL</td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/nugget.png">0</p>
+		            </td>
+		            <td>
+		                 <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
 		        </tr>
 		        <tr>
-		            <td>PAN</td>
-                    <td><p id="shop2">0</p></td>
+		            <td class="name">PAN</td>
+                    <td>
+                        <p id="shop1"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
 		        </tr>
 		        <tr>
-		            <td>SLUICE</td>
-                    <td><p id="shop3">0</p></td>
-		        </tr>
+		            <td class="name">SLUICE</td>
+                    <td>
+                        <p id="shop2"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>SMELTER</td>
-                    <td><p id="shop4">0</p></td>
-		        </tr>
+		            <td class="name">SMELTER</td>
+                    <td>
+                        <p id="shop3"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>SPIRAL PANNER</td>
-                    <td><p id="shop5">0</p></td>
-		        </tr>
+		            <td class="name">SPIRAL PANNER</td>
+                    <td>
+                        <p id="shop4"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>MECHA-SLUICE</td>
-                    <td><p id="shop6">0</p></td>
-		        </tr>
+		            <td class="name">MECHA-SLUICE</td>
+                    <td>
+                        <p id="shop5"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>REFINERY</td>
-                    <td><p id="shop6">0</p></td>
-		        </tr>
+		            <td class="name">REFINERY</td>
+                    <td>
+                        <p id="shop6"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td><p id="shop0">
+		                <img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>BUCKETWHEEL</td>
-                    <td><p id="shop7">0</p></td>
-		        </tr>
+		            <td class="name">BUCKETWHEEL</td>
+                    <td>
+                        <p id="shop7"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>DRILLING MACHINE</td>
-                    <td><p id="shop8">0</p></td>
-		        </tr>
+		            <td class="name">PROPAGANDA MACHINE</td>
+                    <td>
+                        <p id="shop8"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>TAILINGS DOZER</td>
-                    <td><p id="shop9">0</p></td>
-		        </tr>
+		            <td class="name">TAILINGS DOZER</td>
+                    <td>
+                        <p id="shop9"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>HYDRAULIC SHOVEL</td>
-                    <td><p id="shop10">0</p></td>
-		        </tr>
+		            <td class="name">HYDRAULIC SHOVEL</td>
+                    <td>
+                        <p id="shop10"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="shop0"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		        
 		        <tr>
-		            <td>HAUL TRUCK BEHEMOTH</td>
-                    <td><p id="shop9">0</p></td>
-		        </tr>
+		            <td class="name">HAUL TRUCK BEHEMOTH</td>
+                    <td>
+                        <p id="nugsPrice11"><img class="shrinkImg" src="assets/nugget.png">0</p>
+                    </td>
+		            <td>
+		                <p id="coinsPrice11"><img class="shrinkImg" src="assets/coin.png">0</p>
+		            </td>
+		        </tr>		    
 		    </table>
-		</div>
+		</div></div>
 <!-- 		<img src="assets/slider.svg" class="efficiency" alt="slider">
 		<img src="assets/slider.svg" class="speed" alt="slider"> -->
 <svg version="1.1" class="efficiency" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

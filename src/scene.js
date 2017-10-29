@@ -3,7 +3,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = 1;
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var miningSpeed = new BigNumber(10);
+var miningSpeed = new BigNumber(60000);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
@@ -16,7 +16,7 @@ var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = ''
-var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
+var registrarAddress = "0x6f74bc1f32f0702f527d1222f272a8d3bb46b667"
 var gameAddress = ""
 var registrar;
 var game;
@@ -46,15 +46,24 @@ function trimSvgWhitespace() {
 function getGoods() {
   var goodsPromises = []
   for (let i = 0; i < totalGoods; i++) {
-    goodsPromises.push(game.goodsGetter(i));
+    goodsPromises.push(() => {
+      return new Promise((res, rej) => {
+        game.goodsGetter(i, (err, result) => {
+          if (err) return rej(err)
+          res(result)
+        })
+      })
+    });
   }
   return Promise.all(goodsPromises)
   .then((values) => {
+    console.log(values)
     // parse 'em and populate
   })
 }
 
 function speedTimeout(timeout) {
+  console.log(`called mining speed with ${miningSpeed}`)
   var value = new BigNumber(0);
   var count = miningSpeed.times(0.002)
   var interval = setInterval(() => {}, 1000)
@@ -131,8 +140,11 @@ function prompt(text, dialog1, callback1, dialog2, callback2) {
 
 function hidePrompt() {
   var prompt = document.getElementById("alert");
-  prompt.removeChild(prompt.firstChild);
-  prompt.style.display = 'none';
+  console.log(`prompt ${prompt.firstChild.type}`)
+  if (prompt.firstChild.type !== 'submit') {
+    prompt.removeChild(prompt.firstChild);
+    prompt.style.display = 'none';
+  }
 }
 
 function detectMetaMask() {
@@ -199,6 +211,7 @@ function startUpUi() {
   updateUiCoinBal();
   speedTimeout(1);
   rerenderClickCycle(new BigNumber(-1));
+  getGoods();
 }
 
 function getPlayerAndSetVars(account) {
@@ -232,9 +245,10 @@ function getPlayerAndSetVars(account) {
   })  
 }
 
-function checkForGame() {
+function checkForGame(first) {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
+      hidePrompt();
       if (accounts.length === 0) {
         prompt("Unable to find your account, is metamask unlocked?", "Ok", checkForGame)
         return;
