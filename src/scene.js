@@ -20,7 +20,7 @@ var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
 var game;
-var totalGoods = 9;
+var totalGoods = 12;
 
 detectMetaMask();
 
@@ -58,8 +58,18 @@ function getGoods() {
   return Promise.all(goodsPromises)
   .then((values) => {
     console.log(values)
+    for (let i = 0; i < totalGoods; i++) {
+      populateGood(i, values);
+    }
     // parse 'em and populate
   })
+}
+
+function populateGood(ident, goods) {
+  var row = document.getElementById("shop" + ident);
+  var coinsColumn = row.getElementsByTagName('p')[1]
+  coinsColumn.innerHTML = goods[ident][3].toString()
+  console.log(goods[ident][3].toString())
 }
 
 function speedTimeout(timeout) {
