@@ -61,15 +61,67 @@ function getGoods() {
     for (let i = 0; i < totalGoods; i++) {
       populateGood(i, values);
     }
+
     // parse 'em and populate
   })
 }
 
+function increment() {
+  var quantity = document.getElementById("quantity");
+  var int = parseInt(quantity.firstChild.textContent);
+  console.log(int)
+  if (int <= 9) {
+    int += 1;
+  }
+  quantity.innerHTML = int;
+}
+
+function decrement() {
+  var quantity = document.getElementById("quantity");
+  var int = parseInt(quantity.firstChild.textContent);
+  if (int > 0) {
+    int -= 1;
+  }
+  quantity.innerHTML = int;
+}
+
+function hideMenu() {
+  var menu = document.getElementById("orderMenu");
+  menu.style.display = 'none';
+}
+
+function orderMenuButtons() {
+  var up = document.getElementById("up");
+  up.onclick = increment;
+  var down = document.getElementById("down");
+  down.onclick = decrement;
+  var cancel = document.getElementById("cancel");
+  cancel.onclick = hideMenu;
+}
+
 function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
+  row.addEventListener('click', () => buyGood(ident), false);
   var coinsColumn = row.getElementsByTagName('p')[1]
   coinsColumn.innerHTML = goods[ident][3].toString()
   console.log(goods[ident][3].toString())
+}
+
+function orderMenu(ident) {
+  var menu = document.getElementById("orderMenu");
+  menu.style.display = 'block';
+  var query = document.getElementById("query");
+  query.innerHTML = `How many ${good[ident][0]}s would you like to buy?`;
+  var buy = document.getElementById("buy");
+}
+
+function buyGood(ident, quantity) {
+  return new Promise((res, rej) => {
+    game.buyGood(ident, quantity, (err, result) => {
+      if (err) return rej(err);
+      res(result)
+    })
+  })
 }
 
 function speedTimeout(timeout) {
@@ -228,6 +280,7 @@ function startUpUi() {
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   getGoods();
+  upAndDownButtons();
 }
 
 function getPlayerAndSetVars(account) {

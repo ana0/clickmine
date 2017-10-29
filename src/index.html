@@ -20,6 +20,19 @@
 				color: #38f209;
 				text-align:center;
 			}
+			button {
+				border: solid;
+				border-width: 5px;
+				border-radius: 0 0 0 0;
+				border-color: #38f209;
+				font-size: 12pt;
+				font-family: 'Orator';
+				color :#38f209;
+				background-color: Transparent;
+			}
+			button:focus {
+				outline: none;
+			}
 			.efficiency {
 				position: absolute;
 				left: 20px;
@@ -50,15 +63,32 @@
 				text-align: left;
 				padding-right: 5px;
 			}
+			#up {
+                padding-top: 5px;
+				padding-right: 7px;
+				padding-left: 7px;
+			}
+			#down {
+				padding-top: 5px;
+				padding-right: 7px;
+				padding-left: 7px;
+			}
+			#cancel {
+				padding-top: 5px;
+				padding-right: 7px;
+				padding-left: 7px;
+			}
+			#buy {
+				padding-top: 5px;
+				padding-right: 7px;
+				padding-left: 7px;
+			}
 			#button1 {
 				border: solid;
 				border-width: 5px;
 				border-radius: 0 0 0 0;
 				border-color: #38f209;
-/*                right: 3%;
-                bottom: 13%;*/
 				margin: 20px;
-				/*position: absolute;*/
 				display: none;
 				float: right;
 				font-size: 12pt;
@@ -73,11 +103,8 @@
 				border-width: 5px;
 				border-radius: 0 0 0 0;
 				border-color: #38f209;
-/*				left: 3%;
-                bottom: 13%;*/
                 margin: 20px;
                 float: left;
-				/*position: absolute;*/
 				display: none;
 				font-size: 12pt;
 				padding-top: 7px;
@@ -92,7 +119,6 @@
 				border-radius: 0 0 0 0;
 				border-color: #38f209;
 				width: 30%;
-				/*height: 30%;*/
 			    left: 0; 
 			    right: 0; 
 			    top: 30%;
@@ -101,6 +127,23 @@
 				opacity: .8;
 				position: absolute;
 				display: none;
+				padding: 15px;
+				font-size: 14pt;
+				background-color: rgba(0,0,0,.5);
+			}
+			#orderMenu {
+				border: solid;
+				border-width: 5px;
+				border-radius: 0 0 0 0;
+				border-color: #38f209;
+				width: 30%;
+			    left: 0; 
+			    right: 0; 
+			    top: 30%;
+			    margin-left: auto; 
+			    margin-right: auto; 
+				opacity: .8;
+				position: absolute;
 				padding: 15px;
 				font-size: 14pt;
 				background-color: rgba(0,0,0,.5);
@@ -143,7 +186,6 @@
                 text-align: right;
 			}
 			#shop table p {
-				/*//display: inline-block;*/
 				padding: 0px;
 				display: inline;
                 line-height: 16px;
@@ -176,6 +218,14 @@
 		<script src="scene.js"></script>
 
 		<div id="alert"><button id="button2"></button><button id="button1"></button></div>
+		<div id="orderMenu">  
+		    <p id="query"></p>
+		    <p id="quantity">0</p>
+            <button id="up">▲</button>
+            <button id="down">▼</button>
+            <button id="cancel">CANCEL</button>
+            <button id="buy">BUY</button>
+        </div>
 		<div id="wallet">
 		    <table class="uiTable">
 		        <tr>
