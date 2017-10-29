@@ -46,14 +46,14 @@ function trimSvgWhitespace() {
 function getGoods() {
   var goodsPromises = []
   for (let i = 0; i < totalGoods; i++) {
-    goodsPromises.push(() => {
-      return new Promise((res, rej) => {
+    goodsPromises.push(
+      new Promise((res, rej) => {
         game.goodsGetter(i, (err, result) => {
           if (err) return rej(err)
           res(result)
         })
       })
-    });
+    );
   }
   return Promise.all(goodsPromises)
   .then((values) => {
@@ -210,6 +210,7 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
+  sliderAdjust('efficiencySlider', miningEfficiency, 1000, 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   getGoods();
 }
