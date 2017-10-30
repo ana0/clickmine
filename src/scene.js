@@ -3,7 +3,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var miningSpeed = new BigNumber(1000);
+var miningSpeed = new BigNumber(30000);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
@@ -22,9 +22,10 @@ var registrar;
 var game;
 var totalGoods = 12;
 var cacheGoods;
+var ownedGoods;
+var specialMessages = {};
 
 detectMetaMask();
-
 
 function trimSvgWhitespace() {
   console.log('called')
@@ -63,6 +64,7 @@ function getGoods() {
     for (let i = 0; i < totalGoods; i++) {
       populateGood(i, values);
     }
+    return;
 
     // parse 'em and populate
   })
@@ -104,7 +106,9 @@ function orderMenuButtons() {
 function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
   row.addEventListener('click', () => orderMenu(ident), false);
-  var coinsColumn = row.getElementsByTagName('p')[1]
+  row.setAttribute('title', `Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}`)
+  //row.addEventListener('mouseover', () => itemDetails(ident))
+  var coinsColumn = row.getElementsByTagName('p')[0]
   coinsColumn.innerHTML = goods[ident][3].toString()
   console.log(goods[ident][3].toString())
 }
@@ -125,13 +129,16 @@ function buyGood(ident) {
     var quantity = document.getElementById("quantity");
     var int = parseInt(quantity.firstChild.textContent);
     ident = parseInt(ident)
-    game.buyGood(ident, int, (err, result) => {
+    hideMenu();
+    return game.buyGood(ident, int, (err, result) => {
       if (err) {
-        console.log(err)
         return rej(err);
       }
-      console.log(result)
-      res(result)
+      console.log('got result from buyGood')
+      return getPlayerAndSetVars(playerAddress)
+      .then(() => {
+        refreshUi();
+      })
     })
   })
 }
@@ -284,6 +291,25 @@ function updateUiCoinBal() {
   coinsCount.innerHTML = balance.toString();
 }
 
+function updateUiSpeed() {
+  var speedDisplay = document.getElementById("speedStat");
+  var baseline = new BigNumber(30000);
+  var reversed = baseline.minus(miningSpeed);
+  speedDisplay.innerHTML = reversed.toString();
+}
+
+function updateUiEfficiency() {
+  var efficiencyDisplay = document.getElementById("efficiencyStat");;
+  efficiencyDisplay.innerHTML = miningEfficiency.toString();
+}
+
+function refreshUi() {
+  updateUiCoinBal();
+  updateUiSpeed();
+  updateUiEfficiency();
+  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+}
+
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
@@ -291,8 +317,11 @@ function startUpUi() {
   console.log(`set efficiency to ${miningEfficiency}`)
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
-  getGoods();
   orderMenuButtons();
+  updateUiSpeed();
+  updateUiEfficiency();
+  getGoods()
+  .then(() => placeGoods())
 }
 
 function getPlayerAndSetVars(account) {
@@ -308,15 +337,16 @@ function getPlayerAndSetVars(account) {
       seed = player[0];
       strippedSeed = seed.substring(2, seed.length);
       miningEfficiency = new BigNumber(player[1]);
-      miningSpeed = new BigNumber(1000);//new BigNumber(player[2]);
+      miningSpeed = new BigNumber(30000);//new BigNumber(player[2]);
       canSmelt = player[3];
+      ownedGoods = player[4];
       lastClick = player[5];
       console.log(lastClick.toString())
       numClicks = new BigNumber(player[6]);
       console.log(`numclicks is ${numClicks}`)
       game.balanceOf(account, (errr, bal) => {
         if (err) return rej(err);
-        console.log('got bal')
+        console.log(`got bal ${bal}`)
         balance = new BigNumber(bal);
         updateUiCoinBal();
         sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
@@ -360,12 +390,12 @@ function random(min, max) {
   return Math.floor(x * (max - min) + min);
 }
 
-function getTexture(label, identfier) {
+function getTexture(label, identfier, pngFlag) {
   return new Promise ((resolve, reject) => {
     const onLoad = (texture) => resolve (texture);
     const onError = (event) => reject (event);
     return new THREE.TextureLoader().load(
-      `assets/${label}${identfier}.jpg`, onLoad, () => {}, onError);
+      `assets/${label}${identfier ? identfier : ''}.${pngFlag ? 'png' : 'jpg'}`, onLoad, () => {}, onError);
   })
 }
 
@@ -384,11 +414,25 @@ function makeGroundMaterial(texture, alpha, geometry) {
   return mesh;
 }
 
+function makeItemMaterial(texture, geometry) {
+  var material = new THREE.MeshBasicMaterial({
+    color: `rgb(${darkness}, ${darkness}, ${darkness})`,
+    side: THREE.FrontSide,
+    depthTest: false,
+    transparent: true,
+    map: texture,
+  });
+  var mesh = new THREE.Mesh( geometry, material );
+  //mesh.position.y = 5 * 0.25;
+  mesh.rotation.x = - Math.PI / 2;
+  return mesh;
+}
+
 function genQuad(label, identfier, zIndex) {
   var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
   return getTexture(label, identfier)
   .then(texture => {
-    return getTexture("Mask", 0)
+    return getTexture("Mask", "0")
     .then((alpha) => {
       mesh = makeGroundMaterial(texture, alpha, geometry)
       scene.add(mesh);
@@ -410,6 +454,26 @@ function genQuadNoMask(label, identfier, zIndex) {
   })
 }
 
+function genQuadItem(label, identfier, zIndex) {
+  var geometry = new THREE.PlaneGeometry( 20, 20 );
+  return getTexture(label, identfier, true)
+  .then(texture => {
+   
+    mesh = makeItemMaterial(texture, geometry)
+    var randx = random((window.innerWidth/4) * -1, window.innerWidth/4);
+    seedInt += 1;
+    var randz = random((window.innerHeight/4) * -1, window.innerHeight/4);
+    console.log(randx)
+    console.log(randz)
+    seedInt += 1;
+    mesh.position.x = randx;
+    mesh.position.z = randz;
+    mesh.position.y = 20;
+    scene.add(mesh);
+    return mesh;
+  })
+}
+
 function updateQuad(quad, layer) {
   getTexture("Mask", layer)
   .then((alpha) => {
@@ -427,12 +491,27 @@ function rerenderClickCycle(counter) {
   })
 }
 
-function clickCycle (scopedNumClicks) {
+function placeGoods() {
+  console.log(ownedGoods)
+  for (let i = 0; i < ownedGoods.length; i++) {
+    placeGood(i, ownedGoods[i])
+  }
+}
+
+function placeGood(goodIdent, numberOwned) {
+  console.log(cacheGoods)
+  var name = cacheGoods[goodIdent][0].toLowerCase().replace(/ /g, '-');
+  for (let i = 0; i < numberOwned; i++) {
+    genQuadItem('bigreddot', null, 100);
+  }
+}
+
+function clickCycle(scopedNumClicks) {
   // var layer = numClicks;
   console.log(scopedNumClicks.toString())
   if (scopedNumClicks.equals(0)) {
     console.log('equals zero')
-    return genQuadNoMask("Grass", 0, 0)
+    return genQuadNoMask("Grass", "0", 0)
     .then((newMesh) => {
       console.log('pushing to dirtlayers')
       dirtLayers.push(newMesh);
@@ -476,6 +555,7 @@ function click () {
   game.click((err, result) => {
     getPlayerAndSetVars(playerAddress)
     .then(() => {
+      refreshUi();
       clickCycle(numClicks);
       speedTimeout(1);
       clickAllowed = false;

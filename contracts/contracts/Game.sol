@@ -41,7 +41,7 @@ contract Game is ClickMineToken {
     //no mercy
     games[msg.sender].seed = block.blockhash(block.number - 1);
     games[msg.sender].miningEfficiency = 1;
-    games[msg.sender].miningSpeed = 60000;
+    games[msg.sender].miningSpeed = 30000;
     games[msg.sender].canSmelt = false;
     games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
     games[msg.sender].lastClick = block.timestamp;
