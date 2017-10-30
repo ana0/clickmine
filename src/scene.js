@@ -16,7 +16,7 @@ var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = ''
-var registrarAddress = "0xcd8af56d71742ef278d56d95c8c8e901749d315c"
+var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
 var game;
@@ -278,9 +278,10 @@ function createContracts() {
 function beginGame() {
   hidePrompt();
   game.beginGame((err, result) => {
-    getPlayerAndSetVars(playerAddress)
+    return getPlayerAndSetVars(playerAddress)
     .then(() => {
-      startUpUi()
+      console.log('calling start up')
+      return startUpUi()
     })
     // startUpUi()
   })
@@ -329,6 +330,7 @@ function getPlayerAndSetVars(account) {
     console.log('getting player')
     game.playerGetter(account, (err, player) => {
       if (err) return rej(err);
+      console.log(player)
       const seedCheck = new BigNumber(player[0])
       if (seedCheck.equals(0)) {
         console.log('seed check is zero')
@@ -350,6 +352,7 @@ function getPlayerAndSetVars(account) {
         balance = new BigNumber(bal);
         updateUiCoinBal();
         sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+        console.log('returning from player set vars')
         res(true);
       })
     })

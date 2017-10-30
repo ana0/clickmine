@@ -100,15 +100,11 @@ contract Game is ClickMineToken {
       return c;
   }
 
-    // function socialClick(address _friend) {
-    //   //costs small amount of coin
-    //   //mints more coins than costs at friends address
-    //   //subject to miningSpeed and miningEfficiency
-    // }
-
-    // function smelt(address _friend) {
-    //   //turns ephemeral coin into real coin . . . but how is it different from click?
-    // }
+  function smelt(uint256 _value) external returns (bool success) {
+    require(games[msg.sender].canSmelt);
+    mint(msg.sender, _value);
+    return true;
+  }
 
   function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) 
   {
