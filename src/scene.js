@@ -1,9 +1,10 @@
 var seed = "0x5d52bc658e15e9cade11cc73503f3e083988d38c9fa42806caf40c353368ff4e";
+var txQueue = [];
 var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var miningSpeed = new BigNumber(30000);
+var miningSpeed = new BigNumber(1000);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
@@ -22,8 +23,21 @@ var registrar;
 var game;
 var totalGoods = 12;
 var cacheGoods;
-var ownedGoods;
-var specialMessages = {};
+var ownedGoods = [];
+var specialMessages = {
+  '0': "A humble beginning \n",
+  '1': 'This venture is sure to pan out ... \n',
+  '2': 'Your first step toward total automation! \n',
+  '3': 'Deceptively powerful ... \n',
+  '4': 'The marketing department sold you on this one ... you\'re not too sure what it is yet\n',
+  '5': 'Sluice x3! 14 humans without MBAs lose their jobs \n',
+  '6': 'Pareto efficiency tax \n',
+  // '7': '',
+  '8': 'Keep public sentiment on your side as you pillage the token fields! \n',
+  // '9': '',
+  // '10': '',
+  // '11': ''
+};
 
 detectMetaMask();
 
@@ -44,6 +58,25 @@ function trimSvgWhitespace() {
     svg.setAttribute("viewBox", viewBox);
   }
 }
+
+function getTransactionReceiptMined(txHash) {
+  function transactionReceiptAsync(resolve, reject) {
+    web3.eth.getTransactionReceipt(txHash, (error, receipt) => {
+        if (error) {
+            reject(error);
+        } else if (receipt == null) {
+            setTimeout(
+                () => transactionReceiptAsync(resolve, reject),
+                100);
+        } else {
+            console.log('got receipt')
+            console.log(receipt)
+            resolve(receipt);
+        }
+    });
+  };
+  return new Promise(transactionReceiptAsync);
+};
 
 function getGoods() {
   var goodsPromises = []
@@ -106,7 +139,7 @@ function orderMenuButtons() {
 function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
   row.addEventListener('click', () => orderMenu(ident), false);
-  row.setAttribute('title', `Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}`)
+  row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}`)
   //row.addEventListener('mouseover', () => itemDetails(ident))
   var coinsColumn = row.getElementsByTagName('p')[0]
   coinsColumn.innerHTML = goods[ident][3].toString()
@@ -130,14 +163,19 @@ function buyGood(ident) {
     var int = parseInt(quantity.firstChild.textContent);
     ident = parseInt(ident)
     hideMenu();
+    console.log('about to buy good')
     return game.buyGood(ident, int, (err, result) => {
       if (err) {
         return rej(err);
       }
-      console.log('got result from buyGood')
-      return getPlayerAndSetVars(playerAddress)
+      return getTransactionReceiptMined(result)
       .then(() => {
-        refreshUi();
+        console.log('got receipt from buy')
+        return getPlayerAndSetVars(playerAddress)
+        .then(() => {
+          refreshUi();
+          placeGood(ident, 1);
+        })
       })
     })
   })
@@ -278,12 +316,15 @@ function createContracts() {
 function beginGame() {
   hidePrompt();
   game.beginGame((err, result) => {
-    return getPlayerAndSetVars(playerAddress)
+    if (err) { throw err; }
+    return getTransactionReceiptMined(result)
     .then(() => {
-      console.log('calling start up')
-      return startUpUi()
-    })
-    // startUpUi()
+      return getPlayerAndSetVars(playerAddress)
+      .then(() => {
+        console.log('calling start up')
+        return startUpUi()
+      })
+    }).catch(e => { throw e; })
   })
 }
 
@@ -311,6 +352,14 @@ function refreshUi() {
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
 }
 
+function getPollingBalance() {
+  setInterval(() => {
+    game.balanceOf(playerAddress, (err, result) => {
+      console.log(`polling balance of ${result}`)
+    });
+  }, 200);
+}
+
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
@@ -323,40 +372,44 @@ function startUpUi() {
   updateUiEfficiency();
   getGoods()
   .then(() => placeGoods())
+  //getPollingBalance();
 }
 
 function getPlayerAndSetVars(account) {
   return new Promise((res, rej) => {
     console.log('getting player')
-    game.playerGetter(account, (err, player) => {
-      if (err) return rej(err);
-      console.log(player)
-      const seedCheck = new BigNumber(player[0])
-      if (seedCheck.equals(0)) {
-        console.log('seed check is zero')
-        return res(false);
-      } 
-      seed = player[0];
-      strippedSeed = seed.substring(2, seed.length);
-      miningEfficiency = new BigNumber(player[1]);
-      miningSpeed = new BigNumber(30000);//new BigNumber(player[2]);
-      canSmelt = player[3];
-      ownedGoods = player[4];
-      lastClick = player[5];
-      console.log(lastClick.toString())
-      numClicks = new BigNumber(player[6]);
-      console.log(`numclicks is ${numClicks}`)
-      game.balanceOf(account, (errr, bal) => {
+    console.log(`account is ${account}`)
+    setTimeout(() => {
+      game.playerGetter(account, (err, player) => {
         if (err) return rej(err);
-        console.log(`got bal ${bal}`)
-        balance = new BigNumber(bal);
-        updateUiCoinBal();
-        sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
-        console.log('returning from player set vars')
-        res(true);
+        console.log(player)
+        const seedCheck = new BigNumber(player[0])
+        if (seedCheck.equals(0)) {
+          console.log('seed check is zero')
+          return res(false);
+        } 
+        seed = player[0];
+        strippedSeed = seed.substring(2, seed.length);
+        miningEfficiency = new BigNumber(player[1]);
+        miningSpeed = new BigNumber(1000);//new BigNumber(player[2]);
+        canSmelt = player[3];
+        ownedGoods = player[4];
+        lastClick = player[5];
+        console.log(lastClick.toString())
+        numClicks = new BigNumber(player[6]);
+        console.log(`numclicks is ${numClicks}`)
+        game.balanceOf(account, (errr, bal) => {
+          if (err) return rej(err);
+          console.log(`got bal ${bal}`)
+          balance = new BigNumber(bal);
+          updateUiCoinBal();
+          sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+          console.log('returning from player set vars')
+          res(true);
+        })
       })
-    })
-  })  
+    }, 1000) 
+  })
 }
 
 function checkForGame(first) {
@@ -419,7 +472,7 @@ function makeGroundMaterial(texture, alpha, geometry) {
 
 function makeItemMaterial(texture, geometry) {
   var material = new THREE.MeshBasicMaterial({
-    color: `rgb(${darkness}, ${darkness}, ${darkness})`,
+    color: `rgb(${255}, ${255}, ${255})`,
     side: THREE.FrontSide,
     depthTest: false,
     transparent: true,
@@ -495,14 +548,12 @@ function rerenderClickCycle(counter) {
 }
 
 function placeGoods() {
-  console.log(ownedGoods)
   for (let i = 0; i < ownedGoods.length; i++) {
     placeGood(i, ownedGoods[i])
   }
 }
 
 function placeGood(goodIdent, numberOwned) {
-  console.log(cacheGoods)
   var name = cacheGoods[goodIdent][0].toLowerCase().replace(/ /g, '-');
   for (let i = 0; i < numberOwned; i++) {
     genQuadItem('bigreddot', null, 100);
@@ -555,18 +606,21 @@ function click () {
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
     return;
   }
-  game.click((err, result) => {
-    getPlayerAndSetVars(playerAddress)
+  console.log('about to call click')
+  return game.click((err, result) => {
+    return getTransactionReceiptMined(result)
     .then(() => {
-      refreshUi();
-      clickCycle(numClicks);
-      speedTimeout(1);
-      clickAllowed = false;
+
+      return getPlayerAndSetVars(playerAddress)
+      .then(() => {
+        console.log('about to refresh ui')
+        refreshUi();
+        clickCycle(numClicks);
+        speedTimeout(1);
+        clickAllowed = false;
+      })
     })
   })
-  // clickCycle();
-  // console.log(numClicks)
-  // numClicks = numClicks.plus(new BigNumber(1));
 }
 
 function makeWallet() {
