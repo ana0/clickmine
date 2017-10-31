@@ -11,12 +11,12 @@ var balance = new BigNumber(0);
 var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
-var maxMask = 5;
+var maxMask = 6;
 var darkness = 255;
 var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
-var playerAddress = ''
+var playerAddress = '0xa0dcdee29c0456e1418e71e2ad86b03dfcde07e2'
 var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
@@ -24,6 +24,7 @@ var game;
 var totalGoods = 12;
 var cacheGoods;
 var ownedGoods = [];
+var web3;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
@@ -164,7 +165,7 @@ function buyGood(ident) {
     ident = parseInt(ident)
     hideMenu();
     // console.log('about to buy good')
-    return game.buyGood(ident, int, (err, result) => {
+    return game.buyGood(ident, int, {gas: "210000"}, (err, result) => {
       if (err) {
         return rej(err);
       }
@@ -272,20 +273,27 @@ function hidePrompt() {
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
+      var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
+      web3 = new Web3(w)
+      //var web3 = new Web3();
+      console.log(web3)
+      var playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
+      //var eth = web3.eth;
+      //web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    if (typeof web3 !== 'undefined') {
+    //if (typeof web3 !== 'undefined') {
       // Use Mist/MetaMask's provider
-      window.web3 = new Web3(web3.currentProvider);
-      console.log('Found MetaMask')
+      // window.web3 = new Web3(web3.currentProvider);
+      // console.log('Found MetaMask')
       allowedBrowser = true;
       init();
       canvas = document.getElementById('mainCanvas')
       canvas.addEventListener('click', click, false);
       animate();
-    } else {
-      console.log('No web3? You should consider trying MetaMask!')
-      prompt("You must have a dapp browser or metamask installed to play!", "Ok", hidePrompt)
-    }
+    // } else {
+    //   console.log('No web3? You should consider trying MetaMask!')
+    //   prompt("You must have a dapp browser or metamask installed to play!", "Ok", hidePrompt)
+    // }
     // Now you can start your app & access web3 freely:
 
   })
@@ -315,7 +323,9 @@ function createContracts() {
 
 function beginGame() {
   hidePrompt();
-  game.beginGame((err, result) => {
+  console.log(playerAddress)
+  console.log(gameAddress)
+  game.beginGame({gas: "210000"}, (err, result) => {
     if (err) { throw err; }
     return getTransactionReceiptMined(result)
     .then(() => {
@@ -372,7 +382,7 @@ function startUpUi() {
   updateUiEfficiency();
   getGoods()
   .then(() => placeGoods())
-  getPollingBalance();
+  //getPollingBalance();
 }
 
 function getPlayerAndSetVars(account) {
@@ -397,7 +407,7 @@ function getPlayerAndSetVars(account) {
         lastClick = player[5];
         // console.log(lastClick.toString())
         numClicks = new BigNumber(player[6]);
-        // console.log(`numclicks is ${numClicks}`)
+        console.log(`numclicks is ${numClicks}`)
         game.balanceOf(account, (errr, bal) => {
           if (err) return rej(err);
           // console.log(`got bal ${bal}`)
@@ -431,18 +441,24 @@ function checkForGame(first) {
   })
 }
 
-function getSeed(seedInt) {
-  if (seedInt >= strippedSeed.length) { 
+function getSeed() {
+  console.log(`called with seedInt ${seedInt}`)
+  if (seedInt >= strippedSeed.length - 1) { 
+    console.log(seedInt)
+    console.log('resetting seedInt')
+    console.log(strippedSeed.length)
     seedInt = 0;
   } else {
-    seedInt += 1;
+    console.log('incrementing seedInt')
+    seedInt ++;
   }
+  console.log(seedInt)
   console.log(`0x${strippedSeed.charAt(seedInt)}`)
   return `0x${strippedSeed.charAt(seedInt)}`;
 }
 
 function random(min, max) {
-  var x = Math.abs(Math.sin(getSeed(seedInt)));
+  var x = Math.abs(Math.sin(getSeed()));
   return Math.floor(x * (max - min) + min);
 }
 
@@ -452,6 +468,20 @@ function getTexture(label, identfier) {
     const onError = (event) => reject (event);
     return new THREE.TextureLoader().load(
       `assets/${label}${identfier}.jpg`, onLoad, () => {}, onError);
+  })
+}
+
+function getMaskTexture(label, identfier) {
+  return new Promise ((resolve, reject) => {
+    let rand;
+    if (identfier !== "Null") {
+      rand = random(0, 6);
+      //seedInt = seedInt + 1;
+    }
+    const onLoad = (texture) => resolve (texture);
+    const onError = (event) => reject (event);
+    return new THREE.TextureLoader().load(
+      `assets/${label}${identfier}-${rand}.jpg`, onLoad, () => {}, onError);
   })
 }
 
@@ -498,7 +528,7 @@ function genQuad(label, identfier, zIndex) {
   var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
   return getTexture(label, identfier)
   .then(texture => {
-    return getTexture("Mask", "0")
+    return getMaskTexture("Mask", "0")
     .then((alpha) => {
       mesh = makeGroundMaterial(texture, alpha, geometry)
       scene.add(mesh);
@@ -526,11 +556,11 @@ function genQuadItem(label) {
   .then(texture => {
     mesh = makeItemMaterial(texture, geometry)
     var randx = random((window.innerWidth/4) * -1, window.innerWidth/4);
-    seedInt += 1;
+    //seedInt += 1;
     var randz = random((window.innerHeight/4) * -1, window.innerHeight/4);
     console.log(randx)
     console.log(randz)
-    seedInt += 1;
+    //seedInt += 1;
     mesh.position.x = randx;
     mesh.position.z = randz;
     mesh.position.y = 30;
@@ -541,7 +571,7 @@ function genQuadItem(label) {
 }
 
 function updateQuad(quad, layer) {
-  getTexture("Mask", layer)
+  getMaskTexture("Mask", layer)
   .then((alpha) => {
     quad.position.z = layer;
     quad.material.alphaMap = alpha
@@ -586,6 +616,7 @@ function clickCycle(scopedNumClicks) {
   }
   if (dirtLayers.length > maxMask) {
     // console.log('removing item from dirtLayers')
+    scene.remove(dirtLayers[0])
     dirtLayers.splice(0, 1);
   }
   // console.log('darkness is ' + darkness)
@@ -595,14 +626,14 @@ function clickCycle(scopedNumClicks) {
     darkness = 0;
   }
   var layer = dirtLayers.length;
-  // console.log(`dirt layers is ${dirtLayers.length}`)
+  console.log(`dirt layers is ${dirtLayers.length}`)
   for (let i = 0; i < dirtLayers.length; i++) {
     // console.log(`called updateQuad layer is ${layer}`)
     updateQuad(dirtLayers[i], layer);
     layer -= 1;
   } 
   var rand = random(0, 8);
-  seedInt += 1;
+  //seedInt += 1;
   // console.log(rand)
   return genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
@@ -619,7 +650,9 @@ function click () {
     return;
   }
   // console.log('about to call click')
-  return game.click((err, result) => {
+  return game.click({gas: "210000"}, (err, result) => {
+    if (err) console.log(err)
+    console.log(result)
     return getTransactionReceiptMined(result)
     .then(() => {
 
