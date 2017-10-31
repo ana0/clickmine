@@ -11,12 +11,12 @@ var balance = new BigNumber(0);
 var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
-var maxMask = 6;
+var maxMask = 5;
 var darkness = 255;
 var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
-var playerAddress = '0xa0dcdee29c0456e1418e71e2ad86b03dfcde07e2'
+var playerAddress = ''
 var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
 var gameAddress = ""
 var registrar;
@@ -172,7 +172,7 @@ function buyGood(ident) {
       return getTransactionReceiptMined(result)
       .then(() => {
         // console.log('got receipt from buy')
-        return getPlayerAndSetVars(playerAddress)
+        return getPlayerAndSetVars()
         .then(() => {
           refreshUi();
           placeGood(ident, 1);
@@ -277,7 +277,8 @@ function detectMetaMask() {
       web3 = new Web3(w)
       //var web3 = new Web3();
       console.log(web3)
-      var playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
+      playerAddress = web3.eth.defaultAccount = web3.eth.accounts[1];
+      console.log(`at detect playerAddress is ${playerAddress}`)
       //var eth = web3.eth;
       //web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
@@ -325,11 +326,11 @@ function beginGame() {
   hidePrompt();
   console.log(playerAddress)
   console.log(gameAddress)
-  game.beginGame({gas: "210000"}, (err, result) => {
+  game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) { throw err; }
     return getTransactionReceiptMined(result)
     .then(() => {
-      return getPlayerAndSetVars(playerAddress)
+      return getPlayerAndSetVars()
       .then(() => {
         console.log('calling start up')
         return startUpUi()
@@ -359,7 +360,7 @@ function refreshUi() {
   updateUiCoinBal();
   updateUiSpeed();
   updateUiEfficiency();
-  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
 }
 
 function getPollingBalance() {
@@ -375,7 +376,7 @@ function startUpUi() {
   updateUiCoinBal();
   speedTimeout(1);
   // console.log(`set efficiency to ${miningEfficiency}`)
-  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   orderMenuButtons();
   updateUiSpeed();
@@ -385,12 +386,13 @@ function startUpUi() {
   //getPollingBalance();
 }
 
-function getPlayerAndSetVars(account) {
+function getPlayerAndSetVars() {
   return new Promise((res, rej) => {
     // console.log('getting player')
     // console.log(`account is ${account}`)
     // setTimeout(() => {
-      game.playerGetter(account, (err, player) => {
+    console.log(`playerAddress is ${playerAddress}`)
+      game.playerGetter(playerAddress, (err, player) => {
         if (err) return rej(err);
         // console.log(player)
         const seedCheck = new BigNumber(player[0])
@@ -408,7 +410,7 @@ function getPlayerAndSetVars(account) {
         // console.log(lastClick.toString())
         numClicks = new BigNumber(player[6]);
         console.log(`numclicks is ${numClicks}`)
-        game.balanceOf(account, (errr, bal) => {
+        game.balanceOf(playerAddress, (errr, bal) => {
           if (err) return rej(err);
           // console.log(`got bal ${bal}`)
           balance = new BigNumber(bal);
@@ -425,13 +427,14 @@ function getPlayerAndSetVars(account) {
 function checkForGame(first) {
   return new Promise((res, rej) => {
     web3.eth.getAccounts((err, accounts) => {
+      console.log(accounts)
       hidePrompt();
       if (accounts.length === 0) {
         prompt("Unable to find your account, is metamask unlocked?", "Ok", checkForGame)
         return;
       }
-      playerAddress = accounts[0];
-      getPlayerAndSetVars(playerAddress)
+      //playerAddress = accounts[0];
+      getPlayerAndSetVars()
       .then((player) => {
         console.log(player)
         if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
@@ -481,7 +484,7 @@ function getMaskTexture(label, identfier) {
     const onLoad = (texture) => resolve (texture);
     const onError = (event) => reject (event);
     return new THREE.TextureLoader().load(
-      `assets/${label}${identfier}-${rand}.jpg`, onLoad, () => {}, onError);
+      `assets/${label}${identfier}.jpg`, onLoad, () => {}, onError);
   })
 }
 
@@ -656,7 +659,7 @@ function click () {
     return getTransactionReceiptMined(result)
     .then(() => {
 
-      return getPlayerAndSetVars(playerAddress)
+      return getPlayerAndSetVars()
       .then(() => {
         // console.log('about to refresh ui')
         refreshUi();
