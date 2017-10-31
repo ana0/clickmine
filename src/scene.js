@@ -92,7 +92,7 @@ function getGoods() {
   }
   return Promise.all(goodsPromises)
   .then((values) => {
-    console.log(values)
+    // console.log(values)
     cacheGoods = values;
     for (let i = 0; i < totalGoods; i++) {
       populateGood(i, values);
@@ -143,14 +143,14 @@ function populateGood(ident, goods) {
   //row.addEventListener('mouseover', () => itemDetails(ident))
   var coinsColumn = row.getElementsByTagName('p')[0]
   coinsColumn.innerHTML = goods[ident][3].toString()
-  console.log(goods[ident][3].toString())
+  // console.log(goods[ident][3].toString())
 }
 
 function orderMenu(ident) {
   var menu = document.getElementById("orderMenu");
   menu.style.display = 'block';
   var query = document.getElementById("query");
-  console.log(cacheGoods)
+  // console.log(cacheGoods)
   query.innerHTML = `How many ${cacheGoods[ident][0]}s would you like to buy?`;
   var buy = document.getElementById("buy");
   // buy.removeEventListener('click');
@@ -163,14 +163,14 @@ function buyGood(ident) {
     var int = parseInt(quantity.firstChild.textContent);
     ident = parseInt(ident)
     hideMenu();
-    console.log('about to buy good')
+    // console.log('about to buy good')
     return game.buyGood(ident, int, (err, result) => {
       if (err) {
         return rej(err);
       }
       return getTransactionReceiptMined(result)
       .then(() => {
-        console.log('got receipt from buy')
+        // console.log('got receipt from buy')
         return getPlayerAndSetVars(playerAddress)
         .then(() => {
           refreshUi();
@@ -182,7 +182,7 @@ function buyGood(ident) {
 }
 
 function speedTimeout(timeout) {
-  console.log(`called mining speed with ${miningSpeed}`)
+  // console.log(`called mining speed with ${miningSpeed}`)
   var value = new BigNumber(0);
   var count = miningSpeed.times(0.002)
   var interval = setInterval(() => {}, 1000)
@@ -197,7 +197,7 @@ function speedTimeout(timeout) {
   };
 
   var adjustableTimeout = () => {
-    console.log('adjustable called')
+    // console.log('adjustable called')
     value = new BigNumber(0);
     clearInterval(interval)
     interval = setInterval(draw, miningSpeed/230)
@@ -266,7 +266,7 @@ function prompt(text, dialog1, callback1, dialog2, callback2) {
 
 function hidePrompt() {
   var prompt = document.getElementById("alert");
-  console.log(`prompt ${prompt.firstChild.type}`)
+  // console.log(`prompt ${prompt.firstChild.type}`)
   prompt.style.display = 'none';
 }
 
@@ -364,7 +364,7 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
-  console.log(`set efficiency to ${miningEfficiency}`)
+  // console.log(`set efficiency to ${miningEfficiency}`)
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   orderMenuButtons();
@@ -372,20 +372,20 @@ function startUpUi() {
   updateUiEfficiency();
   getGoods()
   .then(() => placeGoods())
-  //getPollingBalance();
+  getPollingBalance();
 }
 
 function getPlayerAndSetVars(account) {
   return new Promise((res, rej) => {
-    console.log('getting player')
-    console.log(`account is ${account}`)
-    setTimeout(() => {
+    // console.log('getting player')
+    // console.log(`account is ${account}`)
+    // setTimeout(() => {
       game.playerGetter(account, (err, player) => {
         if (err) return rej(err);
-        console.log(player)
+        // console.log(player)
         const seedCheck = new BigNumber(player[0])
         if (seedCheck.equals(0)) {
-          console.log('seed check is zero')
+          // console.log('seed check is zero')
           return res(false);
         } 
         seed = player[0];
@@ -395,20 +395,20 @@ function getPlayerAndSetVars(account) {
         canSmelt = player[3];
         ownedGoods = player[4];
         lastClick = player[5];
-        console.log(lastClick.toString())
+        // console.log(lastClick.toString())
         numClicks = new BigNumber(player[6]);
-        console.log(`numclicks is ${numClicks}`)
+        // console.log(`numclicks is ${numClicks}`)
         game.balanceOf(account, (errr, bal) => {
           if (err) return rej(err);
-          console.log(`got bal ${bal}`)
+          // console.log(`got bal ${bal}`)
           balance = new BigNumber(bal);
           updateUiCoinBal();
           sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
-          console.log('returning from player set vars')
+          // console.log('returning from player set vars')
           res(true);
         })
       })
-    }, 1000) 
+    // }, 1000) 
   })
 }
 
@@ -446,12 +446,22 @@ function random(min, max) {
   return Math.floor(x * (max - min) + min);
 }
 
-function getTexture(label, identfier, pngFlag) {
+function getTexture(label, identfier) {
   return new Promise ((resolve, reject) => {
     const onLoad = (texture) => resolve (texture);
     const onError = (event) => reject (event);
     return new THREE.TextureLoader().load(
-      `assets/${label}${identfier ? identfier : ''}.${pngFlag ? 'png' : 'jpg'}`, onLoad, () => {}, onError);
+      `assets/${label}${identfier}.jpg`, onLoad, () => {}, onError);
+  })
+}
+
+function getItemTexture(label) {
+  console.log(`trying to load texture ${label}`)
+  return new Promise ((resolve, reject) => {
+    const onLoad = (texture) => resolve (texture);
+    const onError = (event) => reject (event);
+    return new THREE.TextureLoader().load(
+      `assets/win95/${label}.png`, onLoad, () => {}, onError);
   })
 }
 
@@ -510,11 +520,10 @@ function genQuadNoMask(label, identfier, zIndex) {
   })
 }
 
-function genQuadItem(label, identfier, zIndex) {
-  var geometry = new THREE.PlaneGeometry( 20, 20 );
-  return getTexture(label, identfier, true)
+function genQuadItem(label) {
+  var geometry = new THREE.PlaneGeometry( 30, 30 );
+  return getItemTexture(label)
   .then(texture => {
-   
     mesh = makeItemMaterial(texture, geometry)
     var randx = random((window.innerWidth/4) * -1, window.innerWidth/4);
     seedInt += 1;
@@ -524,7 +533,8 @@ function genQuadItem(label, identfier, zIndex) {
     seedInt += 1;
     mesh.position.x = randx;
     mesh.position.z = randz;
-    mesh.position.y = 20;
+    mesh.position.y = 30;
+    console.log(`about to place ${label}`)
     scene.add(mesh);
     return mesh;
   })
@@ -554,44 +564,46 @@ function placeGoods() {
 }
 
 function placeGood(goodIdent, numberOwned) {
+  console.log('called placegood')
+  console.log(`numberOwned is ${numberOwned}`)
   var name = cacheGoods[goodIdent][0].toLowerCase().replace(/ /g, '-');
   for (let i = 0; i < numberOwned; i++) {
-    genQuadItem('bigreddot', null, 100);
+    genQuadItem(name);
   }
 }
 
 function clickCycle(scopedNumClicks) {
   // var layer = numClicks;
-  console.log(scopedNumClicks.toString())
+  // console.log(scopedNumClicks.toString())
   if (scopedNumClicks.equals(0)) {
-    console.log('equals zero')
+    // console.log('equals zero')
     return genQuadNoMask("Grass", "0", 0)
     .then((newMesh) => {
-      console.log('pushing to dirtlayers')
+      // console.log('pushing to dirtlayers')
       dirtLayers.push(newMesh);
       return;
     })
   }
   if (dirtLayers.length > maxMask) {
-    console.log('removing item from dirtLayers')
+    // console.log('removing item from dirtLayers')
     dirtLayers.splice(0, 1);
   }
-  console.log('darkness is ' + darkness)
+  // console.log('darkness is ' + darkness)
   if (scopedNumClicks.lessThan(6) && darkness > 30) {
     darkness -= 45;
   } else if (darkness <= 30) {
     darkness = 0;
   }
   var layer = dirtLayers.length;
-  console.log(`dirt layers is ${dirtLayers.length}`)
+  // console.log(`dirt layers is ${dirtLayers.length}`)
   for (let i = 0; i < dirtLayers.length; i++) {
-    console.log(`called updateQuad layer is ${layer}`)
+    // console.log(`called updateQuad layer is ${layer}`)
     updateQuad(dirtLayers[i], layer);
     layer -= 1;
   } 
   var rand = random(0, 8);
   seedInt += 1;
-  console.log(rand)
+  // console.log(rand)
   return genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
     dirtLayers.push(newMesh);
@@ -606,14 +618,14 @@ function click () {
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
     return;
   }
-  console.log('about to call click')
+  // console.log('about to call click')
   return game.click((err, result) => {
     return getTransactionReceiptMined(result)
     .then(() => {
 
       return getPlayerAndSetVars(playerAddress)
       .then(() => {
-        console.log('about to refresh ui')
+        // console.log('about to refresh ui')
         refreshUi();
         clickCycle(numClicks);
         speedTimeout(1);
