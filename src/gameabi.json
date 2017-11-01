@@ -16,6 +16,24 @@ var gameAbi = [
       "constant": false,
       "inputs": [
         {
+          "name": "goodIdentifier",
+          "type": "uint256"
+        }
+      ],
+      "name": "buyGood",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "_spender",
           "type": "address"
         },
@@ -35,28 +53,6 @@ var gameAbi = [
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "goodIdentifier",
-          "type": "uint256"
-        },
-        {
-          "name": "quantity",
-          "type": "uint256"
-        }
-      ],
-      "name": "buyGood",
-      "outputs": [
-        {
-          "name": "success",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
       "constant": true,
       "inputs": [],
       "name": "totalSupply",
@@ -64,6 +60,24 @@ var gameAbi = [
         {
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "smelt",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -177,24 +191,6 @@ var gameAbi = [
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_toBuy",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "buyGoods",
-      "outputs": [
-        {
-          "name": "success",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
       "constant": true,
       "inputs": [
         {
@@ -245,6 +241,10 @@ var gameAbi = [
         {
           "name": "numClicks",
           "type": "uint256"
+        },
+        {
+          "name": "hasGame",
+          "type": "bool"
         }
       ],
       "payable": false,

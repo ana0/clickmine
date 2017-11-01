@@ -13,7 +13,7 @@ contract Game is ClickMineToken {
     uint256[12] ownedGoods;
     uint lastClick;
     uint numClicks;
-    uint hasGame;
+    bool hasGame;
   }
   
   mapping (address => Player) public games;
@@ -48,6 +48,7 @@ contract Game is ClickMineToken {
     games[msg.sender].lastClick = block.timestamp;
     games[msg.sender].numClicks = 0;
     games[msg.sender].hasGame = true;
+    balances[msg.sender] = 0;
     return true;
   }
 
@@ -64,6 +65,13 @@ contract Game is ClickMineToken {
     return true;
   }
 
+   function mul(uint256 a, uint256 b) internal constant returns (uint256) 
+   {
+       uint256 c = a * b;
+       assert(a == 0 || c / a == b);
+       return c;
+  }
+
   function buyGood(uint256 goodIdentifier) public returns (bool success)
   {
     //buy any number of a single good
@@ -72,7 +80,7 @@ contract Game is ClickMineToken {
     require(balances[msg.sender] >= totalCost);
     require(balances[msg.sender] - totalCost <= balances[msg.sender]);
     require(games[msg.sender].miningEfficiency + totalEfficiency >= games[msg.sender].miningEfficiency);
-    require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
+    require(games[msg.sender].ownedGoods[goodIdentifier] + 1 > games[msg.sender].ownedGoods[goodIdentifier]);
     uint256 totalEfficiency = goods[goodIdentifier].efficiencyBoost;
     uint256 totalSpeed = goods[goodIdentifier].speedBoost;
     uint256 totalCost = goods[goodIdentifier].cost;
@@ -80,7 +88,7 @@ contract Game is ClickMineToken {
     balances[msg.sender] -= totalCost;
     games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
     // games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
-    games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
+    games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + 1;
     if (games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed) {
       games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
     }

@@ -172,7 +172,7 @@ function buyGood(ident) {
     ident = parseInt(ident)
     hideMenu();
     // console.log('about to buy good')
-    return game.buyGood(ident, int, {gas: "210000"}, (err, result) => {
+    return game.buyGood(ident, {gas: "210000"}, (err, result) => {
       if (err) {
         return rej(err);
       }
@@ -243,14 +243,23 @@ function nugIncrementer() {
 function resetGame() {
   return game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
     return getPlayerAndSetVars()
-    .then(() => refreshUi())
+    .then(() => {
+      darkness = 255;
+      for (let i = 0; i < dirtLayers.length; i++) {
+        scene.remove(dirtLayers[i])
+      }
+      rerenderClickCycle(new BigNumber(-1));
+      refreshUi()
+    })
   })
 }
 
 function smelt() {
   var nugsCount = document.getElementById("nugsCount");
   var int = new BigNumber(nugsCount.firstChild.textContent);
-  return game.smelt(int, {from: playerAddress, gas: "210000"}, (err, result) => {
+  console.log(`int is ${int}`)
+  console.log(int)
+  return game.smelt(int.toNumber(), {from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) return console.log(err);
     return getTransactionReceiptMined(result)
     .then(() => {
@@ -411,7 +420,7 @@ function startUpUi() {
 
 function refreshBalance() {
   return new Promise((res, rej) => {
-    game.balanceOf(playerAddress, (errr, bal) => {
+    game.balanceOf(playerAddress, (err, bal) => {
       if (err) return rej(err);
       balance = new BigNumber(bal);
       updateUiCoinBal();
@@ -598,7 +607,7 @@ function genQuadItem(label) {
 }
 
 function updateQuad(quad, layer) {
-  getMaskTexture("Mask", layer-1)
+  getMaskTexture("Mask", layer)
   .then((alpha) => {
     quad.position.z = layer;
     quad.material.alphaMap = alpha
