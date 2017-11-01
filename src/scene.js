@@ -13,7 +13,7 @@ var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 5;
 var darkness = 255;
-var nugsIncrement = 10;
+var nugsIncrement = 1;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
