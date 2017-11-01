@@ -277,7 +277,7 @@ function detectMetaMask() {
       web3 = new Web3(w)
       //var web3 = new Web3();
       console.log(web3)
-      playerAddress = web3.eth.defaultAccount = web3.eth.accounts[1];
+      playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
       console.log(`at detect playerAddress is ${playerAddress}`)
       //var eth = web3.eth;
       //web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
@@ -653,7 +653,7 @@ function click () {
     return;
   }
   // console.log('about to call click')
-  return game.click({gas: "210000"}, (err, result) => {
+  return game.click({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) console.log(err)
     console.log(result)
     return getTransactionReceiptMined(result)

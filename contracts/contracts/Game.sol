@@ -13,6 +13,7 @@ contract Game is ClickMineToken {
     uint256[12] ownedGoods;
     uint lastClick;
     uint numClicks;
+    uint hasGame;
   }
   
   mapping (address => Player) public games;
@@ -41,67 +42,58 @@ contract Game is ClickMineToken {
     //no mercy
     games[msg.sender].seed = block.blockhash(block.number - 1);
     games[msg.sender].miningEfficiency = 1;
-    games[msg.sender].miningSpeed = 30000;
+    games[msg.sender].miningSpeed = 1000;
     games[msg.sender].canSmelt = false;
     games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
     games[msg.sender].lastClick = block.timestamp;
     games[msg.sender].numClicks = 0;
+    games[msg.sender].hasGame = true;
     return true;
   }
 
   function click() public returns (bool success) 
   {
-    require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].lastClick);
+    // don't use this line for the gallery version
+    // require(block.timestamp - games[msg.sender].lastClick <= games[msg.sender].miningSpeed);
+    require(games[msg.sender].hasGame);
     require(games[msg.sender].numClicks + 1 >= games[msg.sender].numClicks);
     games[msg.sender].lastClick = block.timestamp;
     games[msg.sender].numClicks = games[msg.sender].numClicks + 1;
     uint256 totalPayout = mul(games[msg.sender].miningEfficiency, tokensPerClick);
     mint(msg.sender, totalPayout);
     return true;
-    // should add buying goods?
   }
 
-  function buyGoods(uint256[] _toBuy) public returns (bool success)
-  {
-    require(_toBuy.length == 12);
-    for (uint ident = 0; ident <= 11; ident++) {
-      buyGood(ident, _toBuy[ident]);
-    }
-    return true;
-  }
-
-  function buyGood(uint256 goodIdentifier, uint256 quantity) public returns (bool success)
+  function buyGood(uint256 goodIdentifier) public returns (bool success)
   {
     //buy any number of a single good
     require(goodIdentifier >= 0 && goodIdentifier <= 11);
-    // uint256 totalCost = mul(goods[goodIdentifier].cost, quantity);
-    // uint256 totalSpeed = mul(goods[goodIdentifier].efficiencyBoost, quantity);
-    // uint256 totalEfficiency = mul(goods[goodIdentifier].speedBoost, quantity);
-    uint256 totalEfficiency = goods[goodIdentifier].efficiencyBoost;
-    uint256 totalSpeed = goods[goodIdentifier].speedBoost;
-    uint256 totalCost = goods[goodIdentifier].cost;
+    require(games[msg.sender].hasGame);
     require(balances[msg.sender] >= totalCost);
     require(balances[msg.sender] - totalCost <= balances[msg.sender]);
     require(games[msg.sender].miningEfficiency + totalEfficiency >= games[msg.sender].miningEfficiency);
-    require(games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed);
     require(games[msg.sender].ownedGoods[goodIdentifier] + quantity > games[msg.sender].ownedGoods[goodIdentifier]);
+    uint256 totalEfficiency = goods[goodIdentifier].efficiencyBoost;
+    uint256 totalSpeed = goods[goodIdentifier].speedBoost;
+    uint256 totalCost = goods[goodIdentifier].cost;
+    //require(games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed);
     balances[msg.sender] -= totalCost;
     games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
-    games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
+    // games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
     games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + quantity;
+    if (games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed) {
+      games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
+    }
+    if (goodIdentifier == 3) {
+      games[msg.sender].canSmelt = true;
+    }
     Transfer(msg.sender, 0x0000000000000000000000000000000000000000, totalCost);
     return true;
   }
 
-  function mul(uint256 a, uint256 b) internal constant returns (uint256) 
-  {
-      uint256 c = a * b;
-      assert(a == 0 || c / a == b);
-      return c;
-  }
-
   function smelt(uint256 _value) external returns (bool success) {
     require(games[msg.sender].canSmelt);
+    require(games[msg.sender].hasGame);
     mint(msg.sender, _value);
     return true;
   }
