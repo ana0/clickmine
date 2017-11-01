@@ -16,9 +16,9 @@ var darkness = 255;
 var nugsIncrement = 10;
 var clickAllowed = false;
 var allowedBrowser = false;
-var playerAddress = ''
-var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7"
-var gameAddress = ""
+var playerAddress = '';
+var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7";
+var gameAddress = "";
 var registrar;
 var game;
 var totalGoods = 12;
@@ -128,6 +128,13 @@ function hideMenu() {
   menu.style.display = 'none';
 }
 
+function statsMenuButtons() {
+  var smt = document.getElementById("smelt");
+  smt.onclick = smelt;
+  var res = document.getElementById("reset");
+  res.onclick = resetGame;
+}
+
 function orderMenuButtons() {
   var up = document.getElementById("up");
   up.onclick = increment;
@@ -183,7 +190,6 @@ function buyGood(ident) {
 }
 
 function speedTimeout(timeout) {
-  // console.log(`called mining speed with ${miningSpeed}`)
   var value = new BigNumber(0);
   var count = miningSpeed.times(0.002)
   var interval = setInterval(() => {}, 1000)
@@ -198,11 +204,9 @@ function speedTimeout(timeout) {
   };
 
   var adjustableTimeout = () => {
-    // console.log('adjustable called')
     value = new BigNumber(0);
     clearInterval(interval)
     interval = setInterval(draw, miningSpeed/230)
-    //setTimeout(adjustableTimeout, miningSpeed)
   }
 
   setTimeout(adjustableTimeout, timeout)
@@ -234,6 +238,26 @@ function nugIncrementer() {
     int = int.plus(nugsIncrement);
     nugsCount.innerHTML = int.toString();
   }, 500);
+}
+
+function resetGame() {
+  return game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
+    return getPlayerAndSetVars()
+    .then(() => refreshUi())
+  })
+}
+
+function smelt() {
+  var nugsCount = document.getElementById("nugsCount");
+  var int = new BigNumber(nugsCount.firstChild.textContent);
+  return game.smelt(int, {from: playerAddress, gas: "210000"}, (err, result) => {
+    if (err) return console.log(err);
+    return getTransactionReceiptMined(result)
+    .then(() => {
+      nugsCount.innerHTML = 0;
+      return refreshBalance();
+    })
+  })
 }
 
 function prompt(text, dialog1, callback1, dialog2, callback2) {
@@ -315,7 +339,6 @@ function createContracts() {
       game = Game.at(gameAddress);
       game.tokensPerClick((err, result) => {
         if (err) return rej(err)
-        console.log(result.toString())
         res();
       })
     });
@@ -375,10 +398,10 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
-  // console.log(`set efficiency to ${miningEfficiency}`)
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
   orderMenuButtons();
+  statsMenuButtons();
   updateUiSpeed();
   updateUiEfficiency();
   getGoods()
@@ -386,20 +409,28 @@ function startUpUi() {
   //getPollingBalance();
 }
 
+function refreshBalance() {
+  return new Promise((res, rej) => {
+    game.balanceOf(playerAddress, (errr, bal) => {
+      if (err) return rej(err);
+      balance = new BigNumber(bal);
+      updateUiCoinBal();
+      res(true);
+    })
+  })
+}
+
 function getPlayerAndSetVars() {
   return new Promise((res, rej) => {
-    // console.log('getting player')
-    // console.log(`account is ${account}`)
     // setTimeout(() => {
     console.log(`playerAddress is ${playerAddress}`)
       game.playerGetter(playerAddress, (err, player) => {
         if (err) return rej(err);
-        // console.log(player)
         const seedCheck = new BigNumber(player[0])
         if (seedCheck.equals(0)) {
-          // console.log('seed check is zero')
           return res(false);
         } 
+        // probably don't need to reassign seed and strippedSeed here
         seed = player[0];
         strippedSeed = seed.substring(2, seed.length);
         miningEfficiency = new BigNumber(player[1]);
@@ -407,18 +438,11 @@ function getPlayerAndSetVars() {
         canSmelt = player[3];
         ownedGoods = player[4];
         lastClick = player[5];
-        // console.log(lastClick.toString())
         numClicks = new BigNumber(player[6]);
         console.log(`numclicks is ${numClicks}`)
-        game.balanceOf(playerAddress, (errr, bal) => {
-          if (err) return rej(err);
-          // console.log(`got bal ${bal}`)
-          balance = new BigNumber(bal);
-          updateUiCoinBal();
-          sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
-          // console.log('returning from player set vars')
-          res(true);
-        })
+        //sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
+        return refreshBalance()
+        .then(() => res(true))
       })
     // }, 1000) 
   })
@@ -531,7 +555,7 @@ function genQuad(label, identfier, zIndex) {
   var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
   return getTexture(label, identfier)
   .then(texture => {
-    return getMaskTexture("Mask", "0")
+    return getMaskTexture("Mask", "Null")
     .then((alpha) => {
       mesh = makeGroundMaterial(texture, alpha, geometry)
       scene.add(mesh);
