@@ -598,7 +598,7 @@ function genQuadItem(label) {
 }
 
 function updateQuad(quad, layer) {
-  getMaskTexture("Mask", layer)
+  getMaskTexture("Mask", layer-1)
   .then((alpha) => {
     quad.position.z = layer;
     quad.material.alphaMap = alpha
