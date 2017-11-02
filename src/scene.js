@@ -258,7 +258,7 @@ function resetGame() {
 function smelt() {
   var nugsCount = document.getElementById("nugsCount");
   var int = new BigNumber(nugsCount.firstChild.textContent);
-  int = int.time(miningEfficiency);
+  int = int.times(miningEfficiency);
   nugsCount.innerHTML = int.toString();
 }
 
@@ -301,16 +301,12 @@ function detectAddress() {
     web3.eth.getAccounts((err, accounts) => {
       hidePrompt();
       if (accounts.length === 0) {
-        console.log('address length was 0')
         prompt("Unable to find your account, is metamask unlocked?", "Ok", detectAddress)
         return;
       } else {
         playerAddress = accounts[0];
-        console.log(accounts)
         gatherInitialData()
       }
-      // console.log('finished id')
-      // return res();
     })
   })
 }
@@ -340,10 +336,6 @@ function detectMetaMask() {
       window.web3 = new Web3(web3.currentProvider);
       allowedBrowser = true;
       return detectAddress()
-      // .then(() => {
-      //   console.log('returned from detectAddress')
-      //   gatherInitialData()
-      // })
     } else if (gallery) {
       var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
       web3 = new Web3(w)
