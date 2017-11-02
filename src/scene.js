@@ -17,7 +17,7 @@ var nugsIncrement = 1;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7";
+var registrarAddress = "0xe454c5cf591fb9e3bb77cc63efbc0cb8737afafb";
 var gameAddress = "";
 var registrar;
 var game;
@@ -25,6 +25,7 @@ var totalGoods = 12;
 var cacheGoods;
 var ownedGoods = [];
 var web3;
+var gallery = false;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
@@ -257,16 +258,8 @@ function resetGame() {
 function smelt() {
   var nugsCount = document.getElementById("nugsCount");
   var int = new BigNumber(nugsCount.firstChild.textContent);
-  console.log(`int is ${int}`)
-  console.log(int)
-  return game.smelt(int.toNumber(), {from: playerAddress, gas: "210000"}, (err, result) => {
-    if (err) return console.log(err);
-    return getTransactionReceiptMined(result)
-    .then(() => {
-      nugsCount.innerHTML = 0;
-      return refreshBalance();
-    })
-  })
+  int = int.time(miningEfficiency);
+  nugsCount.innerHTML = int.toString();
 }
 
 function prompt(text, dialog1, callback1, dialog2, callback2) {
@@ -300,36 +293,66 @@ function prompt(text, dialog1, callback1, dialog2, callback2) {
 
 function hidePrompt() {
   var prompt = document.getElementById("alert");
-  // console.log(`prompt ${prompt.firstChild.type}`)
   prompt.style.display = 'none';
+}
+
+function detectAddress() {
+  return new Promise((res, rej) => {
+    web3.eth.getAccounts((err, accounts) => {
+      hidePrompt();
+      if (accounts.length === 0) {
+        console.log('address length was 0')
+        prompt("Unable to find your account, is metamask unlocked?", "Ok", detectAddress)
+        return;
+      } else {
+        playerAddress = accounts[0];
+        console.log(accounts)
+        gatherInitialData()
+      }
+      // console.log('finished id')
+      // return res();
+    })
+  })
+}
+
+function startWebGL() {
+  init();
+  canvas = document.getElementById('mainCanvas')
+  canvas.addEventListener('click', click, false);
+  animate();
+}
+
+function gatherInitialData() {
+  if (allowedBrowser) {
+    return createContracts()
+    .then(() => {
+      return checkForGame()
+      .then(() => {
+        return startWebGL()
+      })
+    })
+  }
 }
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
+    if (typeof web3 !== 'undefined') {
+      window.web3 = new Web3(web3.currentProvider);
+      allowedBrowser = true;
+      return detectAddress()
+      // .then(() => {
+      //   console.log('returned from detectAddress')
+      //   gatherInitialData()
+      // })
+    } else if (gallery) {
       var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
       web3 = new Web3(w)
-      //var web3 = new Web3();
-      console.log(web3)
       playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
-      console.log(`at detect playerAddress is ${playerAddress}`)
-      //var eth = web3.eth;
-      //web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    //if (typeof web3 !== 'undefined') {
-      // Use Mist/MetaMask's provider
-      // window.web3 = new Web3(web3.currentProvider);
-      // console.log('Found MetaMask')
       allowedBrowser = true;
-      init();
-      canvas = document.getElementById('mainCanvas')
-      canvas.addEventListener('click', click, false);
-      animate();
-    // } else {
-    //   console.log('No web3? You should consider trying MetaMask!')
-    //   prompt("You must have a dapp browser or metamask installed to play!", "Ok", hidePrompt)
-    // }
-    // Now you can start your app & access web3 freely:
-
+      gatherInitialData();
+    } else {
+      prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
+    }
   })
 }
 
@@ -458,22 +481,11 @@ function getPlayerAndSetVars() {
 }
 
 function checkForGame(first) {
-  return new Promise((res, rej) => {
-    web3.eth.getAccounts((err, accounts) => {
-      console.log(accounts)
-      hidePrompt();
-      if (accounts.length === 0) {
-        prompt("Unable to find your account, is metamask unlocked?", "Ok", checkForGame)
-        return;
-      }
-      //playerAddress = accounts[0];
-      getPlayerAndSetVars()
-      .then((player) => {
-        console.log(player)
-        if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
-        startUpUi();
-      })
-    })
+  return getPlayerAndSetVars()
+  .then((player) => {
+    console.log(player)
+    if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
+    return startUpUi();
   })
 }
 
@@ -710,10 +722,7 @@ function makeWallet() {
 
 function init() {
   if (allowedBrowser) { 
-    createContracts()
-    .then(() => {
-      checkForGame()
-    })
+
   }
   console.log(allowedBrowser)
   camera = new THREE.OrthographicCamera( 

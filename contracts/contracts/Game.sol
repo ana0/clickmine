@@ -99,13 +99,6 @@ contract Game is ClickMineToken {
     return true;
   }
 
-  function smelt(uint256 _value) external returns (bool success) {
-    require(games[msg.sender].canSmelt);
-    require(games[msg.sender].hasGame);
-    mint(msg.sender, _value);
-    return true;
-  }
-
   function goodsGetter(uint256 _index) constant public returns (string, uint256, uint256, uint256) 
   {
     require(_index >= 0 && _index <= 11);

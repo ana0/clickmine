@@ -1,7 +1,6 @@
 {
   "name": "clickmine",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,5 +8,12 @@
     "build": "babel src -d build/lib"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  },
+  "description": "",
+  "dependencies": {
+    "truffle-hdwallet-provider": "0.0.3"
+  }
 }
