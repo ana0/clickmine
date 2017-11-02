@@ -69,6 +69,16 @@
 			.smeltButtonText {
 				display: inline;
 			}
+			.rightColumn {
+				float: right;
+				width: 50%;
+				height: 150px;
+			}
+			.leftColumn {
+				float: left;
+				/*position: fixed;*/
+				width: 50%;
+			}	
 			#smelt {
 				height: 55px;
 				margin: 5px;
@@ -151,6 +161,23 @@
 				font-size: 14pt;
 				background-color: rgba(0,0,0,.5);
 			}
+			#pending {
+				border: solid;
+				border-width: 5px;
+				border-radius: 0 0 0 0;
+				border-color: #38f209;
+				width: 30%;
+			    left: 0; 
+			    right: 0; 
+			    top: 30%;
+			    margin-left: auto; 
+			    margin-right: auto; 
+				opacity: .8;
+				position: absolute;
+				padding: 15px;
+				font-size: 14pt;
+				background-color: rgba(0,0,0,.5);
+			}	
 			#orderMenu {
 				border: solid;
 				border-width: 5px;
@@ -203,6 +230,8 @@
 				left: 180px;
 				bottom: 20px;
 				padding: 5px;
+				height: 120px;
+				width: 550px;
 			}
 			#shop {
 				border: solid;
@@ -267,6 +296,7 @@
 		<script src="scene.js"></script>
 
         <button id="whitepaper"> </button>
+        <div id="pending">PENDING</button></div>
 		<div id="alert"><button id="button2"></button><button id="button1"></button></div>
 		<div id="orderMenu">  
 		    <p id="query"></p>
@@ -289,6 +319,27 @@
 		    </table>
 		</div>
 		<div id="stats">
+		    <div class="rightColumn">
+			    <table id="txHistory">
+			        <tr><td>TRANSACTION HISTORY</td></tr>
+			    	<tr>
+                        <td>0xf1811dde4cdb231b246f7...</td>
+			    	</tr>
+			    	<tr>
+                        <td>0xf1811dde4cdb231b246f7...</td>
+			    	</tr>
+			    	<tr>
+                        <td>0xf1811dde4cdb231b246f7...</td>
+			    	</tr>
+			    	<tr>
+                        <td>0xf1811dde4cdb231b246f7...</td>
+			    	</tr>
+			    	<tr>
+                        <td>0xf1811dde4cdb231b246f7...</td>
+			    	</tr>
+			    </table>
+		    </div>
+		    <div class="leftColumn">
 		    <table>
 		    	<tr>
 		    		<td>EFFICIENCY :</td>
@@ -303,6 +354,7 @@
                  <span><img align="middle" src="assets/win95/smelter.png">SMELT</span>
 		    </button>
 		    <button id="reset" title="NO MERCY"><table><tr>RESET GAME</tr></table></button>
+		    </div>
 		</div>
 		<div id="shop"><div id="shop-content">
 		    <table class="uiTable">
