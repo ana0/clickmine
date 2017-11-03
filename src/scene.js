@@ -4,6 +4,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
+var efficiencyMax = new BigNumber(1500)
 var miningSpeed = new BigNumber(1000);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
@@ -215,7 +216,9 @@ function buyGood(ident) {
 
 function speedTimeout(timeout) {
   var value = new BigNumber(0);
-  var count = miningSpeed.times(0.002)
+  var count = 0.2
+  var intervalRegularity = 1;//miningSpeed/230
+
   var interval = setInterval(() => {}, 1000)
 
   var draw = () => { 
@@ -230,11 +233,11 @@ function speedTimeout(timeout) {
   var adjustableTimeout = () => {
     value = new BigNumber(0);
     clearInterval(interval)
-    interval = setInterval(draw, miningSpeed/230)
+    interval = setInterval(draw, intervalRegularity)
   }
 
-  setTimeout(adjustableTimeout, timeout)
-
+  //setTimeout(adjustableTimeout, timeout)
+  adjustableTimeout();
 }
 
 function denormalizeToCutOff(value, max, min) {
@@ -422,9 +425,9 @@ function updateUiCoinBal() {
 
 function updateUiSpeed() {
   var speedDisplay = document.getElementById("speedStat");
-  var baseline = new BigNumber(30000);
-  var reversed = baseline.minus(miningSpeed);
-  speedDisplay.innerHTML = reversed.toString();
+  // var baseline = new BigNumber(1000)
+  // var reversed = baseline.minus(miningSpeed);
+  speedDisplay.innerHTML = miningSpeed.toString();
 }
 
 function updateUiEfficiency() {
@@ -439,12 +442,17 @@ function checkSmeltButton() {
   }
 }
 
+function adjustEfficiency() {
+  var max = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? miningEfficiency : efficiencyMax;
+  sliderAdjust('efficiencySlider', miningEfficiency, max, 300, 30)
+}
+
 function refreshUi() {
   updateUiCoinBal();
   updateUiSpeed();
   updateUiEfficiency();
   checkSmeltButton();
-  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
+  adjustEfficiency();
 }
 
 function getPollingBalance() {
@@ -459,7 +467,7 @@ function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
   speedTimeout(1);
-  sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
+  adjustEfficiency();
   rerenderClickCycle(new BigNumber(-1));
   statsMenuButtons();
   updateUiSpeed();
@@ -495,7 +503,7 @@ function getPlayerAndSetVars() {
         seed = player[0];
         strippedSeed = seed.substring(2, seed.length);
         miningEfficiency = new BigNumber(player[1]);
-        miningSpeed = new BigNumber(1000);//new BigNumber(player[2]);
+        miningSpeed = new BigNumber(player[2]);
         canSmelt = player[3];
         ownedGoods = player[4];
         lastClick = player[5];

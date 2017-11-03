@@ -16,6 +16,7 @@ ClickMine/Assets/AssetStoreTools*
 src/assets/*
 .fuse*
 *.todo
+*.txt
 contracts/node_modules/*
 
 
