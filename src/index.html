@@ -33,6 +33,26 @@
 			button:focus {
 				outline: none;
 			}
+			a {
+				color: #38f209;
+				text-decoration: none;;
+			}
+			@-webkit-keyframes colourChange {
+				0% {
+					color: #38f209;
+				}
+				50% {
+					color: #ff1a1a;
+				}
+				100% {
+					color: #38f209;
+				}
+			}
+			.pendingFlash a {
+				-webkit-animation: colourChange 4s infinite alternate;
+				text-decoration: none;
+				color: #38f209;
+			}
 			.efficiency {
 				position: absolute;
 				left: 20px;
@@ -86,6 +106,7 @@
 				padding-top: 5px;
 				padding-right: 7px;
 				padding-left: 7px;
+				display: none;
 			}
 			#reset {
 				height: 55px;
@@ -297,16 +318,7 @@
 		<script src="scene.js"></script>
 
         <button id="whitepaper"> </button>
-        <div id="pending">PENDING</button></div>
 		<div id="alert"><button id="button2"></button><button id="button1"></button></div>
-		<div id="orderMenu">  
-		    <p id="query"></p>
-		    <p id="quantity">0</p>
-            <button id="up">▲</button>
-            <button id="down">▼</button>
-            <button id="cancel">CANCEL</button>
-            <button id="buy">BUY</button>
-        </div>
 		<div id="wallet">
 		    <table class="uiTable">
 		        <tr>
@@ -323,21 +335,6 @@
 		    <div class="rightColumn">
 			    <table id="txHistory">
 			        <tr><td>TRANSACTION HISTORY</td></tr>
-			    	<tr>
-                        <td>0xf1811dde4cdb231b246f7...</td>
-			    	</tr>
-			    	<tr>
-                        <td>0xf1811dde4cdb231b246f7...</td>
-			    	</tr>
-			    	<tr>
-                        <td>0xf1811dde4cdb231b246f7...</td>
-			    	</tr>
-			    	<tr>
-                        <td>0xf1811dde4cdb231b246f7...</td>
-			    	</tr>
-			    	<tr>
-                        <td>0xf1811dde4cdb231b246f7...</td>
-			    	</tr>
 			    </table>
 		    </div>
 		    <div class="leftColumn">

@@ -61,6 +61,27 @@ function trimSvgWhitespace() {
   }
 }
 
+function insertTxHash(txHash) {
+  var text = '';
+  var table = document.getElementById('txHistory');
+  var row = table.insertRow(1);
+  var column = row.insertCell(0);
+  column.setAttribute('id', txHash);
+  if (gallery) {
+    text = `${txHash.substring(0, 23)}...`;
+  } else {
+    text = '<a href="https://ropsten.etherscan.io/tx/' + txHash + '" target="_blank">' + txHash.substring(0, 23) + '...</a>';
+    column.setAttribute('class', 'pendingFlash');
+  }
+  column.innerHTML = text; 
+  return;
+}
+
+function removePendingFlash(txHash) {
+  var element = document.getElementById(txHash);
+  element.removeAttribute('class');
+}
+
 function getTransactionReceiptMined(txHash) {
   function transactionReceiptAsync(resolve, reject) {
     web3.eth.getTransactionReceipt(txHash, (error, receipt) => {
@@ -77,7 +98,8 @@ function getTransactionReceiptMined(txHash) {
         }
     });
   };
-  return new Promise(transactionReceiptAsync);
+  insertTxHash(txHash);
+  return new Promise(transactionReceiptAsync).then(() => removePendingFlash(txHash));
 };
 
 function getGoods() {
@@ -105,29 +127,29 @@ function getGoods() {
   })
 }
 
-function increment() {
-  var quantity = document.getElementById("quantity");
-  var int = parseInt(quantity.firstChild.textContent);
-  console.log(int)
-  if (int <= 9) {
-    int += 1;
-  }
-  quantity.innerHTML = int;
-}
+// function increment() {
+//   var quantity = document.getElementById("quantity");
+//   var int = parseInt(quantity.firstChild.textContent);
+//   console.log(int)
+//   if (int <= 9) {
+//     int += 1;
+//   }
+//   quantity.innerHTML = int;
+// }
 
-function decrement() {
-  var quantity = document.getElementById("quantity");
-  var int = parseInt(quantity.firstChild.textContent);
-  if (int > 0) {
-    int -= 1;
-  }
-  quantity.innerHTML = int;
-}
+// function decrement() {
+//   var quantity = document.getElementById("quantity");
+//   var int = parseInt(quantity.firstChild.textContent);
+//   if (int > 0) {
+//     int -= 1;
+//   }
+//   quantity.innerHTML = int;
+// }
 
-function hideMenu() {
-  var menu = document.getElementById("orderMenu");
-  menu.style.display = 'none';
-}
+// function hideMenu() {
+//   var menu = document.getElementById("orderMenu");
+//   menu.style.display = 'none';
+// }
 
 function statsMenuButtons() {
   var smt = document.getElementById("smelt");
@@ -137,12 +159,12 @@ function statsMenuButtons() {
 }
 
 function orderMenuButtons() {
-  var up = document.getElementById("up");
-  up.onclick = increment;
-  var down = document.getElementById("down");
-  down.onclick = decrement;
-  var cancel = document.getElementById("cancel");
-  cancel.onclick = hideMenu;
+  // var up = document.getElementById("up");
+  // up.onclick = increment;
+  // var down = document.getElementById("down");
+  // down.onclick = decrement;
+  // var cancel = document.getElementById("cancel");
+  // cancel.onclick = hideMenu;
 }
 
 function populateGood(ident, goods) {
@@ -156,22 +178,23 @@ function populateGood(ident, goods) {
 }
 
 function orderMenu(ident) {
-  var menu = document.getElementById("orderMenu");
-  menu.style.display = 'block';
-  var query = document.getElementById("query");
+  // var menu = document.getElementById("orderMenu");
+  // menu.style.display = 'block';
+  // var query = document.getElementById("query");
   // console.log(cacheGoods)
-  query.innerHTML = `How many ${cacheGoods[ident][0]}s would you like to buy?`;
-  var buy = document.getElementById("buy");
+  prompt(`Would you like to buy a ${cacheGoods[ident][0]}?`, 'Cancel', hidePrompt, 'Buy', () => { buyGood(ident); })
+  //query.innerHTML = `How many ${cacheGoods[ident][0]}s would you like to buy?`;
+  // var buy = document.getElementById("buy");
   // buy.removeEventListener('click');
-  buy.onclick = () => { buyGood(ident) }
+  // buy.onclick = () => { buyGood(ident) }
 }
 
 function buyGood(ident) {
   return new Promise((res, rej) => {
-    var quantity = document.getElementById("quantity");
-    var int = parseInt(quantity.firstChild.textContent);
-    ident = parseInt(ident)
-    hideMenu();
+    // var quantity = document.getElementById("quantity");
+    // var int = parseInt(quantity.firstChild.textContent);
+    // ident = parseInt(ident)
+    hidePrompt();
     // console.log('about to buy good')
     return game.buyGood(ident, {gas: "210000"}, (err, result) => {
       if (err) {
@@ -245,12 +268,18 @@ function resetGame() {
   return game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
     return getPlayerAndSetVars()
     .then(() => {
-      darkness = 255;
-      for (let i = 0; i < dirtLayers.length; i++) {
-        scene.remove(dirtLayers[i])
-      }
-      rerenderClickCycle(new BigNumber(-1));
-      refreshUi()
+      return getTransactionReceiptMined(result)
+      .then(() => {
+        return getPlayerAndSetVars()
+        .then(() => {
+          darkness = 255;
+          for (let i = 0; i < dirtLayers.length; i++) {
+            scene.remove(dirtLayers[i])
+          }
+          rerenderClickCycle(new BigNumber(-1));
+          refreshUi()
+        })
+      })
     })
   })
 }
@@ -403,10 +432,18 @@ function updateUiEfficiency() {
   efficiencyDisplay.innerHTML = miningEfficiency.toString();
 }
 
+function checkSmeltButton() {
+  if (canSmelt) {
+    var smt = document.getElementById("smelt")
+    smt.style.display = 'inline-block';
+  }
+}
+
 function refreshUi() {
   updateUiCoinBal();
   updateUiSpeed();
   updateUiEfficiency();
+  checkSmeltButton();
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
 }
 
@@ -424,10 +461,10 @@ function startUpUi() {
   speedTimeout(1);
   sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1500), 300, 30)
   rerenderClickCycle(new BigNumber(-1));
-  orderMenuButtons();
   statsMenuButtons();
   updateUiSpeed();
   updateUiEfficiency();
+  checkSmeltButton();
   getGoods()
   .then(() => placeGoods())
   //getPollingBalance();
