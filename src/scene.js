@@ -175,7 +175,10 @@ function orderMenuButtons() {
 function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
   row.addEventListener('click', () => orderMenu(ident), false);
-  row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}`)
+  var plural = `${ident === 6 ? 'Refinerie' : goods[ident][0]}s`;
+  var grammered = `${ident === 1 ? goods[ident][0] : plural}`;
+  row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}
+    \nYou have bought ${ownedGoods[ident]} ${grammered}`)
   //row.addEventListener('mouseover', () => itemDetails(ident))
   var coinsColumn = row.getElementsByTagName('p')[0]
   coinsColumn.innerHTML = goods[ident][3].toString()
@@ -211,6 +214,7 @@ function buyGood(ident) {
         return getPlayerAndSetVars()
         .then(() => {
           refreshUi();
+          populateGood(ident, cacheGoods);
           placeGood(ident, 1);
         })
       }).catch((e) => console.log(e))
@@ -512,7 +516,7 @@ function getPlayerAndSetVars() {
         seed = player[0];
         strippedSeed = seed.substring(2, seed.length);
         miningEfficiency = new BigNumber(player[1]);
-        miningSpeed = new BigNumber(0);//new BigNumber(player[2]);
+        miningSpeed = new BigNumber(player[2]);
         canSmelt = player[3];
         ownedGoods = player[4];
         lastClick = player[5];
