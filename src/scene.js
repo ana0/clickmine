@@ -5,14 +5,14 @@ var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
 var efficiencyMax = new BigNumber(1500)
-var miningSpeed = new BigNumber(1000);
+var miningSpeed = new BigNumber(2500);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
 var balance = new BigNumber(0);
 var seedInt = 0;
 var camera, scene, renderer;
 var dirtLayers = [];
-var maxMask = 5;
+var maxMask = 6;
 var darkness = 255;
 var nugsIncrement = 1;
 var clickAllowed = false;
@@ -20,6 +20,7 @@ var allowedBrowser = false;
 var playerAddress = '';
 var registrarAddress = "0xe454c5cf591fb9e3bb77cc63efbc0cb8737afafb";
 var gameAddress = "";
+var interval = setInterval(() => {}, 1000);
 var registrar;
 var game;
 var totalGoods = 12;
@@ -99,8 +100,11 @@ function getTransactionReceiptMined(txHash) {
         }
     });
   };
-  insertTxHash(txHash);
-  return new Promise(transactionReceiptAsync).then(() => removePendingFlash(txHash));
+  if (txHash) {
+    insertTxHash(txHash);
+    return new Promise(transactionReceiptAsync).then(() => removePendingFlash(txHash))
+  }
+  return Promise.reject();
 };
 
 function getGoods() {
@@ -209,17 +213,15 @@ function buyGood(ident) {
           refreshUi();
           placeGood(ident, 1);
         })
-      })
+      }).catch((e) => console.log(e))
     })
   })
 }
 
-function speedTimeout(timeout) {
+function speedTimeout() {
   var value = new BigNumber(0);
   var count = 0.2
   var intervalRegularity = 1;//miningSpeed/230
-
-  var interval = setInterval(() => {}, 1000)
 
   var draw = () => { 
     value = value.plus(count);
@@ -235,9 +237,13 @@ function speedTimeout(timeout) {
     clearInterval(interval)
     interval = setInterval(draw, intervalRegularity)
   }
-
-  //setTimeout(adjustableTimeout, timeout)
-  adjustableTimeout();
+  
+  if (miningSpeed.equals(0)) {
+    clickAllowed = true;
+    sliderAdjust('speedSlider', new BigNumber(1), new BigNumber(1), 300, 70);
+  } else {
+    adjustableTimeout();
+  }
 }
 
 function denormalizeToCutOff(value, max, min) {
@@ -282,7 +288,7 @@ function resetGame() {
           rerenderClickCycle(new BigNumber(-1));
           refreshUi()
         })
-      })
+      }).catch((e) => console.log(e))
     })
   })
 }
@@ -382,9 +388,11 @@ function detectMetaMask() {
 
 function createContracts() {
   console.log('called create')
+  console.log(`registrar address at ${registrarAddress}`)
   return new Promise((res, rej) => {
     var Registrar = web3.eth.contract(registrarAbi);
     registrar = Registrar.at(registrarAddress);
+    console.log('test')
     console.log('attempting to get game address')
     registrar.GameAddress((err, result) => {
       console.log(err)
@@ -414,7 +422,7 @@ function beginGame() {
         console.log('calling start up')
         return startUpUi()
       })
-    }).catch(e => { throw e; })
+    }).catch((e) => console.log(e))
   })
 }
 
@@ -425,9 +433,9 @@ function updateUiCoinBal() {
 
 function updateUiSpeed() {
   var speedDisplay = document.getElementById("speedStat");
-  // var baseline = new BigNumber(1000)
-  // var reversed = baseline.minus(miningSpeed);
-  speedDisplay.innerHTML = miningSpeed.toString();
+  var baseline = new BigNumber(2500)
+  var reversed = baseline.minus(miningSpeed);
+  speedDisplay.innerHTML = reversed.toString();
 }
 
 function updateUiEfficiency() {
@@ -466,7 +474,7 @@ function getPollingBalance() {
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
-  speedTimeout(1);
+  speedTimeout();
   adjustEfficiency();
   rerenderClickCycle(new BigNumber(-1));
   statsMenuButtons();
@@ -495,6 +503,7 @@ function getPlayerAndSetVars() {
     console.log(`playerAddress is ${playerAddress}`)
       game.playerGetter(playerAddress, (err, player) => {
         if (err) return rej(err);
+        console.log(player)
         const seedCheck = new BigNumber(player[0])
         if (seedCheck.equals(0)) {
           return res(false);
@@ -503,7 +512,7 @@ function getPlayerAndSetVars() {
         seed = player[0];
         strippedSeed = seed.substring(2, seed.length);
         miningEfficiency = new BigNumber(player[1]);
-        miningSpeed = new BigNumber(player[2]);
+        miningSpeed = new BigNumber(0);//new BigNumber(player[2]);
         canSmelt = player[3];
         ownedGoods = player[4];
         lastClick = player[5];
@@ -527,18 +536,11 @@ function checkForGame(first) {
 }
 
 function getSeed() {
-  console.log(`called with seedInt ${seedInt}`)
   if (seedInt >= strippedSeed.length - 1) { 
-    console.log(seedInt)
-    console.log('resetting seedInt')
-    console.log(strippedSeed.length)
     seedInt = 0;
   } else {
-    console.log('incrementing seedInt')
     seedInt ++;
   }
-  console.log(seedInt)
-  console.log(`0x${strippedSeed.charAt(seedInt)}`)
   return `0x${strippedSeed.charAt(seedInt)}`;
 }
 
@@ -656,7 +658,7 @@ function genQuadItem(label) {
 }
 
 function updateQuad(quad, layer) {
-  getMaskTexture("Mask", layer)
+  getMaskTexture("MaskBlur", layer)
   .then((alpha) => {
     quad.position.z = layer;
     quad.material.alphaMap = alpha
@@ -705,10 +707,13 @@ function clickCycle(scopedNumClicks) {
     dirtLayers.splice(0, 1);
   }
   // console.log('darkness is ' + darkness)
-  if (scopedNumClicks.lessThan(6) && darkness > 30) {
-    darkness -= 45;
-  } else if (darkness <= 30) {
-    darkness = 0;
+  if (scopedNumClicks.greaterThan(3)) {
+      if (darkness > 30) {
+        darkness -= 45;
+      } else {
+        darkness = 0;
+      }
+      console.log(`darkness is ${darkness}`)
   }
   var layer = dirtLayers.length;
   console.log(`dirt layers is ${dirtLayers.length}`)
@@ -737,19 +742,17 @@ function click () {
   // console.log('about to call click')
   return game.click({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) console.log(err)
-    console.log(result)
+    clickAllowed = false;
     return getTransactionReceiptMined(result)
     .then(() => {
-
       return getPlayerAndSetVars()
       .then(() => {
         // console.log('about to refresh ui')
         refreshUi();
         clickCycle(numClicks);
-        speedTimeout(1);
-        clickAllowed = false;
+        speedTimeout();
       })
-    })
+    }).catch((e) => console.log(e))
   })
 }
 
