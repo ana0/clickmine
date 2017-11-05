@@ -4,7 +4,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var efficiencyMax = new BigNumber(100000)
+var efficiencyMax = new BigNumber(95000)
 var miningSpeed = new BigNumber(2500);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
@@ -18,10 +18,10 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0xdd97381fd94df080cebc64ac9dc2f9f48d04fb55";
+var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
-var efficiencyInterval = setInterval(() => {}, 1000);
+var efInterval = setInterval(() => {}, 1000);
 var registrar;
 var game;
 var totalGoods = 12;
@@ -222,6 +222,7 @@ function denormalizeToCutOff(value, max, min) {
 }
 
 function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
+  console.log(`slider adjust with ${slider}`)
   var slider = document.getElementById(slider); 
   var max = new BigNumber(sliderMax);
   var normalizedHeight = value.dividedBy(paramMax); 
@@ -424,32 +425,38 @@ function checkSmeltButton() {
   }
 }
 
-function efficiencyTimeout(efficiency, max) {
+function efTimeout(efficiency) {
   var value = new BigNumber(0);
-  var count = 0.2
-  var intervalRegularity = 1;
+  var count = 500;
+  var intervalRegularity = 1;//miningSpeed/230
 
   var draw = () => { 
     value = value.plus(count);
+    console.log(`testing whether ${value} is greater than ${efficiency}`)
     if (value.greaterThanOrEqualTo(efficiency)) {
-      clearInterval(efficiencyInterval)
+      console.log('stop draw')
+      clearInterval(efInterval)
     }
-    sliderAdjust('efficiencySlider', value, max, 300, 30);
+    sliderAdjust('efficiencySlider', value, efficiencyMax, 300, 30);
   };
 
   var adjustableTimeout = () => {
     value = new BigNumber(0);
-    clearInterval(efficiencyInterval)
-    efficiencyInterval = setInterval(draw, intervalRegularity)
+    clearInterval(efInterval)
+    efInterval = setInterval(draw, intervalRegularity)
   }
   
-  adjustableTimeout();
+    console.log('calling efficiency adjustableTimeout')
+    adjustableTimeout();
 }
 
 function adjustEfficiency() {
-  var max = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? miningEfficiency : efficiencyMax;
-  sliderAdjust('efficiencySlider', miningEfficiency, max, 300, 30)
-  //efficiencyTimeout(miningEfficiency, max)
+  var max = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? efficiencyMax : miningEfficiency;
+  var eff = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? efficiencyMax : miningEfficiency;
+  console.log(`max is ${max}`)
+  console.log(`miningEfficiency is ${miningEfficiency}`)
+  //sliderAdjust('efficiencySlider', miningEfficiency, max, 300, 30)
+  efTimeout(max)
 }
 
 function refreshUi() {
