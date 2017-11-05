@@ -69,24 +69,6 @@ var gameAbi = [
       "constant": false,
       "inputs": [
         {
-          "name": "_value",
-          "type": "uint256"
-        }
-      ],
-      "name": "smelt",
-      "outputs": [
-        {
-          "name": "success",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "_from",
           "type": "address"
         },
@@ -233,10 +215,6 @@ var gameAbi = [
         {
           "name": "canSmelt",
           "type": "bool"
-        },
-        {
-          "name": "lastClick",
-          "type": "uint256"
         },
         {
           "name": "numClicks",
@@ -387,10 +365,6 @@ var gameAbi = [
         {
           "name": "",
           "type": "uint256[12]"
-        },
-        {
-          "name": "",
-          "type": "uint256"
         },
         {
           "name": "",

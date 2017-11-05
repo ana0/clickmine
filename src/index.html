@@ -181,7 +181,8 @@
 				display: none;
 				padding: 15px;
 				font-size: 14pt;
-				background-color: rgba(0,0,0,.5);
+				z-index: 20;
+				background-color: rgba(0,0,0,.8);
 			}
 			#pending {
 				border: solid;
@@ -326,7 +327,7 @@
 		            <td><p id="nugsCount">0</p></td>
 		        </tr>
 		        <tr>
-		            <td><img title="CLK" src="assets/coin.png"></td>
+		            <td><img title="$CLK" src="assets/coin.png"></td>
                     <td><p id="coinsCount">0</p></td>
 		        </tr>
 		    </table>
@@ -339,7 +340,7 @@
 		    </div>
 		    <div class="leftColumn">
 		    <table>
-		    	<tr title="The higher efficiency, the more tokens per click">
+		    	<tr title="More efficiency means most $CLK per click">
 		    		<td>EFFICIENCY :</td>
 		    		<td id="efficiencyStat"></td>
 		    	</tr>
@@ -348,7 +349,7 @@
 		    	    <td id="speedStat"></td>
 		    	</tr>
 		    </table>
-		    <button id="smelt" title="Smelt ore into tokens!">
+		    <button id="smelt" title="Smelt ore, why not?">
                  <span><img align="middle" src="assets/win95/smelter.png">SMELT</span>
 		    </button>
 		    <button id="reset" title="NO MERCY"><table><tr>RESET GAME</tr></table></button>

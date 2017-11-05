@@ -4,7 +4,7 @@ var strippedSeed = seed.substring(2, seed.length);
 var miningEfficiency = new BigNumber(1);
 var efficiencySliderHeight = 0;
 var efficiencySliderY = 300
-var efficiencyMax = new BigNumber(1500)
+var efficiencyMax = new BigNumber(100000)
 var miningSpeed = new BigNumber(2500);
 var canSmelt = false;
 var numClicks = new BigNumber(0);
@@ -14,20 +14,22 @@ var camera, scene, renderer;
 var dirtLayers = [];
 var maxMask = 6;
 var darkness = 255;
-var nugsIncrement = 1;
+var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0xe454c5cf591fb9e3bb77cc63efbc0cb8737afafb";
+var registrarAddress = "0xdd97381fd94df080cebc64ac9dc2f9f48d04fb55";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
+var efficiencyInterval = setInterval(() => {}, 1000);
 var registrar;
 var game;
 var totalGoods = 12;
 var cacheGoods;
 var ownedGoods = [];
+var drawnGoods = []
 var web3;
-var gallery = false;
+var gallery = true;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
@@ -127,49 +129,14 @@ function getGoods() {
       populateGood(i, values);
     }
     return;
-
-    // parse 'em and populate
   })
 }
-
-// function increment() {
-//   var quantity = document.getElementById("quantity");
-//   var int = parseInt(quantity.firstChild.textContent);
-//   console.log(int)
-//   if (int <= 9) {
-//     int += 1;
-//   }
-//   quantity.innerHTML = int;
-// }
-
-// function decrement() {
-//   var quantity = document.getElementById("quantity");
-//   var int = parseInt(quantity.firstChild.textContent);
-//   if (int > 0) {
-//     int -= 1;
-//   }
-//   quantity.innerHTML = int;
-// }
-
-// function hideMenu() {
-//   var menu = document.getElementById("orderMenu");
-//   menu.style.display = 'none';
-// }
 
 function statsMenuButtons() {
   var smt = document.getElementById("smelt");
   smt.onclick = smelt;
   var res = document.getElementById("reset");
   res.onclick = resetGame;
-}
-
-function orderMenuButtons() {
-  // var up = document.getElementById("up");
-  // up.onclick = increment;
-  // var down = document.getElementById("down");
-  // down.onclick = decrement;
-  // var cancel = document.getElementById("cancel");
-  // cancel.onclick = hideMenu;
 }
 
 function populateGood(ident, goods) {
@@ -179,32 +146,22 @@ function populateGood(ident, goods) {
   var grammered = `${ident === 1 ? goods[ident][0] : plural}`;
   row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}
     \nYou have bought ${ownedGoods[ident]} ${grammered}`)
-  //row.addEventListener('mouseover', () => itemDetails(ident))
   var coinsColumn = row.getElementsByTagName('p')[0]
   coinsColumn.innerHTML = goods[ident][3].toString()
-  // console.log(goods[ident][3].toString())
 }
 
 function orderMenu(ident) {
-  // var menu = document.getElementById("orderMenu");
-  // menu.style.display = 'block';
-  // var query = document.getElementById("query");
-  // console.log(cacheGoods)
   prompt(`Would you like to buy a ${cacheGoods[ident][0]}?`, 'Cancel', hidePrompt, 'Buy', () => { buyGood(ident); })
-  //query.innerHTML = `How many ${cacheGoods[ident][0]}s would you like to buy?`;
-  // var buy = document.getElementById("buy");
-  // buy.removeEventListener('click');
-  // buy.onclick = () => { buyGood(ident) }
 }
 
 function buyGood(ident) {
   return new Promise((res, rej) => {
-    // var quantity = document.getElementById("quantity");
-    // var int = parseInt(quantity.firstChild.textContent);
-    // ident = parseInt(ident)
     hidePrompt();
-    // console.log('about to buy good')
-    return game.buyGood(ident, {gas: "210000"}, (err, result) => {
+    if (balance.lessThan(cacheGoods[ident][3])) {
+      prompt(`You do not have enough $CLK to buy a ${cacheGoods[ident][0]}`, 'Ok', hidePrompt)
+      return res();
+    }
+    return game.buyGood(ident, {gas: "210000", from: playerAddress}, (err, result) => {
       if (err) {
         return rej(err);
       }
@@ -222,18 +179,20 @@ function buyGood(ident) {
   })
 }
 
-function speedTimeout() {
+function speedTimeout(speed) {
   var value = new BigNumber(0);
   var count = 0.2
   var intervalRegularity = 1;//miningSpeed/230
 
   var draw = () => { 
     value = value.plus(count);
-    if (value.greaterThanOrEqualTo(miningSpeed)) {
+    if (value.greaterThanOrEqualTo(speed)) {
+      console.log('setting click Allowed true')
       clickAllowed = true;
       clearInterval(interval)
     }
-    sliderAdjust('speedSlider', value, miningSpeed, 300, 70);
+    console.log('called draw')
+    sliderAdjust('speedSlider', value, speed, 300, 70);
   };
 
   var adjustableTimeout = () => {
@@ -242,10 +201,15 @@ function speedTimeout() {
     interval = setInterval(draw, intervalRegularity)
   }
   
-  if (miningSpeed.equals(0)) {
+  if (speed.equals(0)) {
+    console.log('setting click Allowed true')
     clickAllowed = true;
     sliderAdjust('speedSlider', new BigNumber(1), new BigNumber(1), 300, 70);
+  } else if (speed.lessThan(10)) {
+    speed = new BigNumber(10);
+    adjustableTimeout();
   } else {
+    console.log('calling adjustableTimeout')
     adjustableTimeout();
   }
 }
@@ -289,8 +253,13 @@ function resetGame() {
           for (let i = 0; i < dirtLayers.length; i++) {
             scene.remove(dirtLayers[i])
           }
+          for (let i = 0; i < drawnGoods.length; i++) {
+            scene.remove(drawnGoods[i])
+          }
           rerenderClickCycle(new BigNumber(-1));
           refreshUi()
+          speedTimeout(miningSpeed);
+
         })
       }).catch((e) => console.log(e))
     })
@@ -374,7 +343,7 @@ function gatherInitialData() {
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
-    if (typeof web3 !== 'undefined') {
+    if (typeof web3 !== 'undefined' && !gallery) {
       window.web3 = new Web3(web3.currentProvider);
       allowedBrowser = true;
       return detectAddress()
@@ -437,6 +406,7 @@ function updateUiCoinBal() {
 
 function updateUiSpeed() {
   var speedDisplay = document.getElementById("speedStat");
+  speedDisplay.setAttribute('title', `${miningSpeed.equals(1) ? 'Your speed is maxed out!' : 'Higher speed means you mine faster!'}`)
   var baseline = new BigNumber(2500)
   var reversed = baseline.minus(miningSpeed);
   speedDisplay.innerHTML = reversed.toString();
@@ -454,9 +424,32 @@ function checkSmeltButton() {
   }
 }
 
+function efficiencyTimeout(efficiency, max) {
+  var value = new BigNumber(0);
+  var count = 0.2
+  var intervalRegularity = 1;
+
+  var draw = () => { 
+    value = value.plus(count);
+    if (value.greaterThanOrEqualTo(efficiency)) {
+      clearInterval(efficiencyInterval)
+    }
+    sliderAdjust('efficiencySlider', value, max, 300, 30);
+  };
+
+  var adjustableTimeout = () => {
+    value = new BigNumber(0);
+    clearInterval(efficiencyInterval)
+    efficiencyInterval = setInterval(draw, intervalRegularity)
+  }
+  
+  adjustableTimeout();
+}
+
 function adjustEfficiency() {
   var max = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? miningEfficiency : efficiencyMax;
   sliderAdjust('efficiencySlider', miningEfficiency, max, 300, 30)
+  //efficiencyTimeout(miningEfficiency, max)
 }
 
 function refreshUi() {
@@ -478,7 +471,7 @@ function getPollingBalance() {
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
-  speedTimeout();
+  speedTimeout(miningSpeed);
   adjustEfficiency();
   rerenderClickCycle(new BigNumber(-1));
   statsMenuButtons();
@@ -503,7 +496,6 @@ function refreshBalance() {
 
 function getPlayerAndSetVars() {
   return new Promise((res, rej) => {
-    // setTimeout(() => {
     console.log(`playerAddress is ${playerAddress}`)
       game.playerGetter(playerAddress, (err, player) => {
         if (err) return rej(err);
@@ -519,14 +511,11 @@ function getPlayerAndSetVars() {
         miningSpeed = new BigNumber(player[2]);
         canSmelt = player[3];
         ownedGoods = player[4];
-        lastClick = player[5];
-        numClicks = new BigNumber(player[6]);
+        numClicks = new BigNumber(player[5]);
         console.log(`numclicks is ${numClicks}`)
-        //sliderAdjust('efficiencySlider', miningEfficiency, new BigNumber(1000), 300, 30)
         return refreshBalance()
         .then(() => res(true))
       })
-    // }, 1000) 
   })
 }
 
@@ -567,7 +556,6 @@ function getMaskTexture(label, identfier) {
     let rand;
     if (identfier !== "Null") {
       rand = random(0, 6);
-      //seedInt = seedInt + 1;
     }
     const onLoad = (texture) => resolve (texture);
     const onError = (event) => reject (event);
@@ -596,7 +584,6 @@ function makeGroundMaterial(texture, alpha, geometry) {
     alphaMap: alpha
   });
   var mesh = new THREE.Mesh( geometry, material );
-  //mesh.position.y = 5 * 0.25;
   mesh.rotation.x = - Math.PI / 2;
   return mesh;
 }
@@ -610,7 +597,6 @@ function makeItemMaterial(texture, geometry) {
     map: texture,
   });
   var mesh = new THREE.Mesh( geometry, material );
-  //mesh.position.y = 5 * 0.25;
   mesh.rotation.x = - Math.PI / 2;
   return mesh;
 }
@@ -647,15 +633,10 @@ function genQuadItem(label) {
   .then(texture => {
     mesh = makeItemMaterial(texture, geometry)
     var randx = random((window.innerWidth/4) * -1, window.innerWidth/4);
-    //seedInt += 1;
     var randz = random((window.innerHeight/4) * -1, window.innerHeight/4);
-    console.log(randx)
-    console.log(randz)
-    //seedInt += 1;
     mesh.position.x = randx;
     mesh.position.z = randz;
     mesh.position.y = 30;
-    console.log(`about to place ${label}`)
     scene.add(mesh);
     return mesh;
   })
@@ -685,33 +666,28 @@ function placeGoods() {
 }
 
 function placeGood(goodIdent, numberOwned) {
-  console.log('called placegood')
-  console.log(`numberOwned is ${numberOwned}`)
   var name = cacheGoods[goodIdent][0].toLowerCase().replace(/ /g, '-');
   for (let i = 0; i < numberOwned; i++) {
-    genQuadItem(name);
+    genQuadItem(name)
+    .then(quad => {
+      drawnGoods.push(quad)
+    })
   }
 }
 
 function clickCycle(scopedNumClicks) {
-  // var layer = numClicks;
-  // console.log(scopedNumClicks.toString())
   if (scopedNumClicks.equals(0)) {
-    // console.log('equals zero')
     return genQuadNoMask("Grass", "0", 0)
     .then((newMesh) => {
-      // console.log('pushing to dirtlayers')
       dirtLayers.push(newMesh);
       return;
     })
   }
   if (dirtLayers.length > maxMask) {
-    // console.log('removing item from dirtLayers')
     scene.remove(dirtLayers[0])
     dirtLayers.splice(0, 1);
   }
-  // console.log('darkness is ' + darkness)
-  if (scopedNumClicks.greaterThan(3)) {
+  if (scopedNumClicks.greaterThan(1)) {
       if (darkness > 30) {
         darkness -= 45;
       } else {
@@ -720,15 +696,11 @@ function clickCycle(scopedNumClicks) {
       console.log(`darkness is ${darkness}`)
   }
   var layer = dirtLayers.length;
-  console.log(`dirt layers is ${dirtLayers.length}`)
   for (let i = 0; i < dirtLayers.length; i++) {
-    // console.log(`called updateQuad layer is ${layer}`)
     updateQuad(dirtLayers[i], layer);
     layer -= 1;
   } 
   var rand = random(0, 8);
-  //seedInt += 1;
-  // console.log(rand)
   return genQuad("Dirt", rand, dirtLayers.length + 1)
   .then((newMesh) => {
     dirtLayers.push(newMesh);
@@ -743,20 +715,22 @@ function click () {
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
     return;
   }
-  // console.log('about to call click')
   return game.click({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) console.log(err)
+    console.log('setting click Allowed false')
     clickAllowed = false;
     return getTransactionReceiptMined(result)
     .then(() => {
       return getPlayerAndSetVars()
       .then(() => {
-        // console.log('about to refresh ui')
         refreshUi();
         clickCycle(numClicks);
-        speedTimeout();
+        speedTimeout(miningSpeed);
       })
-    }).catch((e) => console.log(e))
+    }).catch((e) => {
+      speedTimeout(miningSpeed);
+      console.log(e)
+    })
   })
 }
 
@@ -768,7 +742,6 @@ function init() {
   if (allowedBrowser) { 
 
   }
-  console.log(allowedBrowser)
   camera = new THREE.OrthographicCamera( 
     window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
   camera.position.set( 0, 100, 10 );
@@ -811,13 +784,6 @@ function animate() {
 
 function render() {
   var time = Date.now() / 6000;
-  // camera.position.x = 80 * Math.cos( time );
-  // camera.position.z = 80 * Math.sin( time );
   camera.lookAt( scene.position );
-  // for ( var i = 0, l = scene.children.length; i < l; i ++ ) {
-  //   var mesh = scene.children[ i ];
-  //   mesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
-  //   mesh.position.z = Math.cos( time * 6 ) * i * i * 0.005;
-  // }
   renderer.render( scene, camera );
 }
