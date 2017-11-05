@@ -41,7 +41,7 @@ contract Game is ClickMineToken {
     //no mercy
     games[msg.sender].seed = block.blockhash(block.number - 1);
     games[msg.sender].miningEfficiency = 1;
-    games[msg.sender].miningSpeed = 2500;
+    games[msg.sender].miningSpeed = 500;
     games[msg.sender].canSmelt = false;
     games[msg.sender].ownedGoods = [0,0,0,0,0,0,0,0,0,0];
     games[msg.sender].numClicks = 0;
@@ -79,10 +79,8 @@ contract Game is ClickMineToken {
     require(balances[msg.sender] - totalCost <= balances[msg.sender]);
     require(games[msg.sender].miningEfficiency + totalEfficiency >= games[msg.sender].miningEfficiency);
     require(games[msg.sender].ownedGoods[goodIdentifier] + 1 > games[msg.sender].ownedGoods[goodIdentifier]);
-    //require(games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed);
     balances[msg.sender] -= totalCost;
     games[msg.sender].miningEfficiency = games[msg.sender].miningEfficiency + totalEfficiency;
-    // games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
     games[msg.sender].ownedGoods[goodIdentifier] = games[msg.sender].ownedGoods[goodIdentifier] + 1;
     if (games[msg.sender].miningSpeed - totalSpeed <= games[msg.sender].miningSpeed) {
       games[msg.sender].miningSpeed = games[msg.sender].miningSpeed - totalSpeed;
