@@ -39,11 +39,8 @@ contract ClickMineToken is StandardToken, mortal {
 
     function mint(address _to, uint256 _value) internal returns (bool success)
     {
-        require(balances[_to] + _value > balances[_to]);
         balances[_to] += _value;
-        allowed[_to][this] += _value;
         Transfer(0x0000000000000000000000000000000000000000, _to, _value);
-        Approval(_to, this, _value);
         return true;
     }
 }

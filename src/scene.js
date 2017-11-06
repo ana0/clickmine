@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0x1a3568e468c3169db8ded188b707b20da73be3a7";
+var registrarAddress = "0xd751b7fa68823a960a2b8e55e4a9756c6b4448d1";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -29,41 +29,23 @@ var cacheGoods;
 var ownedGoods = [];
 var drawnGoods = []
 var web3;
-var gallery = true;
+var gallery = false;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
   '2': 'Your first step toward total automation! \n',
   '3': 'Deceptively powerful ... \n',
   '4': 'The marketing department sold you on this one ... you\'re not too sure what it is yet\n',
-  '5': 'Sluice x3! 14 humans without MBAs lose their jobs \n',
+  '5': 'Sluice x3! For every mecha-sluice, 14 people lose their jobs \n',
   '6': 'Pareto efficiency tax \n',
-  // '7': '',
-  '8': 'Keep public sentiment on your side as you pillage the token fields! \n',
-  // '9': '',
-  // '10': '',
-  // '11': ''
+  '7': 'This baby is among the largest land vehicles ever constructed\n',
+  '8': 'Keep public sentiment on your side as you pillage the earth! \n',
+  '9': 'A "tailings pond" is a cute name for a lake of toxic waste... \n One this bulldozer can drive through with noooooo problem!\n',
+  '10': 'Rip up the fields, uncover the last root of the merkle tree...\n',
+  '11': 'UNCAPPED HAULAGE. CHAOS REIGNS\n'
 };
 
 detectMetaMask();
-
-function trimSvgWhitespace() {
-  console.log('called')
-  // get all SVG objects in the DOM
-  var svgs = document.getElementsByTagName("svg");
-  console.log(svgs.length)
-
-  // go through each one and add a viewbox that ensures all children are visible
-  for (var i=0, l=svgs.length; i<l; i++) {
-    console.log(svgs[i])
-
-    var svg = svgs[i],
-        box = svg.getBBox(), // <- get the visual boundary required to view all children
-        viewBox = [box.x, box.y, box.width, box.height].join(" ");
-    // set viewable area based on value above
-    svg.setAttribute("viewBox", viewBox);
-  }
-}
 
 function insertTxHash(txHash) {
   var text = '';
@@ -96,8 +78,6 @@ function getTransactionReceiptMined(txHash) {
                 () => transactionReceiptAsync(resolve, reject),
                 100);
         } else {
-            console.log('got receipt')
-            console.log(receipt)
             resolve(receipt);
         }
     });
@@ -123,7 +103,6 @@ function getGoods() {
   }
   return Promise.all(goodsPromises)
   .then((values) => {
-    // console.log(values)
     cacheGoods = values;
     for (let i = 0; i < totalGoods; i++) {
       populateGood(i, values);
@@ -137,6 +116,23 @@ function statsMenuButtons() {
   smt.onclick = smelt;
   var res = document.getElementById("reset");
   res.onclick = resetGame;
+}
+
+function showWhitepaper() {
+  var wp = document.getElementById("whitepaperFull");
+  wp.style.display = 'block';
+}
+
+function hideWhitepaper() {
+  var wp = document.getElementById("whitepaperFull");
+  wp.style.display = 'none';
+}
+
+function whitepaperButton() {
+  var button = document.getElementById("whitepaper");
+  button.onclick = showWhitepaper;
+  var wp = document.getElementById("whitepaperFull");
+  wp.addEventListener('click', hideWhitepaper);
 }
 
 function populateGood(ident, goods) {
@@ -167,7 +163,6 @@ function buyGood(ident) {
       }
       return getTransactionReceiptMined(result)
       .then(() => {
-        // console.log('got receipt from buy')
         return getPlayerAndSetVars()
         .then(() => {
           refreshUi();
@@ -187,11 +182,9 @@ function speedTimeout(speed) {
   var draw = () => { 
     value = value.plus(count);
     if (value.greaterThanOrEqualTo(speed)) {
-      console.log('setting click Allowed true')
       clickAllowed = true;
       clearInterval(interval)
     }
-    console.log('called draw')
     sliderAdjust('speedSlider', value, speed, 300, 70);
   };
 
@@ -202,14 +195,12 @@ function speedTimeout(speed) {
   }
   
   if (speed.equals(0)) {
-    console.log('setting click Allowed true')
     clickAllowed = true;
     sliderAdjust('speedSlider', new BigNumber(1), new BigNumber(1), 300, 70);
   } else if (speed.lessThan(10)) {
     speed = new BigNumber(10);
     adjustableTimeout();
   } else {
-    console.log('calling adjustableTimeout')
     adjustableTimeout();
   }
 }
@@ -222,7 +213,6 @@ function denormalizeToCutOff(value, max, min) {
 }
 
 function sliderAdjust(slider, value, paramMax, sliderMax, cutoff) {
-  console.log(`slider adjust with ${slider}`)
   var slider = document.getElementById(slider); 
   var max = new BigNumber(sliderMax);
   var normalizedHeight = value.dividedBy(paramMax); 
@@ -316,6 +306,7 @@ function detectAddress() {
         prompt("Unable to find your account, is metamask unlocked?", "Ok", detectAddress)
         return;
       } else {
+        console.log(accounts)
         playerAddress = accounts[0];
         gatherInitialData()
       }
@@ -361,17 +352,11 @@ function detectMetaMask() {
 }
 
 function createContracts() {
-  console.log('called create')
-  console.log(`registrar address at ${registrarAddress}`)
   return new Promise((res, rej) => {
     var Registrar = web3.eth.contract(registrarAbi);
     registrar = Registrar.at(registrarAddress);
-    console.log('test')
-    console.log('attempting to get game address')
     registrar.GameAddress((err, result) => {
-      console.log(err)
       if (err) return rej(err)
-      console.log(result)
       gameAddress = result
       var Game = web3.eth.contract(gameAbi);
       game = Game.at(gameAddress);
@@ -385,15 +370,12 @@ function createContracts() {
 
 function beginGame() {
   hidePrompt();
-  console.log(playerAddress)
-  console.log(gameAddress)
   game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) { throw err; }
     return getTransactionReceiptMined(result)
     .then(() => {
       return getPlayerAndSetVars()
       .then(() => {
-        console.log('calling start up')
         return startUpUi()
       })
     }).catch((e) => console.log(e))
@@ -432,9 +414,7 @@ function efTimeout(efficiency) {
 
   var draw = () => { 
     value = value.plus(count);
-    console.log(`testing whether ${value} is greater than ${efficiency}`)
     if (value.greaterThanOrEqualTo(efficiency)) {
-      console.log('stop draw')
       clearInterval(efInterval)
     }
     sliderAdjust('efficiencySlider', value, efficiencyMax, 300, 30);
@@ -445,17 +425,12 @@ function efTimeout(efficiency) {
     clearInterval(efInterval)
     efInterval = setInterval(draw, intervalRegularity)
   }
-  
-    console.log('calling efficiency adjustableTimeout')
-    adjustableTimeout();
+  adjustableTimeout();
 }
 
 function adjustEfficiency() {
   var max = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? efficiencyMax : miningEfficiency;
   var eff = miningEfficiency.greaterThanOrEqualTo(efficiencyMax) ? efficiencyMax : miningEfficiency;
-  console.log(`max is ${max}`)
-  console.log(`miningEfficiency is ${miningEfficiency}`)
-  //sliderAdjust('efficiencySlider', miningEfficiency, max, 300, 30)
   efTimeout(max)
 }
 
@@ -470,7 +445,6 @@ function refreshUi() {
 function getPollingBalance() {
   setInterval(() => {
     game.balanceOf(playerAddress, (err, result) => {
-      console.log(`polling balance of ${result}`)
     });
   }, 200);
 }
@@ -485,9 +459,9 @@ function startUpUi() {
   updateUiSpeed();
   updateUiEfficiency();
   checkSmeltButton();
+  whitepaperButton();
   getGoods()
   .then(() => placeGoods())
-  //getPollingBalance();
 }
 
 function refreshBalance() {
@@ -519,7 +493,6 @@ function getPlayerAndSetVars() {
         canSmelt = player[3];
         ownedGoods = player[4];
         numClicks = new BigNumber(player[5]);
-        console.log(`numclicks is ${numClicks}`)
         return refreshBalance()
         .then(() => res(true))
       })
@@ -529,7 +502,6 @@ function getPlayerAndSetVars() {
 function checkForGame(first) {
   return getPlayerAndSetVars()
   .then((player) => {
-    console.log(player)
     if (!player) return prompt("No game detected with this address, would you like to play?", "No", hidePrompt, "Yes", beginGame);
     return startUpUi();
   })
@@ -572,7 +544,6 @@ function getMaskTexture(label, identfier) {
 }
 
 function getItemTexture(label) {
-  console.log(`trying to load texture ${label}`)
   return new Promise ((resolve, reject) => {
     const onLoad = (texture) => resolve (texture);
     const onError = (event) => reject (event);
@@ -700,7 +671,6 @@ function clickCycle(scopedNumClicks) {
       } else {
         darkness = 0;
       }
-      console.log(`darkness is ${darkness}`)
   }
   var layer = dirtLayers.length;
   for (let i = 0; i < dirtLayers.length; i++) {
@@ -724,7 +694,6 @@ function click () {
   }
   return game.click({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) console.log(err)
-    console.log('setting click Allowed false')
     clickAllowed = false;
     return getTransactionReceiptMined(result)
     .then(() => {

@@ -18,6 +18,10 @@ src/assets/*
 *.todo
 *.txt
 contracts/node_modules/*
+screenshots/*
+*.png
+screenshots*
+src/MathJax/*
 
 
 # ===================================== #
