@@ -177,7 +177,7 @@ function buyGood(ident) {
 function speedTimeout(speed) {
   var value = new BigNumber(0);
   var count = 0.2
-  var intervalRegularity = 1;//miningSpeed/230
+  var intervalRegularity = 1;
 
   var draw = () => { 
     value = value.plus(count);
@@ -686,8 +686,6 @@ function clickCycle(scopedNumClicks) {
 }
 
 function click () {
-  // send transaction
-  // when received, set numclicks, then call clickCycle()
   if (!clickAllowed) { 
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
     return;
