@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0xd751b7fa68823a960a2b8e55e4a9756c6b4448d1";
+var registrarAddress = "0xee3e07092ea9a6f705c2b69f51119bb8a9471305";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -56,7 +56,7 @@ function insertTxHash(txHash) {
   if (gallery) {
     text = `${txHash.substring(0, 23)}...`;
   } else {
-    text = '<a href="https://ropsten.etherscan.io/tx/' + txHash + '" target="_blank">' + txHash.substring(0, 23) + '...</a>';
+    text = '<a href="https://etherscan.io/tx/' + txHash + '" target="_blank">' + txHash.substring(0, 23) + '...</a>';
     column.setAttribute('class', 'pendingFlash');
   }
   column.innerHTML = text; 
@@ -324,12 +324,6 @@ function startWebGL() {
 function gatherInitialData() {
   if (allowedBrowser) {
     return createContracts()
-    .then(() => {
-      return checkForGame()
-      .then(() => {
-        return startWebGL()
-      })
-    })
   }
 }
 
@@ -351,19 +345,30 @@ function detectMetaMask() {
   })
 }
 
+function continueSetUp() {
+  return checkForGame()
+  .then(() => {
+    return startWebGL()
+  })
+}
+
 function createContracts() {
   return new Promise((res, rej) => {
     var Registrar = web3.eth.contract(registrarAbi);
     registrar = Registrar.at(registrarAddress);
     registrar.GameAddress((err, result) => {
       if (err) return rej(err)
-      gameAddress = result
-      var Game = web3.eth.contract(gameAbi);
-      game = Game.at(gameAddress);
-      game.tokensPerClick((err, result) => {
-        if (err) return rej(err)
-        res();
-      })
+      if (result === '' || !result || result === '0x') {
+        prompt('Can\'t connect to contracts, are you on the main ethereum network?', 'Ok', createContracts)
+      } else {
+        gameAddress = result
+        var Game = web3.eth.contract(gameAbi);
+        game = Game.at(gameAddress);
+        game.tokensPerClick((err, result) => {
+          if (err) return rej(err)
+          return continueSetUp()
+        })
+      }
     });
   })
 }
