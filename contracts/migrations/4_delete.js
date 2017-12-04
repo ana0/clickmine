@@ -3,7 +3,7 @@ var Game = artifacts.require("./Game.sol");
 var ClickMineToken = artifacts.require("./ClickMineToken.sol");
 
 module.exports = function(deployer) {
-  // const game = Registrar.at('0xe454c5cf591fb9e3bb77cc63efbc0cb8737afafb');
-  // game.close()
+  // const game = Game.at('0xEe3E07092eA9a6f705c2b69F51119BB8A9471305');
+  // game.addGood(4, 'Spiral Panner', 23906, 250, 575)
   // .then(() => console.log('done'))
 };

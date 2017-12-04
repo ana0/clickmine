@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0x5a6b7ea54e39c742ac45a64f0bd7ca12b15d0e7c";
+var registrarAddress = "0x21c59b106a98d7d1e3ad621625f32f0bc22e7e55";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -139,7 +139,7 @@ function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
   row.addEventListener('click', () => orderMenu(ident), false);
   var plural = `${ident === 6 ? 'Refinerie' : goods[ident][0]}s`;
-  var grammered = `${ident === 1 ? goods[ident][0] : plural}`;
+  var grammered = `${ownedGoods[ident].equals(1) ? goods[ident][0] : plural}`;
   row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}
     \nYou have bought ${ownedGoods[ident]} ${grammered}`)
   var coinsColumn = row.getElementsByTagName('p')[0]
