@@ -7,6 +7,9 @@ using Nethereum.JsonRpc.UnityClient;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.Blocks;
 
+
+
+
 public class GetBlock : MonoBehaviour {
 	public Text blockNumberText;
 	private float blockCheckRate = 3f;
@@ -23,19 +26,21 @@ public class GetBlock : MonoBehaviour {
 		}
 	}
 
+
 	public IEnumerator CheckBlockNumber() 
 	{
 		while(true)
 		{ 
 			yield return new WaitForSeconds(2);
-			var blockNumberRequest = new EthBlockNumberUnityRequest("https://rinkeby.infura.io");
+			var blockNumberRequest = new EthBlockNumberUnityRequest("https://mainnet.infura.io");
 			yield return blockNumberRequest.SendRequest();
 			if(blockNumberRequest.Exception == null) {
-				//blockNumberText.text = "Block: " + blockNumberRequest.Result.Value.ToString();
 				Debug.Log (blockNumberRequest.Result.Value.ToString ());
 			}
 		}
 	}
+
+
 
 	public void Update () 
 	{
