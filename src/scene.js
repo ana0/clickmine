@@ -154,6 +154,21 @@ function orderMenu(ident) {
   prompt(`Would you like to buy a ${cacheGoods[ident][0]}?`, 'Cancel', hidePrompt, 'Buy', () => { buyGood(ident); })
 }
 
+function bounceStats () {
+  var eff = document.getElementById("efficiencyStat")
+  var speed = document.getElementById("speedStat")
+  eff.classList.add("animated");
+  eff.classList.add("bounce");
+  speed.classList.add("animated");
+  speed.classList.add("bounce");
+  setTimeout(() => {
+    eff.classList.remove("animated");
+    eff.classList.remove("bounce");
+    speed.classList.remove("animated");
+    speed.classList.remove("bounce");
+  }, 1000)
+}
+
 function buyGood(ident) {
   return new Promise((res, rej) => {
     hidePrompt();
@@ -170,6 +185,7 @@ function buyGood(ident) {
         return getPlayerAndSetVars()
         .then(() => {
           refreshUi();
+          bounceStats();
           populateGood(ident, cacheGoods);
           placeGood(ident, 1);
         })
@@ -694,6 +710,16 @@ function clickCycle(scopedNumClicks) {
   })
 }
 
+function bounceCoin () {
+  var coin = document.getElementById("coinImg")
+  coin.classList.add("animated");
+  coin.classList.add("bounce");
+  setTimeout(() => {
+    coin.classList.remove("animated");
+    coin.classList.remove("bounce");
+  }, 1000)
+}
+
 function click () {
   if (!clickAllowed) { 
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
@@ -707,6 +733,7 @@ function click () {
       return getPlayerAndSetVars()
       .then(() => {
         refreshUi();
+        bounceCoin();
         clickCycle(numClicks);
         speedTimeout(miningSpeed);
       })
