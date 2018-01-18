@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0x21c59b106a98d7d1e3ad621625f32f0bc22e7e55";
+var registrarAddress = "0x2850c34255b8fc689b5f5640c83cd35f29b0d3dc";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -29,7 +29,7 @@ var cacheGoods;
 var ownedGoods = [];
 var drawnGoods = []
 var web3;
-var gallery = false;
+var gallery = true;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
@@ -120,19 +120,23 @@ function statsMenuButtons() {
 
 function showWhitepaper() {
   var wp = document.getElementById("whitepaperFull");
+  var wbg = document.getElementById("whitepaperBg");
   wp.style.display = 'block';
+  wbg.style.display = 'block';
 }
 
 function hideWhitepaper() {
   var wp = document.getElementById("whitepaperFull");
   wp.style.display = 'none';
+  var wbg = document.getElementById("whitepaperBg");
+  wbg.style.display = 'none';
 }
 
 function whitepaperButton() {
   var button = document.getElementById("whitepaper");
   button.onclick = showWhitepaper;
-  var wp = document.getElementById("whitepaperFull");
-  wp.addEventListener('click', hideWhitepaper);
+  var wbg = document.getElementById("whitepaperBg");
+  wbg.addEventListener('click', hideWhitepaper);
 }
 
 function populateGood(ident, goods) {
