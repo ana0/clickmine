@@ -253,7 +253,7 @@ function resetGame() {
           }
           rerenderClickCycle(new BigNumber(-1));
           refreshUi()
-          speedTimeout(miningSpeed);
+          speedTimeout(new BigNumber(1));
 
         })
       }).catch((e) => console.log(e))
@@ -461,7 +461,7 @@ function getPollingBalance() {
 function startUpUi() {
   nugIncrementer();
   updateUiCoinBal();
-  speedTimeout(miningSpeed);
+  speedTimeout(new BigNumber(1));
   adjustEfficiency();
   rerenderClickCycle(new BigNumber(-1));
   statsMenuButtons();
