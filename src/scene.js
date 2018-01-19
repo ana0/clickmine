@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0x2850c34255b8fc689b5f5640c83cd35f29b0d3dc";
+var registrarAddress = "0xc37031c5a8dffe24cdda0a5dab0618b13c327334";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
