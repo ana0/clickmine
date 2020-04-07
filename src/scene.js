@@ -349,7 +349,20 @@ function gatherInitialData() {
 
 function detectMetaMask() {
   window.addEventListener('load', function() {
-    if (typeof web3 !== 'undefined' && !gallery) {
+    if (window.ethereum && !gallery) {
+      window.web3 = new Web3(ethereum);
+      try {
+        // Request account access if needed
+        await ethereum.enable();
+        allowedBrowser = true;
+        return detectAddress()
+      } catch (error) {
+        // User denied account access...
+        prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
+      }
+    }
+    // Legacy dapp browsers...
+    else if (window.web3 && !gallery) {
       window.web3 = new Web3(web3.currentProvider);
       allowedBrowser = true;
       return detectAddress()
@@ -362,6 +375,20 @@ function detectMetaMask() {
     } else {
       prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
     }
+
+    // if (typeof web3 !== 'undefined' && !gallery) {
+    //   window.web3 = new Web3(web3.currentProvider);
+    //   allowedBrowser = true;
+    //   return detectAddress()
+    // } else if (gallery) {
+    //   var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
+    //   web3 = new Web3(w)
+    //   playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
+    //   allowedBrowser = true;
+    //   gatherInitialData();
+    // } else {
+    //   prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
+    // }
   })
 }
 
