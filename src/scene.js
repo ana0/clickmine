@@ -29,7 +29,7 @@ var cacheGoods;
 var ownedGoods = [];
 var drawnGoods = []
 var web3;
-var gallery = true;
+var gallery = false;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
