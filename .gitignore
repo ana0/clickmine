@@ -12,16 +12,14 @@ ClickMine/Obj/
 ClickMine/UnityGenerated/
 ClickMine/Library/
 ClickMine/Assets/AssetStoreTools*
-*.jpg
-src/assets/*
 .fuse*
 *.todo
 *.txt
 contracts/node_modules/*
 screenshots/*
-*.png
 screenshots*
 src/MathJax/*
+
 
 
 # ===================================== #
@@ -37,3 +35,7 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
+
+ipfs screenshots/*
+documentation/*
+*.zip
