@@ -18,7 +18,7 @@ var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
 var playerAddress = '';
-var registrarAddress = "0xee3e07092ea9a6f705c2b69f51119bb8a9471305";
+var registrarAddress = "0x21C59b106a98d7D1E3ad621625f32F0bc22e7e55";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -348,6 +348,7 @@ function gatherInitialData() {
 }
 
 function detectMetaMask() {
+  console.log('detect metamask')
   window.addEventListener('load', function() {
     if (window.ethereum && !gallery) {
       window.web3 = new Web3(ethereum);
@@ -359,7 +360,8 @@ function detectMetaMask() {
         prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
       })
     } else if (window.web3 && !gallery) {
-      window.web3 = new Web3(web3.currentProvider);
+      var w = new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/110eb3d44dfa476db42ef38c05365a1e`)
+      window.web3 = new Web3(w);
       allowedBrowser = true;
       return detectAddress()
     } else if (gallery) {
@@ -399,7 +401,10 @@ function createContracts() {
   return new Promise((res, rej) => {
     var Registrar = web3.eth.contract(registrarAbi);
     registrar = Registrar.at(registrarAddress);
+    console.log(registrar)
     registrar.GameAddress((err, result) => {
+      console.log(result)
+      //result = '0xEe3E07092eA9a6f705c2b69F51119BB8A9471305'
       if (err) return rej(err)
       if (result === '' || !result || result === '0x') {
         prompt('Can\'t connect to contracts, are you on the main ethereum network?', 'Ok', createContracts)

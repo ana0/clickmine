@@ -12,13 +12,13 @@ module.exports = {
       gasPrice: 100000000000
     },
     ropsten: {
-      provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"),
+      provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/v3/110eb3d44dfa476db42ef38c05365a1e"),
       network_id: 3,
       gas: 4600000,
       gasPrice: 100000000000
     },
     mainnet: {
-      provider: new HDWalletProvider(mnemonic, "https://mainnet.infura.io/"),
+      provider: new HDWalletProvider(mnemonic, "https://mainnet.infura.io/v3/110eb3d44dfa476db42ef38c05365a1e"),
       network_id: 1,
       gas: 4600000,
       gasPrice: 20000000000

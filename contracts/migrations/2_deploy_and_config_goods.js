@@ -3,12 +3,12 @@ var Game = artifacts.require("./Game.sol");
 var ClickMineToken = artifacts.require("./ClickMineToken.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Game, 10, "ClickMineToken", 0, "CLK")
+  return deployer.deploy(Game, 10, "ClickMineToken", 0, "CLK")
   .then((gameInstance) => {
-    deployer.deploy(Registrar, Game.address)
+    return deployer.deploy(Registrar, Game.address)
     .then(() => {
       const game = Game.deployed();
-      game.then((gameInstance) => {
+      return game.then((gameInstance) => {
         const addGoods = [
           gameInstance.addGood(0, 'Shovel', 3, 5, 5),
           gameInstance.addGood(1, 'Pan', 100, 20, 25),
@@ -20,10 +20,10 @@ module.exports = function(deployer) {
           gameInstance.addGood(7, 'Bucketwheel', 220890008056, 302, 76890056),
           gameInstance.addGood(8, 'Propaganda Machine', 50, 130, 155055505550),
           gameInstance.addGood(9, 'Tailings Dozer', 995000457600, 10, 508100034100),
-          gameInstance.addGood(10, 'Hydraulic Shovel', 66002990004781212000010, 105, 1901007710345),
-          gameInstance.addGood(11, 'Haul Truck Behemoth', 5789604461865809771178549250434395392663499233282028201972879200395656481996, 204, 5000299000418955590)
+          gameInstance.addGood(10, 'Hydraulic Shovel', '66002990004781212000010', 105, 1901007710345),
+          gameInstance.addGood(11, 'Haul Truck Behemoth', '5789604461865809771178549250434395392663499233282028201972879200395656481996', 204, '5000299000418955590')
         ]
-        Promise.all(addGoods).then((values) => {
+        return Promise.all(addGoods).then((values) => {
           console.log(values)
         })
       })
