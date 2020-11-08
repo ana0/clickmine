@@ -17,8 +17,9 @@ var darkness = 255;
 var nugsIncrement = 8;
 var clickAllowed = false;
 var allowedBrowser = false;
+var player = '';
 var playerAddress = '';
-var registrarAddress = "0x21C59b106a98d7D1E3ad621625f32F0bc22e7e55";
+var registrarAddress = "0x80cc1C4c88B6e0ab18f9efCe9c43B17c0240f6ae";
 var gameAddress = "";
 var interval = setInterval(() => {}, 1000);
 var efInterval = setInterval(() => {}, 1000);
@@ -29,7 +30,7 @@ var cacheGoods;
 var ownedGoods = [];
 var drawnGoods = []
 var web3;
-var gallery = false;
+var gallery = true;
 var specialMessages = {
   '0': "A humble beginning \n",
   '1': 'This venture is sure to pan out ... \n',
@@ -94,7 +95,7 @@ function getGoods() {
   for (let i = 0; i < totalGoods; i++) {
     goodsPromises.push(
       new Promise((res, rej) => {
-        game.goodsGetter(i, (err, result) => {
+        game.methods.goodsGetter(i).call((err, result) => {
           if (err) return rej(err)
           res(result)
         })
@@ -143,7 +144,8 @@ function populateGood(ident, goods) {
   var row = document.getElementById("shop" + ident);
   row.addEventListener('click', () => orderMenu(ident), false);
   var plural = `${ident === 6 ? 'Refinerie' : goods[ident][0]}s`;
-  var grammered = `${ownedGoods[ident].equals(1) ? goods[ident][0] : plural}`;
+  console.log(ownedGoods)
+  var grammered = `${new BigNumber(ownedGoods[ident]).equals(1) ? goods[ident][0] : plural}`;
   row.setAttribute('title', `${specialMessages[ident] ? specialMessages[ident] : ''}Efficiency +${goods[ident][1].toString()}  Speed +${goods[ident][2].toString()}
     \nYou have bought ${ownedGoods[ident]} ${grammered}`)
   var coinsColumn = row.getElementsByTagName('p')[0]
@@ -176,7 +178,7 @@ function buyGood(ident) {
       prompt(`You do not have enough $CLK to buy a ${cacheGoods[ident][0]}`, 'Ok', hidePrompt)
       return res();
     }
-    return game.buyGood(ident, {gas: "210000", from: playerAddress}, (err, result) => {
+    return game.methods.buyGood(ident).send({gas: "210000", from: playerAddress}, (err, result) => {
       if (err) {
         return rej(err);
       }
@@ -253,7 +255,7 @@ function nugIncrementer() {
 }
 
 function resetGame() {
-  return game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
+  return game.methods.beginGame().send({from: playerAddress, gas: "210000"}, (err, result) => {
     return getPlayerAndSetVars()
     .then(() => {
       return getTransactionReceiptMined(result)
@@ -326,7 +328,6 @@ function detectAddress() {
         prompt("Unable to find your account, is metamask unlocked?", "Ok", detectAddress)
         return;
       } else {
-        console.log(accounts)
         playerAddress = accounts[0];
         gatherInitialData()
       }
@@ -347,46 +348,33 @@ function gatherInitialData() {
   }
 }
 
-function detectMetaMask() {
-  console.log('detect metamask')
-  window.addEventListener('load', function() {
-    if (window.ethereum && !gallery) {
-      window.web3 = new Web3(ethereum);
-      // Request account access if needed
-      return ethereum.enable().then(() => {
-        allowedBrowser = true;
-        return detectAddress()
-      }).catch(() => {
-        prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
-      })
-    } else if (window.web3 && !gallery) {
-      var w = new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/110eb3d44dfa476db42ef38c05365a1e`)
-      window.web3 = new Web3(w);
-      allowedBrowser = true;
-      return detectAddress()
-    } else if (gallery) {
-      var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
-      web3 = new Web3(w)
-      playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
-      allowedBrowser = true;
-      gatherInitialData();
-    } else {
-      prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
-    }
+function fundPlayer() {
+  return web3.eth.getAccounts()
+  .then((accounts) => {
+    return web3.eth.sendTransaction({
+      from: accounts[0],
+      to: playerAddress,
+      value: web3.utils.toWei('2'),
+    })
+  })
+}
 
-    // if (typeof web3 !== 'undefined' && !gallery) {
-    //   window.web3 = new Web3(web3.currentProvider);
-    //   allowedBrowser = true;
-    //   return detectAddress()
-    // } else if (gallery) {
-    //   var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
-    //   web3 = new Web3(w)
-    //   playerAddress = web3.eth.defaultAccount = web3.eth.accounts[0];
-    //   allowedBrowser = true;
-    //   gatherInitialData();
-    // } else {
-    //   prompt("You must have a dapp browser, metamask, or local node installed to play!", "Ok", hidePrompt)
-    // }
+function detectMetaMask() {
+  window.addEventListener('load', function() {
+    var w = new Web3.providers.HttpProvider(`http://127.0.0.1:8545`)
+    web3 = new Web3(w)
+    web3.eth.personal.newAccount('', (err, result) => {
+      if (err) { console.log(err); return; }
+      playerAddress = result;
+      fundPlayer()
+      .then(() => {
+        return web3.eth.personal.unlockAccount(playerAddress, '', 0);
+      })
+      .then(() => {
+        allowedBrowser = true;
+        gatherInitialData();
+      })
+    })
   })
 }
 
@@ -399,20 +387,15 @@ function continueSetUp() {
 
 function createContracts() {
   return new Promise((res, rej) => {
-    var Registrar = web3.eth.contract(registrarAbi);
-    registrar = Registrar.at(registrarAddress);
-    console.log(registrar)
-    registrar.GameAddress((err, result) => {
-      console.log(result)
-      //result = '0xEe3E07092eA9a6f705c2b69F51119BB8A9471305'
+    registrar = new web3.eth.Contract(registrarAbi, registrarAddress);
+    registrar.methods.GameAddress().call((err, result) => {
       if (err) return rej(err)
       if (result === '' || !result || result === '0x') {
         prompt('Can\'t connect to contracts, are you on the main ethereum network?', 'Ok', createContracts)
       } else {
         gameAddress = result
-        var Game = web3.eth.contract(gameAbi);
-        game = Game.at(gameAddress);
-        game.tokensPerClick((err, result) => {
+        game = new web3.eth.Contract(gameAbi, gameAddress);
+        game.methods.tokensPerClick().call((err, result) => {
           if (err) return rej(err)
           return continueSetUp()
         })
@@ -423,7 +406,7 @@ function createContracts() {
 
 function beginGame() {
   hidePrompt();
-  game.beginGame({from: playerAddress, gas: "210000"}, (err, result) => {
+  game.methods.beginGame().send({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) { throw err; }
     return getTransactionReceiptMined(result)
     .then(() => {
@@ -497,7 +480,7 @@ function refreshUi() {
 
 function getPollingBalance() {
   setInterval(() => {
-    game.balanceOf(playerAddress, (err, result) => {
+    game.methods.balanceOf(playerAddress).call((err, result) => {
     });
   }, 200);
 }
@@ -519,7 +502,7 @@ function startUpUi() {
 
 function refreshBalance() {
   return new Promise((res, rej) => {
-    game.balanceOf(playerAddress, (err, bal) => {
+    game.methods.balanceOf(playerAddress).call((err, bal) => {
       if (err) return rej(err);
       balance = new BigNumber(bal);
       updateUiCoinBal();
@@ -531,9 +514,8 @@ function refreshBalance() {
 function getPlayerAndSetVars() {
   return new Promise((res, rej) => {
     console.log(`playerAddress is ${playerAddress}`)
-      game.playerGetter(playerAddress, (err, player) => {
+      game.methods.playerGetter(playerAddress).call((err, player) => {
         if (err) return rej(err);
-        console.log(player)
         const seedCheck = new BigNumber(player[0])
         if (seedCheck.equals(0)) {
           return res(false);
@@ -753,7 +735,7 @@ function click () {
     prompt("You can't mine faster than your equipment allows!", "Ok", hidePrompt);
     return;
   }
-  return game.click({from: playerAddress, gas: "210000"}, (err, result) => {
+  return game.methods.click().send({from: playerAddress, gas: "210000"}, (err, result) => {
     if (err) console.log(err)
     clickAllowed = false;
     return getTransactionReceiptMined(result)

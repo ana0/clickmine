@@ -3,6 +3,11 @@ var HDWalletProvider = require("truffle-hdwallet-provider");
 var mnemonic = "circle decrease appear spy oven outdoor mule boil citizen grain agree thunder";
 
 module.exports = {
+  compilers: {
+    solc: {
+      version: "0.4.15",
+    },
+  },
   networks: {
     development: {
       host: "localhost",
